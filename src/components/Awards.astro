@@ -1,0 +1,94 @@
+---
+const awards = [
+	{
+		id: 1,
+		title: "Mejor Clip del Año",
+		icon: "🎥",
+		color: "from-red-600 to-red-700",
+		description: "El clip más épico y memorable"
+	},
+	{
+		id: 2,
+		title: "Creador Revelación",
+		icon: "⭐",
+		color: "from-purple-600 to-purple-700",
+		description: "Nuevo talento que brilla intensamente"
+	},
+	{
+		id: 3,
+		title: "Mejor Comunidad",
+		icon: "👥",
+		color: "from-orange-600 to-orange-700",
+		description: "La comunidad más vibrante y unida"
+	},
+	{
+		id: 4,
+		title: "Momento Más Divertido",
+		icon: "😂",
+		color: "from-yellow-600 to-yellow-700",
+		description: "Risa garantizada y entretenimiento puro"
+	},
+	{
+		id: 5,
+		title: "Mejor Edición",
+		icon: "✂️",
+		color: "from-blue-600 to-blue-700",
+		description: "Técnica y creatividad en cada frame"
+	},
+	{
+		id: 6,
+		title: "Premio del Público",
+		icon: "🏆",
+		color: "from-red-600 via-orange-600 to-yellow-600",
+		description: "Votado por la comunidad LAG"
+	},
+	{
+		id: 7,
+		title: "Mejor video porno",
+		icon: "🎥",
+		color: "from-black-600 to-green-700",
+		description: "Mejor videos Porno producidos por el TeamLag"
+	},
+	
+	
+];
+---
+
+<section class="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
+  <div class="absolute inset-0 bg-linear-to-b from-transparent via-purple-600/5 to-red-600/5"></div>
+
+  <div class="relative z-10 container mx-auto">
+    <div class="text-center mb-16">
+      <h2 class="text-5xl sm:text-6xl font-black mb-4 leading-tight">
+        <span class="text-transparent bg-clip-text bg-linear-to-r from-red-500 to-orange-500">Categorías</span>
+        <br />
+        <span class="text-white">de Premios</span>
+      </h2>
+      <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+        Descubre todas las categorías especiales donde la creatividad y el talento son reconocidos
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {awards.map((award) => (
+        <div class="group relative h-64 rounded-2xl overflow-hidden cursor-pointer transform transition-all duration-500 hover:scale-105">
+          <div class={"absolute inset-0 bg-linear-to-br " + award.color + " opacity-80 group-hover:opacity-100 transition-opacity duration-300"}></div>
+
+          <div class="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent"></div>
+
+          <div class="absolute inset-0 rounded-2xl border border-white/10 group-hover:border-white/30 transition-all duration-300"></div>
+
+          <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+            <div class="text-6xl mb-4 transform group-hover:scale-125 transition-transform duration-300">
+              {award.icon}
+            </div>
+            <h3 class="text-2xl font-black mb-2 text-white">{award.title}</h3>
+            <p class="text-white/80 text-sm">{award.description}</p>
+          </div>
+
+          <div class="absolute -top-1/2 -right-1/2 w-full h-full bg-white/5 rounded-full blur-3xl group-hover:bg-white/10 transition-all duration-500 opacity-0 group-hover:opacity-100"></div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

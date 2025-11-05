@@ -1,0 +1,86 @@
+---
+---
+
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-24">
+	<!-- Fondo con efectos -->
+	<div class="absolute inset-0 bg-linear-to-b from-red-600/10 via-transparent to-purple-600/5"></div>
+	<div class="absolute inset-0">
+		<div class="absolute top-0 -left-40 w-80 h-80 bg-red-600/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+		<div class="absolute top-1/2 right-0 w-80 h-80 bg-purple-600/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+		<div class="absolute -bottom-40 left-1/2 w-80 h-80 bg-orange-600/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style="animation-delay: 4s;"></div>
+	</div>
+
+	<!-- Contenido principal -->
+	<div class="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+		<!-- Logo/Branding -->
+		<div class="mb-8 animate-fade-in">
+			<span class="inline-block text-sm font-bold text-yellow-400 mb-4 tracking-widest">🎬 EVENTO DE PREMIOS</span>
+		</div>
+
+		<!-- Título principal con efecto -->
+		<h1 class="text-6xl sm:text-7xl lg:text-8xl font-black mb-6 leading-tight animate-fade-in" style="animation-delay: 0.1s;">
+			<span class="bg-linear-to-r from-red-500 via-red-400 to-orange-500 text-transparent bg-clip-text">LAG</span>
+			<br />
+			<span class="text-white">AWARDS</span>
+		</h1>
+
+		<!-- Subtítulo -->
+		<p class=" text-xl sm:text-2xl text-gray-300 mx-auto animate-fade-in" style="animation-delay: 0.2s;">
+			Celebrando los mejores clips, creadores y momentos épicos de la comunidad
+		</p>
+		<br />
+
+		<!-- CTA Buttons -->
+		<div class="flex flex-col sm:flex-row gap-4 justify-center mb-12 animate-fade-in" style="animation-delay: 0.3s;">
+			<button class="relative px-8 py-4 bg-linear-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-bold text-lg rounded transition-all duration-300 transform hover:scale-105 shadow-lg shadow-red-600/50">
+				Ver Premios
+			</button>
+			<button class="relative px-8 py-4 bg-transparent border-2 border-purple-500 hover:bg-purple-500/10 text-white font-bold text-lg rounded transition-all duration-300">
+				Nominados
+			</button>
+		</div>
+		<br />
+		
+        <!--   Debe arreglarse aun -->
+		<!-- Estadísticas rápidas   -->
+		<div class="grid grid-cols-3 gap-4 max-w-xl mx-auto animate-fade-in" style="animation-delay: 0.4s;">
+			<div class="backdrop-blur-md bg-white/5 p-4 rounded-lg border border-white/10">
+				<div class="text-3xl font-bold text-yellow-400">50+</div>
+				<div class="text-sm text-gray-400">Videos Porno</div>
+			</div>
+			<div class="backdrop-blur-md bg-white/5 p-4 rounded-lg border border-white/10">
+				<div class="text-3xl font-bold text-orange-400">1000+</div>
+				<div class="text-sm text-gray-400">Creadores</div>
+			</div>
+			<div class="backdrop-blur-md bg-white/5 p-4 rounded-lg border border-white/10">
+				<div class="text-3xl font-bold text-red-400">∞</div>
+				<div class="text-sm text-gray-400">Comunidad</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Scroll indicator -->
+	<div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
+		<svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+		</svg>
+	</div>
+</section>
+
+<style>
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+			transform: translateY(20px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.animate-fade-in {
+		animation: fade-in 0.8s ease-out forwards;
+		opacity: 0;
+	}
+</style>

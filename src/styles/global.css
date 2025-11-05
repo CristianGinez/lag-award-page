@@ -1,0 +1,67 @@
+/* Tailwind base + custom global styles */
+@import "tailwindcss";
+
+/* Theme variables */
+:root {
+  --font-sans: 'Inter', sans-serif;
+  --font-heading: 'Orbitron', monospace;
+
+  /* Colores principales */
+  --color-primary: #dc2626; /* Rojo vibrante */
+  --color-secondary: #7c3aed; /* Morado */
+  --color-accent: #f97316; /* Naranja */
+  --color-light: #fbbf24; /* Amarillo */
+  --color-dark: #0f0f0f; /* Negro oscuro */
+  --color-surface: #1a1a1a; /* Gris oscuro */
+  --color-border: #333333; /* Gris borde */
+}
+
+/* Global reset */
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: linear-gradient(135deg, var(--color-dark) 0%, #1a0a1a 100%);
+  color: #ffffff;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* Efectos de partículas y brillo */
+.glow-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.glow-effect::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(220, 38, 38, 0.1) 0%, transparent 70%);
+  animation: glow-rotate 20s linear infinite;
+}
+
+@keyframes glow-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Estilo de títulos */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Scroll personalizado */
+::-webkit-scrollbar { width: 12px; }
+::-webkit-scrollbar-track { background: var(--color-surface); }
+::-webkit-scrollbar-thumb { background: var(--color-primary); border-radius: 6px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-secondary); }

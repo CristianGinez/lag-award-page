@@ -1,22 +1,40 @@
+---
+import '../styles/global.css';
+const { title } = Astro.props;
+---
+
 <!doctype html>
-<html lang="en">
+<html lang="es">
 	<head>
 		<meta charset="UTF-8" />
+		<meta name="description" content="LAG AWARDS - Celebrando clips, creadores y comunidad" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>{title}</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 	</head>
 	<body>
 		<slot />
+		<script>
+			// Efectos interactivos
+			document.addEventListener('mousemove', (e) => {
+				const stars = document.querySelectorAll('.star-particle');
+				stars.forEach((star) => {
+					// ensure proper typing for TypeScript checks inside Astro
+					const el = /** @type {HTMLElement} */ (star);
+					const rect = el.getBoundingClientRect();
+					const x = e.clientX - rect.left;
+					const y = e.clientY - rect.top;
+					const distance = Math.sqrt(x * x + y * y);
+					if (distance < 100) {
+						// set style via attribute to avoid type errors during Astro's type checking
+						el.setAttribute('style', 'opacity: 1;');
+					}
+				});
+			});
+		</script>
 	</body>
 </html>
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
