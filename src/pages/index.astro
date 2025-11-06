@@ -1,14 +1,17 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
 import Hero from '../components/Hero.astro';
 import Awards from '../components/Awards.astro';
 import Nominees from '../components/Nominees.astro';
 import Footer from '../components/Footer.astro';
 ---
 
+
 <Layout 
   title="LAG AWARDS 2025 - Celebra con nosotros lo mejor de la comunidad"
   description="Únete a los LAG AWARDS 2025 y celebra lo mejor de la comunidad LAG. Descubre nominados, categorías y vota por tus favoritos en este evento épico.">
+	<Navbar />
 	<Hero />
 	<Awards />
 	<Nominees />

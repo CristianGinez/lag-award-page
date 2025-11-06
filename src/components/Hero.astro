@@ -2,9 +2,21 @@
 ---
 
 <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-24">
+	<!-- imagen -->
+	<div class="absolute inset-0 -z-10">
+		<img 
+			src="./img/ph-1.jpg" 
+			alt="Fondo principal" 
+			class="w-full h-full object-cover"
+		/>
+	</div>
+
+	<!-- Overlay oscuro -->
+	<div class="absolute inset-0 bg-black/50 -z-10"></div>
+
 	<!-- Fondo con efectos -->
-	<div class="absolute inset-0 bg-linear-to-b from-red-600/10 via-transparent to-purple-600/5"></div>
-	<div class="absolute inset-0">
+	<div class="absolute inset-0 bg-linear-to-b from-red-600/10 via-transparent to-purple-600/5 -z-10"></div>
+	<div class="absolute inset-0 -z-10">
 		<div class="absolute top-0 -left-40 w-80 h-80 bg-red-600/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
 		<div class="absolute top-1/2 right-0 w-80 h-80 bg-purple-600/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
 		<div class="absolute -bottom-40 left-1/2 w-80 h-80 bg-orange-600/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style="animation-delay: 4s;"></div>
@@ -17,12 +29,23 @@
 			<span class="inline-block text-sm font-bold text-yellow-400 mb-4 tracking-widest">EVENTO DE PREMIOS</span>
 		</div>
 
+
+		<div class="relative inline-block">
+            <!-- Imagen del logo de fondo con efecto brillante -->
+            <img 
+                src="/img/tl_logo.png" 
+                alt="Logo de fondo"
+                class="absolute inset-0 w-full h-4/3 object-contain -z-10 opacity-10 backdrop-blur-xl animate-pulse"
+            />
+
 		<!-- Título principal con efecto -->
 		<h1 class="text-6xl sm:text-7xl lg:text-8xl font-black mb-6 leading-tight animate-fade-in" style="animation-delay: 0.1s;">
 			<span class="bg-linear-to-r from-red-500 via-red-400 to-orange-500 text-transparent bg-clip-text">LAG</span>
 			<br />
+			
 			<span class="text-white">AWARDS</span>
 		</h1>
+		</div>
 
 		<!-- Subtítulo -->
 		<p class=" text-xl sm:text-2xl text-gray-300 mx-auto animate-fade-in" style="animation-delay: 0.2s;">
