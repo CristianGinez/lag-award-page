@@ -1,225 +1,702 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Navbar from '../components/Navbar.astro';
-import Footer from '../components/Footer.astro';
-
-const categories = [
-  {
-    id: 'clip-del-ano',
-    icon: 'award',
-    title: 'Clip del Año',
-    description: 'El momento más icónico, divertido o impresionante capturado en un clip.',
-    nominees: [
-      { name: 'El susto épico de Rubius', creator: 'Rubius', image: '/img/nominees/rubius.png' },
-      { name: 'La jugada imposible de Ibai', creator: 'Ibai Llanos', image: '/img/nominees/ibai.png' },
-      { name: 'El fail de Auronplay', creator: 'Auronplay', image: '/img/nominees/auron.png' },
-      { name: 'El momento más emotivo', creator: 'TheGrefg', image: '/img/nominees/grefg.png' },
-    ]
-  },
-  {
-    id: 'creador-del-ano',
-    icon: 'user',
-    title: 'Creador del Año',
-    description: 'El creador de contenido que ha tenido el mayor impacto y crecimiento.',
-    nominees: [
-      { name: 'KZ', creator: 'KZ', image: '/img/nominees/kz.png' },
-      { name: 'LAG', creator: 'LAG', image: '/img/nominees/lag.png' },
-      { name: 'IlloJuan', creator: 'IlloJuan', image: '/img/nominees/illojuan.png' },
-      { name: 'Spreen', creator: 'Spreen', image: '/img/nominees/spreen.png' },
-    ]
-  },
-  // ... (Agrega más categorías según sea necesario)
-];
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import categories from "../data/categories.ts";
 ---
 
 <Layout title="Categorías - LAGAWARDS">
   <Navbar />
-  <main class="pt-24 text-white">
+  <main class="pt-24 text-white min-h-screen">
     <div class="container mx-auto px-6 py-16">
-      
-      <!-- Vista de Cuadrícula de Categorías (Visible por defecto) -->
       <div id="category-view" class="transition-opacity duration-300">
         <div class="text-center mb-16">
           <h1 class="text-5xl md:text-7xl font-bold font-orbitron">
-            <span class="bg-linear-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text">Categorías</span> de Premios
+            <span
+              class="bg-linear-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text"
+              >Categorías</span
+            > de Premios
           </h1>
           <p class="text-xl text-gray-300 mt-4 max-w-3xl mx-auto">
-            Selecciona una categoría para ver los nominados y votar.
+            Selecciona una categoría para ver los nominados.
           </p>
         </div>
-        <div id="category-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {categories.map(category => (
-            <div class="card-glass p-8 text-center flex flex-col items-center cursor-pointer transition-all duration-300 hover:border-purple-500 hover:scale-105" data-category-id={category.id}>
-              <!-- Icono -->
-              <h3 class="text-2xl font-bold font-orbitron mb-2">{category.title}</h3>
-              <p class="text-gray-400 text-sm">{category.description}</p>
-            </div>
-          ))}
+        <div id="category-grid"
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
+          {
+            categories.map((category) => (
+              <div
+                class="card-glass p-8 text-center flex flex-col items-center cursor-pointer transition-all duration-300 hover:border-purple-500 hover:scale-105"
+                data-category-id={category.id}
+              >
+                <h3 class="text-2xl font-bold font-orbitron mb-2">
+                  {category.title}
+                </h3>
+                <p class="text-gray-400 text-sm">{category.description}</p>
+              </div>
+            ))
+          }
         </div>
       </div>
 
-      <!-- Vista de Detalles de Nominados (Oculta por defecto) -->
-      <div id="nominee-view" class="hidden relative">
-    <button id="back-to-categories" class="cursor-pointer flex items-center gap-2 text-purple-400 font-bold mb-8 hover:text-purple-300 transition-colors">
-        &larr; Volver a Categorías
-    </button>
-    
-    <!-- Contenedor para el contenido que se anima -->
-    <div id="nominee-content" class="transition-opacity duration-300">
-        <h1 id="nominee-title" class="text-5xl md:text-7xl font-bold font-orbitron mb-12 text-center"></h1>
-        <div id="nominee-list" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            <!-- Las miniaturas de los nominados se insertarán aquí -->
+      <div
+        id="nominee-view"
+        class="hidden relative transition-opacity duration-300 opacity-0"
+      >
+        <button
+          id="back-to-categories"
+          class="cursor-pointer flex items-center gap-2 text-purple-400 font-bold mb-8 hover:text-purple-300 transition-colors z-30 relative"
+        >
+          &larr; Volver a Categorías
+        </button>
+
+        <div id="nominee-content" class="transition-opacity duration-300">
+          <h1
+            id="nominee-title"
+            class="text-5xl md:text-7xl font-bold font-orbitron mb-12 text-center"
+          >
+          </h1>
+
+          <div class="relative w-full">
+            <button id="prev-category" class="cursor-pointer nav-arrow left-0">
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                ><path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 19l-7-7 7-7"></path></svg
+              >
+            </button>
+
+            <div
+              id="nominee-list"
+              class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+            >
+            </div>
+
+            <button id="next-category" class="cursor-pointer nav-arrow right-0">
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                ><path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"></path></svg
+              >
+            </button>
+          </div>
         </div>
-    </div>
+      </div>
 
-    <!-- Flechas de Navegación -->
-    <button id="prev-category" class="cursor-pointer nav-arrow left-0 -translate-x-1/2">
-    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
-</button>
-<button id="next-category" class="cursor-pointer nav-arrow right-0 translate-x-1/2">
-    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-</button>
-</div>
+      <div
+        id="detail-view"
+        class="hidden relative transition-opacity duration-300 opacity-0"
+      >
+        <button
+          id="back-to-nominees"
+          class="cursor-pointer flex items-center gap-2 text-purple-400 font-bold mb-8 hover:text-purple-300 transition-colors"
+        >
+          &larr; Volver a Nominados
+        </button>
 
+        <div class="card-glass p-4 md:p-8 animate-fade-in">
+          <div
+            class="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center lg:items-start"
+          >
+            <div class="w-full lg:w-1/2">
+              <div
+                id="media-container"
+                class="relative aspect-square rounded-xl overflow-hidden border-4 border-purple-500/30 shadow-[0_0_30px_rgba(168,85,247,0.3)] group bg-black transition-all duration-300"
+              >
+                <img
+                  id="detail-img"
+                  src=""
+                  alt="Imagen del nominado"
+                  class="w-full h-full object-cover absolute inset-0 transition-opacity duration-300"
+                />
+
+                <div id="audio-overlay"
+                  class="absolute inset-0 flex items-center justify-center cursor-pointer transition-colors hover:bg-black/50">
+                  <button id="play-btn"
+                    class="cursor-pointer bg-white/90 hover:bg-white text-purple-600 rounded-full p-6 w-24 h-24 flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.5)] transition-transform hover:scale-110 active:scale-95">
+                    <svg
+                      id="icon-play"
+                      class="w-12 h-12 ml-1"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg
+                    >
+                    <svg
+                      id="icon-pause"
+                      class="w-12 h-12 hidden"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                      ><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg
+                    >
+                  </button>
+                </div>
+
+                <video
+                  id="detail-video"
+                  class="hidden w-full h-full object-contain bg-black"
+                  controls={false}></video>
+
+                <div
+                  id="video-controls"
+                  class="hidden absolute bottom-0 left-0 right-0 p-3 bg-linear-to-t from-black/80 to-transparent transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+                >
+                  <div class="flex justify-between text-sm text-gray-400 mt-2">
+                    <span id="current-time">0:00</span>
+                    <span id="total-duration">0:00</span>
+                  </div>
+                  <input
+                    type="range"
+                    id="video-progress"
+                    min="0"
+                    max="100"
+                    value="0"
+                    class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
+                  />
+
+                  <div class="flex items-center gap-4 mt-2">
+                    <button
+                      id="video-play-pause-btn"
+                      class="cursor-pointer text-white hover:text-red-400 transition-colors"
+                    >
+                      <svg
+                        id="video-icon-play"
+                        class="w-8 h-8"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg
+                      >
+                      <svg
+                        id="video-icon-pause"
+                        class="w-8 h-8 hidden"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                        ><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg
+                      >
+                    </button>
+
+                    <svg
+                      class="w-6 h-6 text-gray-300"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      ><path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
+                      ></path></svg
+                    >
+                    <input
+                      type="range"
+                      id="video-volume-slider"
+                      min="0"
+                      max="1"
+                      step="0.1"
+                      value="0.5"
+                      class="w-40 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
+                    />
+
+                    <button
+                      id="fullscreen-btn"
+                      class="cursor-pointer text-white hover:text-red-400 transition-colors ml-auto"
+                    >
+                      <svg
+                        class="w-6 h-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
+                        ></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="w-full lg:w-1/2 flex flex-col justify-center text-left space-y-6"
+            >
+              <div>
+                <h2
+                  id="detail-name"
+                  class="text-4xl md:text-6xl font-bold font-orbitron text-white mb-2"
+                >
+                </h2>
+                <p
+                  id="detail-creator"
+                  class="text-xl text-purple-300 font-semibold"
+                >
+                </p>
+              </div>
+
+              <div class="h-1 w-24 bg-linear-to-r from-purple-500 to-transparent rounded-full">
+              </div>
+
+              <div id="audio-volume-controls"
+                class="flex bg-purple-900/30 p-4 rounded-lg border border-purple-500/20 items-center gap-4">
+                <svg
+                  class="w-6 h-6 text-gray-300"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  ><path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
+                  ></path></svg>
+                <input id="audio-volume-slider"
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.1"
+                  value="0.5"
+                  class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
+                />
+              </div>
+
+              <p id="detail-desc" class="text-lg text-gray-300 leading-relaxed">
+              </p>
+
+              <div class="pt-6">
+                <button
+                  class="w-full md:w-auto px-8 py-4 bg-linear-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 rounded-lg text-xl font-bold text-white shadow-lg transition-all transform hover:scale-105 flex items-center justify-center gap-3"
+                >
+                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"
+                    >
+                    </path></svg
+                  >
+                  Votar Ahora
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
   <Footer />
 </Layout>
 
 <style>
-.card-glass {
+  .card-glass {
     background-color: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-radius: 1rem;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow:
-        0 10px 15px -3px rgba(0, 0, 0, 0.1),
-        0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        
-        .nav-arrow {
-      position: absolute;
-      top: 50%;
-      z-index: 20;
-      width: 3rem; /* w-12 */
-      height: 3rem; /* h-12 */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: rgba(88, 28, 135, 0.3); /* bg-purple-900/30 */
-      color: #ffffff; /* text-white */
-      border-radius: 9999px; /* rounded-full */
-      border: 1px solid rgba(168, 85, 247, 0.5); /* border + border-purple-500/50 */
-      transition: all 300ms ease-in-out; /* transition-all duration-300 ease-in-out */
-      box-shadow: 0 10px 15px -3px rgba(88, 28, 135, 0.5), 0 4px 6px -4px rgba(88, 28, 135, 0.5); /* shadow-lg shadow-purple-900/50 */
-    }
-
-    /* Posicionamiento y traducción horizontal/vertical */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+  .nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 50;
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(88, 28, 135, 0.5);
+    color: #ffffff;
+    border-radius: 9999px;
+    border: 1px solid rgba(168, 85, 247, 0.7);
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+    transition: all 300ms ease-in-out;
+  }
+  #prev-category {
+    left: 0;
+    margin-left: -6rem;
+  }
+  #next-category {
+    right: 0;
+    margin-right: -6rem;
+  }
+  .nav-arrow:hover {
+    background-color: rgba(126, 34, 206, 0.8);
+    transform: translateY(-50%) scale(1.15);
+    box-shadow: 0 0 30px rgba(168, 85, 247, 0.8);
+  }
+  .stroke-text-white {
+    -webkit-text-stroke: 1.5px white;
+    text-stroke: 1.5px white;
+    color: transparent;
+  }
+  @media (max-width: 768px) {
     #prev-category {
-      left: 0;
-      transform: translate(-50%, -50%);
+      margin-left: -5rem;
     }
-
     #next-category {
-      right: 0;
-      transform: translate(50%, -50%);
+      margin-right: -5rem;
     }
-
-    .nav-arrow:hover {
-      background-color: rgba(126, 34, 206, 0.5); /* bg-purple-700/50 */
+    .nav-arrow {
+      width: 3rem;
+      height: 3rem;
     }
-
-    /* Mantener la traducción y agregar escala en hover sin romper la posición */
-    #prev-category:hover {
-      transform: translate(-50%, -50%) scale(1.1); /* scale-110 */
-      box-shadow: 0 0 15px rgba(168, 85, 247, 0.6); /* Resplandor morado */
-    }
-
-    #next-category:hover {
-      transform: translate(50%, -50%) scale(1.1); /* scale-110 */
-      box-shadow: 0 0 15px rgba(168, 85, 247, 0.6); /* Resplandor morado */
-    }
+  }
 </style>
 
 <script define:vars={{ categories }}>
-  document.addEventListener('DOMContentLoaded', () => {
-    const categoryView = document.getElementById('category-view');
-    const nomineeView = document.getElementById('nominee-view');
-    const categoryGrid = document.getElementById('category-grid');
-    const backButton = document.getElementById('back-to-categories');
-    
-    const nomineeContent = document.getElementById('nominee-content');
-    const nomineeTitle = document.getElementById('nominee-title');
-    const nomineeList = document.getElementById('nominee-list');
+  document.addEventListener("DOMContentLoaded", () => {
+    // --- Referencias al DOM ---
+    const categoryView = document.getElementById("category-view");
+    const nomineeView = document.getElementById("nominee-view");
+    const detailView = document.getElementById("detail-view");
 
-    const prevBtn = document.getElementById('prev-category');
-    const nextBtn = document.getElementById('next-category');
+    const categoryGrid = document.getElementById("category-grid");
+
+    const nomineeContent = document.getElementById("nominee-content");
+    const nomineeTitle = document.getElementById("nominee-title");
+    const nomineeList = document.getElementById("nominee-list");
+    const backToCategoriesBtn = document.getElementById("back-to-categories");
+    const prevBtn = document.getElementById("prev-category");
+    const nextBtn = document.getElementById("next-category");
+
+    const backToNomineesBtn = document.getElementById("back-to-nominees");
+    // Referencia al contenedor para cambiar el Aspect Ratio
+    const mediaContainer = document.getElementById("media-container");
+    const detailImg = document.getElementById("detail-img");
+    const detailName = document.getElementById("detail-name");
+    const detailCreator = document.getElementById("detail-creator");
+    const detailDesc = document.getElementById("detail-desc");
+
+    const audioOverlay = document.getElementById("audio-overlay");
+    const playBtn = document.getElementById("play-btn");
+    const iconPlay = document.getElementById("icon-play");
+    const iconPause = document.getElementById("icon-pause");
+    const audioVolumeControls = document.getElementById(
+      "audio-volume-controls"
+    );
+    const audioVolumeSlider = document.getElementById("audio-volume-slider");
+
+    // --- Referencias a elementos de VIDEO ---
+    const detailVideo = document.getElementById("detail-video");
+    const videoControls = document.getElementById("video-controls");
+    const videoPlayPauseBtn = document.getElementById("video-play-pause-btn");
+    const videoIconPlay = document.getElementById("video-icon-play");
+    const videoIconPause = document.getElementById("video-icon-pause");
+    const videoProgress = document.getElementById("video-progress");
+    const currentTimeSpan = document.getElementById("current-time");
+    const totalDurationSpan = document.getElementById("total-duration");
+    const videoVolumeSlider = document.getElementById("video-volume-slider");
+    const fullscreenBtn = document.getElementById("fullscreen-btn");
 
     let currentCategoryIndex = 0;
+    let currentAudio = null;
 
-    // Función para mostrar una categoría específica
+    const formatTime = (seconds) => {
+      const minutes = Math.floor(seconds / 60);
+      const remainingSeconds = Math.floor(seconds % 60);
+      return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+    };
+
+    const stopAllMedia = () => {
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio = null;
+      }
+      if (detailVideo && !detailVideo.paused) {
+        detailVideo.pause();
+      }
+      // Asegúrate de que los iconos estén en estado de play
+      if (iconPlay) iconPlay.classList.remove("hidden");
+      if (iconPause) iconPause.classList.add("hidden");
+      if (videoIconPlay) videoIconPlay.classList.remove("hidden");
+      if (videoIconPause) videoIconPause.classList.add("hidden");
+
+      // Esconder los controles de video cuando se detiene o cambia de media
+      if (videoControls) videoControls.classList.add("hidden");
+    };
+
+    // --- Funciones de Navegación ---
+
     const showCategoryDetails = (index) => {
       currentCategoryIndex = index;
       const category = categories[index];
 
-      // Animar la salida del contenido actual
-      nomineeContent.classList.add('opacity-0');
+      nomineeContent.classList.add("opacity-0");
 
       setTimeout(() => {
-        // Actualizar contenido
         nomineeTitle.textContent = category.title;
-        nomineeList.innerHTML = ''; 
+        nomineeList.innerHTML = "";
 
-        category.nominees.forEach(nominee => {
-          const nomineeEl = document.createElement('div');
-          nomineeEl.className = 'card-glass p-4 flex flex-col items-center text-center transition-transform transform hover:scale-105';
+        category.nominees.forEach((nominee) => {
+          const nomineeEl = document.createElement("div");
+          nomineeEl.className =
+            "relative aspect-square overflow-hidden rounded-lg border-4 border-amber-400 transition-transform transform hover:scale-105 group shadow-lg cursor-pointer";
+
+          const nameLength = nominee.name.length;
+          const hasSpaces = nominee.name.includes(" ");
+
+          let largeNameClass = "";
+
+          if (!hasSpaces && nameLength > 10) {
+            largeNameClass = "text-xl sm:text-2xl break-all leading-none";
+          } else if (nameLength > 25) {
+            largeNameClass = "text-xl sm:text-2xl break-words leading-tight";
+          } else if (nameLength > 15) {
+            largeNameClass = "text-2xl sm:text-3xl break-words leading-tight";
+          } else {
+            largeNameClass = "text-3xl sm:text-5xl break-words";
+          }
+
           nomineeEl.innerHTML = `
-            <img src="${nominee.image}" alt="Imagen de ${nominee.name}" class="w-24 h-24 rounded-full mb-4 object-cover border-2 border-purple-500">
-            <h4 class="font-bold text-lg flex-grow">${nominee.name}</h4>
-            <p class="text-sm text-gray-400 mb-4">${nominee.creator}</p>
-            <button class="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-sm font-bold transition-colors">Votar</button>
-          `;
+      <img src="${nominee.image}" alt="${nominee.name}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+      
+      <div class="absolute bottom-0 left-0 right-0 w-full p-4 text-center bg-gradient-to-t from-black/90 via-black/70 to-transparent transition-opacity duration-300 group-hover:opacity-0 z-10">
+          <h4 class="font-bold text-2xl text-white drop-shadow-md break-words truncate">${nominee.name}</h4>
+      </div>
+
+      <div class="absolute inset-0 flex flex-col justify-center items-center p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/60 z-20">
+          <h4 class="w-full text-center font-extrabold text-white stroke-text-white drop-shadow-lg ${largeNameClass}">
+            ${nominee.name}
+          </h4>
+          <span class="mt-2 text-purple-300 font-bold tracking-wider text-xs sm:text-sm uppercase">Ver Detalles</span>
+      </div>
+  `;
+
+          nomineeEl.addEventListener("click", () =>
+            showNomineeDetailView(nominee)
+          );
           nomineeList.appendChild(nomineeEl);
         });
 
-        // Animar la entrada del nuevo contenido
-        nomineeContent.classList.remove('opacity-0');
-      }, 300); // Duración de la animación de salida
+        nomineeContent.classList.remove("opacity-0");
+      }, 300);
     };
 
-    // Event listener para la cuadrícula de categorías
-    categoryGrid.addEventListener('click', (e) => {
-      const card = e.target.closest('[data-category-id]');
-      if (!card) return;
+    const showNomineeDetailView = (nominee) => {
+      stopAllMedia();
 
-      const categoryId = card.dataset.categoryId;
-      const categoryIndex = categories.findIndex(c => c.id === categoryId);
+      detailName.textContent = nominee.name;
+      detailCreator.textContent = nominee.creator
+        ? `Creado por: ${nominee.creator}`
+        : "";
+      detailDesc.textContent =
+        nominee.description || "Sin descripción disponible.";
 
-      if (categoryIndex !== -1) {
-        showCategoryDetails(categoryIndex);
+      // Resetear visibilidad de todos los elementos de media
+      detailImg.classList.add("hidden");
+      audioOverlay.classList.add("hidden");
+      detailVideo.classList.add("hidden");
+      audioVolumeControls.classList.add("hidden");
+      videoControls.classList.add("hidden"); // Asegurarse que los controles de video estén ocultos por defecto
 
-        // Cambiar de vista
-        categoryView.classList.add('opacity-0', 'hidden');
-        nomineeView.classList.remove('hidden');
+      // Lógica de Aspect Ratio: Por defecto cuadrado
+      if (mediaContainer) {
+        mediaContainer.classList.add("aspect-square");
+        mediaContainer.classList.remove("aspect-video");
       }
-    });
 
-    // Event listeners para las flechas
-    prevBtn.addEventListener('click', () => {
-      const newIndex = (currentCategoryIndex - 1 + categories.length) % categories.length;
-      showCategoryDetails(newIndex);
-    });
+      if (nominee.audio) {
+        // Caso AUDIO: Aspecto Cuadrado (Mantenemos lo seteado arriba)
+        detailImg.src = nominee.image;
+        detailImg.classList.remove("hidden");
+        audioOverlay.classList.remove("hidden");
+        audioVolumeControls.classList.remove("hidden");
 
-    nextBtn.addEventListener('click', () => {
-      const newIndex = (currentCategoryIndex + 1) % categories.length;
-      showCategoryDetails(newIndex);
-    });
+        currentAudio = new Audio(nominee.audio);
+        if (audioVolumeSlider) currentAudio.volume = audioVolumeSlider.value;
 
-    // Event listener para volver atrás
-    backButton.addEventListener('click', () => {
-      nomineeView.classList.add('hidden');
-      categoryView.classList.remove('hidden', 'opacity-0');
-    });
+        currentAudio.onended = () => {
+          if (iconPlay) iconPlay.classList.remove("hidden");
+          if (iconPause) iconPause.classList.add("hidden");
+        };
+      } else if (nominee.video) {
+        // Caso VIDEO: Cambiar Aspecto a Video (16:9) y mostrar controles personalizados
+        if (mediaContainer) {
+          mediaContainer.classList.remove("aspect-square");
+          mediaContainer.classList.add("aspect-video");
+        }
+
+        detailVideo.classList.remove("hidden"); // Mostrar el elemento video
+        detailVideo.src = nominee.video;
+        if (videoVolumeSlider) detailVideo.volume = videoVolumeSlider.value;
+        detailVideo.load();
+
+        videoControls.classList.remove("hidden"); // Mostrar los controles personalizados de video
+
+        if (videoProgress) videoProgress.value = 0;
+        if (currentTimeSpan) currentTimeSpan.textContent = "0:00";
+        if (totalDurationSpan) totalDurationSpan.textContent = "0:00";
+
+        detailVideo.onloadedmetadata = () => {
+          if (totalDurationSpan)
+            totalDurationSpan.textContent = formatTime(detailVideo.duration);
+        };
+        detailVideo.ontimeupdate = () => {
+          if (videoProgress)
+            videoProgress.value =
+              (detailVideo.currentTime / detailVideo.duration) * 100;
+          if (currentTimeSpan)
+            currentTimeSpan.textContent = formatTime(detailVideo.currentTime);
+        };
+        detailVideo.onended = () => {
+          if (videoIconPlay) videoIconPlay.classList.remove("hidden");
+          if (videoIconPause) videoIconPause.classList.add("hidden");
+          detailVideo.currentTime = 0;
+        };
+      } else {
+        // Caso IMAGEN NORMAL: Aspecto Cuadrado
+        detailImg.src = nominee.image;
+        detailImg.classList.remove("hidden");
+      }
+
+      nomineeView.classList.add("opacity-0");
+      setTimeout(() => {
+        nomineeView.classList.add("hidden");
+        detailView.classList.remove("hidden");
+        setTimeout(() => detailView.classList.remove("opacity-0"), 50);
+      }, 300);
+    };
+
+    // --- Event Listeners (CON PROTECCIÓN CONTRA NULL) ---
+
+    if (categoryGrid) {
+      categoryGrid.addEventListener("click", (e) => {
+        const card = e.target.closest("[data-category-id]");
+        if (!card) return;
+        const categoryId = card.dataset.categoryId;
+        const idx = categories.findIndex((c) => c.id === categoryId);
+        if (idx !== -1) {
+          showCategoryDetails(idx);
+          categoryView.classList.add("opacity-0");
+          setTimeout(() => {
+            categoryView.classList.add("hidden");
+            nomineeView.classList.remove("hidden");
+            setTimeout(() => nomineeView.classList.remove("opacity-0"), 50);
+          }, 300);
+        }
+      });
+    }
+
+    if (playBtn) {
+      playBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (!currentAudio) return;
+        if (currentAudio.paused) {
+          currentAudio.play();
+          if (iconPlay) iconPlay.classList.add("hidden");
+          if (iconPause) iconPause.classList.remove("hidden");
+        } else {
+          currentAudio.pause();
+          if (iconPlay) iconPlay.classList.remove("hidden");
+          if (iconPause) iconPause.classList.add("hidden");
+        }
+      });
+    }
+
+    if (audioVolumeSlider) {
+      audioVolumeSlider.addEventListener("input", (e) => {
+        if (currentAudio) {
+          currentAudio.volume = e.target.value;
+        }
+      });
+    }
+
+    if (videoPlayPauseBtn) {
+      videoPlayPauseBtn.addEventListener("click", () => {
+        if (!detailVideo) return;
+        if (detailVideo.paused) {
+          detailVideo.play();
+          if (videoIconPlay) videoIconPlay.classList.add("hidden");
+          if (videoIconPause) videoIconPause.classList.remove("hidden");
+        } else {
+          detailVideo.pause();
+          if (videoIconPlay) videoIconPlay.classList.remove("hidden");
+          if (videoIconPause) videoIconPause.classList.add("hidden");
+        }
+      });
+    }
+
+    if (videoProgress) {
+      videoProgress.addEventListener("input", (e) => {
+        if (detailVideo) {
+          const seekTime = (e.target.value / 100) * detailVideo.duration;
+          detailVideo.currentTime = seekTime;
+        }
+      });
+    }
+
+    if (videoVolumeSlider) {
+      videoVolumeSlider.addEventListener("input", (e) => {
+        if (detailVideo) {
+          detailVideo.volume = e.target.value;
+        }
+      });
+    }
+
+    if (prevBtn) {
+      prevBtn.addEventListener("click", () => {
+        const newIndex =
+          (currentCategoryIndex - 1 + categories.length) % categories.length;
+        showCategoryDetails(newIndex);
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener("click", () => {
+        const newIndex = (currentCategoryIndex + 1) % categories.length;
+        showCategoryDetails(newIndex);
+      });
+    }
+
+    if (backToCategoriesBtn) {
+      backToCategoriesBtn.addEventListener("click", () => {
+        stopAllMedia();
+        nomineeView.classList.add("opacity-0");
+        setTimeout(() => {
+          nomineeView.classList.add("hidden");
+          categoryView.classList.remove("hidden");
+          setTimeout(() => categoryView.classList.remove("opacity-0"), 50);
+        }, 300);
+      });
+    }
+
+    if (backToNomineesBtn) {
+      backToNomineesBtn.addEventListener("click", () => {
+        stopAllMedia();
+        detailView.classList.add("opacity-0");
+        setTimeout(() => {
+          detailView.classList.add("hidden");
+          nomineeView.classList.remove("hidden");
+          setTimeout(() => nomineeView.classList.remove("opacity-0"), 50);
+        }, 300);
+      });
+    }
+
+    if (fullscreenBtn && mediaContainer) {
+      fullscreenBtn.addEventListener("click", () => {
+        if (!document.fullscreenElement) {
+          // Pone el contenedor (video + controles) en pantalla completa
+          mediaContainer.requestFullscreen().catch((err) => {
+            console.error(
+              `Error al intentar pantalla completa: ${err.message}`
+            );
+          });
+        } else {
+          document.exitFullscreen();
+        }
+      });
+    }
   });
 </script>
