@@ -157,19 +157,19 @@ const categories = [
       {
         name: "LOTR: BFME II: The Rise of the Witch-king",
         creator: "TheKratos86",
-        video: "/video/Lets Play 2 TheKratos86.webm",
+        video: "/video/nominees/Lets Play 2 Thekratos.webm",
         description: "La cara que pones cuando ves un bug épico.",
       },
       {
         name: "Mafia Mobile2",
         creator: "Alejo Gameplayer",
-        video: "/video/Lets Play 1 Alejo Gameplayer.webm",
+        video: "/video/nominees/Lets Play 4 Alejogameplayer.webm",
         description: "Ese momento incómodo en el stream.",
       },
       {
         name: "Left 4 Dead 2 Lima Infection",
         creator: "Johan00",
-        video: "/video/Lets Play 4 Johan00.webm",
+        video: "/video/nominees/Lets Play 1 Johan.webm",
         description: "Cuando tu emote favorito se vuelve viral.",
       },
     ],

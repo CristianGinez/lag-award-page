@@ -1,0 +1,192 @@
+---
+const links = [
+  { name: 'Informacion', href: '/info' },
+  { name: 'Categorias', href: '/categorias' },
+  { name: 'Votar', href: '#votos' },
+  { name: 'Historia', href: '#nominados' },
+];
+---
+
+<!-- Unanavbarparalgordolagartoputo -->
+<nav class="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-black/40 border-b border-white/10 shadow-lg transition-all duration-300">
+    <div class="container mx-auto px-6 py-3">
+        <div class="flex justify-between items-center">
+            
+            <div class="md:hidden flex w-full justify-between items-center">
+                <a href="/" class="flex items-center gap-2 select-none hover:scale-105 transition-transform duration-300 z-10">
+                    <img src="/img/tl_logo.png" alt="Logo LAG Awards" class="h-12 w-auto drop-shadow-[0_0_10px_rgba(220,38,38,0.6)]" />
+                </a>
+                <button id="menu-toggle" class="text-white focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="hidden md:flex w-full items-center justify-between">
+                <div class="flex-1 flex justify-end items-center space-x-8 pr-8">
+                    <a href={links[0].href} class="nav-link font-bold tracking-wider hover:text-yellow-400 transition-colors">{links[0].name}</a>
+                    <a href={links[1].href} class="nav-link font-bold tracking-wider hover:text-yellow-400 transition-colors">{links[1].name}</a>
+                </div>
+
+                <div class="flex-none px-6">
+                    <a href="/" class="flex items-center gap-2 select-none hover:scale-110 transition-transform duration-300">
+                        <img src="/img/tl_logo.png" alt="Logo" class="h-14 w-auto drop-shadow-[0_0_15px_rgba(220,38,38,0.5)]" />
+                    </a>
+                </div>
+
+                <div class="flex-1 flex justify-start items-center space-x-8 pl-8">
+                    <a href={links[2].href} class="nav-link font-bold tracking-wider hover:text-yellow-400 transition-colors">{links[2].name}</a>
+                    <a href={links[3].href} class="nav-link font-bold tracking-wider hover:text-yellow-400 transition-colors">{links[3].name}</a>
+                    
+                    <div class="ml-4 pl-4 border-l border-white/20 h-8 flex items-center">
+                        <a 
+                          id="btn-login-link" 
+                          href="/login" 
+                          class="flex items-center gap-2 px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full text-xs font-bold text-white transition-all hover:scale-105 backdrop-blur-sm"
+                        >
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                            </svg>
+                            LOGIN
+                        </a>
+
+                        <div id="user-profile" class="hidden flex items-center gap-3">
+                            <img 
+                                id="user-avatar" 
+                                src="" 
+                                alt="Perfil" 
+                                class="w-9 h-9 rounded-full border-2 border-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.5)] object-cover cursor-pointer hover:scale-110 transition-transform" 
+                                title="Tu cuenta"
+                            />
+                            <button 
+                                id="btn-logout" 
+                                class="text-xs font-bold text-red-400 hover:text-red-300 border border-red-500/30 bg-red-500/10 px-2 py-1 rounded hover:bg-red-500/20 transition-colors"
+                            >
+                                SALIR
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden md:hidden bg-black/95 backdrop-blur-xl border-t border-white/10 absolute w-full">
+        <div class="flex flex-col items-center py-6 space-y-4">
+            {links.map(link => (
+                <a href={link.href} class="text-lg font-orbitron text-gray-300 hover:text-yellow-400 transition-colors">{link.name}</a>
+            ))}
+            <hr class="w-1/2 border-white/10 my-2" />
+            <a id="mobile-login-btn" href="/login" class="px-6 py-2 bg-white text-black font-bold rounded-full">Iniciar Sesión</a>
+        </div>
+    </div>
+</nav>
+
+<style>
+	/* Pequeña animación de aparición suave */
+	@keyframes navFade {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    nav {
+        animation: navFade 0.8s ease-out forwards;
+    }
+
+	
+
+	.nav-link:hover {
+        text-shadow: 0 0 8px rgba(250, 204, 21, 0.7);
+    }
+
+    /* El estilo de hover para text-shadow no se puede hacer directamente con Tailwind, así que lo mantenemos aquí */
+    a:hover {
+        text-shadow: 0 0 8px rgba(250, 204, 21, 0.7);
+    }
+</style>
+
+<script>
+  // Importamos la lógica de arquitectura
+  import { supabase } from '../lib/supabase';
+  import { $currentUser } from '../stores/authStore';
+
+  // Referencias al DOM
+  const btnLoginLink = document.getElementById('btn-login-link');
+  const userProfile = document.getElementById('user-profile');
+  const userAvatar = document.getElementById('user-avatar') as HTMLImageElement;
+  const btnLogout = document.getElementById('btn-logout');
+  const mobileLoginBtn = document.getElementById('mobile-login-btn');
+
+  // Función Central para Actualizar la UI
+  function updateUI(user: any) {
+      if (user) {
+          // 🟢 ESTADO: LOGUEADO
+          if (btnLoginLink) btnLoginLink.classList.add('hidden');
+          if (mobileLoginBtn) mobileLoginBtn.textContent = 'Mi Cuenta'; // Cambio simple en móvil
+          
+          if (userProfile) userProfile.classList.remove('hidden');
+          if (userProfile) userProfile.classList.add('flex'); // Asegurar display flex
+          
+          // Asignar avatar de Google
+          if (userAvatar) {
+              userAvatar.src = user.user_metadata.avatar_url || '/img/default-avatar.png';
+          }
+      } else {
+          // 🔴 ESTADO: NO LOGUEADO
+          if (btnLoginLink) btnLoginLink.classList.remove('hidden');
+          if (mobileLoginBtn) mobileLoginBtn.textContent = 'Iniciar Sesión';
+
+          if (userProfile) userProfile.classList.add('hidden');
+          if (userProfile) userProfile.classList.remove('flex');
+      }
+  }
+
+  // Listener de Supabase (Patrón Observer)
+  supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+          $currentUser.set(session.user);
+          updateUI(session.user);
+      } else if (event === 'SIGNED_OUT') {
+          $currentUser.set(null);
+          updateUI(null);
+      }
+  });
+
+  // Lógica de Logout
+  if (btnLogout) {
+      btnLogout.addEventListener('click', async () => {
+          await supabase.auth.signOut();
+          window.location.reload();
+      });
+  }
+
+  // Chequeo inicial al cargar (Evita parpadeos si NanoStore ya tiene datos)
+  const current = $currentUser.get();
+  if (current) {
+      updateUI(current);
+  } else {
+      // Si no hay datos en memoria, consultar a Supabase (persistencia)
+      supabase.auth.getSession().then(({ data: { session } }) => {
+          if (session?.user) {
+              $currentUser.set(session.user);
+              updateUI(session.user);
+          }
+      });
+  }
+
+  // Menú Móvil Toggle
+  const menuToggle = document.getElementById('menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  if (menuToggle && mobileMenu) {
+    menuToggle.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+  }
+</script>

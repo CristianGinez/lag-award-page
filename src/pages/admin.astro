@@ -1,0 +1,403 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../layouts/Navbar.astro';
+import Footer from '../layouts/Footer.astro';
+---
+
+<Layout title="Panel de Control - LAGAWARDS">
+  <Navbar />
+  
+  <main class="pt-24 min-h-screen text-white relative overflow-hidden bg-[#050505]">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_center,var(--tw-gradient-stops))] from-purple-900/20 via-black to-black -z-10"></div>
+    <div class="absolute top-0 left-0 w-full h-0.5 bg-linear-to-r from-red-500 via-purple-500 to-blue-500 shadow-[0_0_20px_rgba(168,85,247,0.5)]"></div>
+
+    <div class="container mx-auto px-4 md:px-6 py-8 pb-40">
+      
+      <div id="loading-state" class="flex flex-col items-center justify-center h-[70vh]">
+        <div class="relative">
+            <div class="w-20 h-20 border-4 border-white/5 border-t-purple-500 rounded-full animate-spin"></div>
+            <div class="absolute inset-0 flex items-center justify-center text-2xl animate-pulse">🦎</div>
+        </div>
+        <p class="mt-6 text-gray-500 font-mono text-sm tracking-widest uppercase">Conectando con el servidor...</p>
+      </div>
+
+      <div id="admin-dashboard" class="hidden opacity-0 transition-opacity duration-700">
+        
+        <header class="flex flex-col md:flex-row justify-between items-end mb-10 border-b border-white/5 pb-6 gap-4">
+          <div>
+            <div class="flex items-center gap-3 mb-1">
+                <span class="inline-block w-2 h-2 rounded-full bg-red-500 animate-pulse shadow-[0_0_10px_#ef4444]"></span>
+                <span class="text-red-500 font-bold text-[10px] uppercase tracking-[0.2em]">Live Admin Console</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-black font-orbitron text-white uppercase tracking-tighter">
+              Centro de Mando
+            </h1>
+          </div>
+          <div class="text-right">
+            <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md hover:bg-white/10 transition-colors cursor-default">
+                <div class="flex flex-col items-end leading-none">
+                    <span class="text-[10px] text-gray-500 uppercase font-bold tracking-wider">Operador</span>
+                    <span id="admin-email-display" class="font-mono text-xs text-purple-400">...</span>
+                </div>
+                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 shadow-inner"></div>
+            </div>
+          </div>
+        </header>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+            <div class="relative p-6 rounded-2xl bg-[#0a0a0a] border border-white/10 overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-br from-yellow-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div class="relative z-10">
+                    <h3 class="text-gray-500 text-xs font-bold uppercase tracking-widest mb-1">Votos Totales</h3>
+                    <p id="stat-total-votes" class="text-5xl font-black font-orbitron text-white tracking-tighter group-hover:text-yellow-400 transition-colors">0</p>
+                </div>
+                <div class="absolute top-4 right-4 p-2 bg-white/5 rounded-lg text-yellow-500/50 group-hover:text-yellow-500 group-hover:bg-yellow-500/10 transition-all">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                </div>
+            </div>
+            
+            <div class="relative p-6 rounded-2xl bg-[#0a0a0a] border border-white/10 overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div class="relative z-10">
+                    <h3 class="text-gray-500 text-xs font-bold uppercase tracking-widest mb-1">Votantes Únicos</h3>
+                    <p id="stat-unique-voters" class="text-5xl font-black font-orbitron text-white tracking-tighter group-hover:text-blue-400 transition-colors">0</p>
+                </div>
+                <div class="absolute top-4 right-4 p-2 bg-white/5 rounded-lg text-blue-500/50 group-hover:text-blue-500 group-hover:bg-blue-500/10 transition-all">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                </div>
+            </div>
+
+            <div class="relative p-6 rounded-2xl bg-gradient-to-br from-[#1a0b2e] to-black border border-purple-500/30 overflow-hidden group shadow-[0_0_30px_rgba(147,51,234,0.1)]">
+                <div class="absolute -right-6 -top-6 w-32 h-32 bg-purple-500/20 blur-3xl rounded-full group-hover:bg-purple-500/30 transition-all"></div>
+                <div class="relative z-10">
+                    <h3 class="text-purple-300 text-xs font-bold uppercase tracking-widest mb-2 flex items-center gap-2">
+                        <span class="text-lg">👑</span> Top Global
+                    </h3>
+                    <p id="stat-top-nominee" class="text-3xl font-black font-orbitron text-white truncate">---</p>
+                    <div class="mt-2 inline-block px-2 py-1 bg-purple-500/20 border border-purple-500/30 rounded text-purple-200 text-xs font-mono font-bold">
+                        <span id="stat-top-nominee-count">0</span> VOTOS
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+            
+            <div class="lg:col-span-2 space-y-8">
+                
+                <div class="bg-[#0f0f0f] border border-white/10 rounded-2xl overflow-hidden shadow-lg">
+                    <div class="p-5 border-b border-white/5 flex items-center gap-3 bg-white/[0.02]">
+                        <div class="w-8 h-8 rounded bg-orange-500/20 flex items-center justify-center text-orange-500">📊</div>
+                        <h3 class="font-bold font-orbitron text-white text-sm uppercase tracking-wider">Rendimiento por Categoría</h3>
+                    </div>
+                    <div class="p-6">
+                        <div id="category-breakdown-list" class="space-y-5">
+                            <div class="animate-pulse space-y-3">
+                                <div class="h-2 bg-white/5 rounded w-full"></div>
+                                <div class="h-2 bg-white/5 rounded w-2/3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-[#0f0f0f] border border-white/10 rounded-2xl overflow-hidden shadow-lg">
+                    <div class="p-5 border-b border-white/5 flex items-center gap-3 bg-white/[0.02]">
+                        <div class="w-8 h-8 rounded bg-cyan-500/20 flex items-center justify-center text-cyan-500">📋</div>
+                        <h3 class="font-bold font-orbitron text-white text-sm uppercase tracking-wider">Ranking Global</h3>
+                    </div>
+                    <div class="overflow-x-auto max-h-[450px] custom-scrollbar">
+                        <table class="w-full text-left border-collapse">
+                            <thead class="bg-[#050505] text-xs uppercase text-gray-500 font-mono sticky top-0 z-10 shadow-sm">
+                                <tr>
+                                    <th class="p-4 font-bold">Nominado</th>
+                                    <th class="p-4 font-bold">Categoría</th>
+                                    <th class="p-4 font-bold text-right">Votos</th>
+                                    <th class="p-4 font-bold text-right">%</th>
+                                </tr>
+                            </thead>
+                            <tbody id="nominee-breakdown-table" class="divide-y divide-white/5 text-sm text-gray-300"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                
+                <div class="bg-gradient-to-b from-green-900/10 to-[#0f0f0f] border border-green-500/20 rounded-2xl p-6 shadow-lg">
+                    <h3 class="font-bold font-orbitron text-green-400 mb-6 text-xs uppercase tracking-widest border-b border-green-500/20 pb-2">Resumen Ejecutivo</h3>
+                    <ul id="executive-summary" class="space-y-4 text-sm text-gray-300">
+                        <li class="flex gap-3 text-xs animate-pulse"><span class="text-green-500">●</span> Analizando datos...</li>
+                    </ul>
+                </div>
+
+                <div class="bg-[#0f0f0f] border border-white/10 rounded-2xl overflow-hidden shadow-lg">
+                    <div class="p-4 border-b border-white/5 bg-white/[0.02]">
+                        <h3 class="font-bold font-orbitron text-gray-400 text-xs uppercase tracking-widest">Feed en Vivo</h3>
+                    </div>
+                    <div id="recent-activity-list" class="divide-y divide-white/5 max-h-[350px] overflow-y-auto custom-scrollbar"></div>
+                </div>
+
+                <div class="p-5 rounded-2xl border border-red-900/30 bg-red-950/10 backdrop-blur-sm">
+                    <p class="text-red-500/50 font-bold text-[10px] uppercase tracking-widest mb-3 text-center">Zona Administrativa</p>
+                    <button id="btn-reset-votes" class="w-full py-3 bg-transparent hover:bg-red-900/20 text-red-500/70 hover:text-red-400 border border-red-800/30 rounded-lg transition-all font-bold text-xs flex items-center justify-center gap-2 group">
+                        <span class="group-hover:animate-pulse">⚠️</span> Resetear Evento
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="pt-10 border-t border-white/10">
+            <div class="flex flex-col md:flex-row items-center justify-between mb-10">
+                <h2 class="text-3xl font-black font-orbitron text-white uppercase flex items-center gap-3">
+                    <span class="text-yellow-500">🏆</span> Desglose por Categoría
+                </h2>
+                <p class="text-gray-500 text-sm font-mono mt-2 md:mt-0">Clasificación detallada</p>
+            </div>
+            
+            <div id="category-standings-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div class="bg-[#111] h-64 rounded-2xl animate-pulse"></div>
+            </div>
+        </div>
+
+      </div>
+
+      <div id="access-denied" class="hidden flex flex-col items-center justify-center min-h-[60vh] text-center">
+        <div class="text-8xl mb-6 filter drop-shadow-[0_0_15px_rgba(220,38,38,0.5)]">🔒</div>
+        <h2 class="text-4xl font-black font-orbitron text-white mb-2">ACCESO RESTRINGIDO</h2>
+        <p class="text-gray-500 font-mono text-sm max-w-md mx-auto">Este canal está encriptado y reservado para personal autorizado. Tu IP ha sido registrada.</p>
+        <a href="/" class="mt-8 px-8 py-3 border border-white/10 rounded-full hover:bg-white/10 transition text-sm font-bold text-white uppercase tracking-wider">Volver al Inicio</a>
+      </div>
+
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #0a0a0a; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #555; }
+</style>
+
+<script>
+  import { supabase } from '../lib/supabase';
+  import { getDashboardStats, resetAllVotes } from '../lib/admin';
+  import categories from '../data/categories.ts'; 
+  
+  const ADMIN_EMAIL = import.meta.env.PUBLIC_ADMIN_EMAIL;
+
+  // Refs DOM
+  const loadingState = document.getElementById('loading-state');
+  const dashboard = document.getElementById('admin-dashboard');
+  const accessDenied = document.getElementById('access-denied');
+  const emailDisplay = document.getElementById('admin-email-display');
+  
+  // KPI Refs
+  const totalVotesEl = document.getElementById('stat-total-votes');
+  const uniqueVotersEl = document.getElementById('stat-unique-voters');
+  const topNomineeEl = document.getElementById('stat-top-nominee');
+  const topNomineeCountEl = document.getElementById('stat-top-nominee-count');
+  
+  // Listas
+  const breakdownList = document.getElementById('category-breakdown-list');
+  const nomineeTable = document.getElementById('nominee-breakdown-table');
+  const activityList = document.getElementById('recent-activity-list');
+  const summaryList = document.getElementById('executive-summary');
+  const standingsGrid = document.getElementById('category-standings-grid');
+  const resetBtn = document.getElementById('btn-reset-votes');
+
+  // --- 1. VALIDACIÓN ---
+  const checkAdminAccess = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    const user = session?.user;
+
+    if (user && user.email === ADMIN_EMAIL) {
+        loadingState.classList.add('hidden');
+        dashboard.classList.remove('hidden');
+        setTimeout(() => dashboard.classList.remove('opacity-0'), 100);
+        if(emailDisplay) emailDisplay.textContent = user.email;
+        
+        loadStats();
+        setInterval(loadStats, 5000); // Refresh
+
+    } else {
+        loadingState.classList.add('hidden');
+        accessDenied.classList.remove('hidden');
+    }
+  };
+
+  // --- 2. CARGA Y RENDER ---
+  const loadStats = async () => {
+      const stats = await getDashboardStats();
+      if (!stats) return;
+
+      const totalVotes = stats.total_votes || 0;
+
+      // A. KPIs
+      if(totalVotesEl) totalVotesEl.textContent = totalVotes;
+      if(uniqueVotersEl) uniqueVotersEl.textContent = stats.unique_voters || 0;
+      if(topNomineeEl) topNomineeEl.textContent = stats.top_nominee || '---';
+      if(topNomineeCountEl) topNomineeCountEl.textContent = (stats.top_nominee_count || 0) + ' votos';
+
+      // B. PROCESAMIENTO
+      const groupedByCat = {};
+      if (stats.nominee_breakdown) {
+          stats.nominee_breakdown.forEach((nom) => {
+              if (!groupedByCat[nom.category_id]) {
+                  groupedByCat[nom.category_id] = { totalVotes: 0, nominees: [] };
+              }
+              groupedByCat[nom.category_id].nominees.push(nom);
+              groupedByCat[nom.category_id].totalVotes += nom.c;
+          });
+      }
+
+      // C. Barras de Categoría (Sidebar Izq)
+      if(breakdownList && stats.category_breakdown) {
+          breakdownList.innerHTML = stats.category_breakdown.map((item: any) => {
+              const cat = categories.find(c => c.id === item.category_id);
+              const catName = cat ? cat.title : `ID: ${item.category_id}`;
+              const percent = totalVotes > 0 ? Math.round((item.c / totalVotes) * 100) : 0;
+              return `
+                <div class="group">
+                    <div class="flex justify-between text-xs mb-2 uppercase font-bold tracking-wider">
+                        <span class="text-gray-300">${catName}</span>
+                        <span class="text-white font-mono bg-white/10 px-2 py-0.5 rounded">${item.c}</span>
+                    </div>
+                    <div class="w-full bg-gray-800/50 rounded-full h-1.5 overflow-hidden">
+                        <div class="bg-gradient-to-r from-orange-500 to-red-500 h-full rounded-full transition-all duration-1000 relative" style="width: ${percent}%">
+                            <div class="absolute inset-0 bg-white/20 animate-pulse"></div>
+                        </div>
+                    </div>
+                </div>
+              `;
+          }).join('');
+      }
+
+      // D. Tabla Global (Sidebar Izq)
+      if(nomineeTable && stats.nominee_breakdown) {
+          nomineeTable.innerHTML = stats.nominee_breakdown.map((item: any, index: number) => {
+              const cat = categories.find(c => c.id === item.category_id);
+              const catName = cat ? cat.title : item.category_id;
+              const percent = totalVotes > 0 ? ((item.c / totalVotes) * 100).toFixed(1) : 0;
+              
+              // Estilos para el top 3
+              let rowClass = "hover:bg-white/5 border-b border-white/5 last:border-0 transition-colors";
+              let rankBadge = `<span class="text-gray-500 font-mono">#${index + 1}</span>`;
+              if (index === 0) rankBadge = `<span class="text-yellow-400 font-bold">🥇 1</span>`;
+              if (index === 1) rankBadge = `<span class="text-gray-300 font-bold">🥈 2</span>`;
+              if (index === 2) rankBadge = `<span class="text-orange-400 font-bold">🥉 3</span>`;
+
+              return `
+                <tr class="${rowClass}">
+                    <td class="p-4 flex items-center gap-3">
+                        ${rankBadge}
+                        <span class="font-bold text-white">${item.nominee_name}</span>
+                    </td>
+                    <td class="p-4 text-gray-500 text-[10px] uppercase tracking-wider">${catName}</td>
+                    <td class="p-4 text-right font-mono text-white font-bold">${item.c}</td>
+                    <td class="p-4 text-right text-gray-600 text-xs font-mono">${percent}%</td>
+                </tr>
+              `;
+          }).join('');
+      }
+
+      // E. Desglose Detallado por Categoría (Abajo - LO NUEVO)
+      if (standingsGrid) {
+          const gridHTML = categories.map((cat) => {
+              const catData = groupedByCat[cat.id] || { nominees: [], totalVotes: 0 };
+              const sorted = catData.nominees.sort((a, b) => b.c - a.c);
+              
+              const listHTML = sorted.map((nom, idx) => {
+                  const isLeader = idx === 0 && nom.c > 0;
+                  const percent = catData.totalVotes > 0 ? (nom.c / catData.totalVotes) * 100 : 0;
+                  
+                  return `
+                    <div class="mb-4 relative group">
+                        <div class="flex justify-between items-end text-xs mb-1.5">
+                            <div class="flex items-center gap-2 overflow-hidden">
+                                <span class="font-mono text-[10px] ${isLeader ? 'text-yellow-500' : 'text-gray-600'}">#${idx + 1}</span>
+                                <span class="${isLeader ? 'text-yellow-400 font-black text-sm' : 'text-gray-300 font-medium'} truncate" title="${nom.nominee_name}">
+                                    ${nom.nominee_name}
+                                </span>
+                                ${isLeader ? '<span class="text-xs">🏆</span>' : ''}
+                            </div>
+                            <span class="font-mono ${isLeader ? 'text-white font-bold' : 'text-gray-500'}">${nom.c}</span>
+                        </div>
+                        <div class="w-full bg-gray-800 rounded-full h-1.5 overflow-hidden">
+                            <div class="${isLeader ? 'bg-yellow-500 shadow-[0_0_10px_#eab308]' : 'bg-gray-700'} h-full rounded-full transition-all duration-500" style="width: ${percent}%"></div>
+                        </div>
+                    </div>
+                  `;
+              }).join('');
+
+              return `
+                <div class="bg-[#111] border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-all shadow-lg flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-6 border-b border-white/5 pb-4">
+                        <h3 class="font-bold font-orbitron text-white text-sm uppercase truncate pr-2">${cat.title}</h3>
+                        <span class="bg-white/5 text-gray-500 text-[10px] font-mono px-2 py-1 rounded border border-white/5">${catData.totalVotes} votos</span>
+                    </div>
+                    <div class="space-y-1 flex-1 overflow-y-auto max-h-[300px] custom-scrollbar pr-2">
+                        ${listHTML || '<p class="text-gray-600 text-xs italic text-center py-4">Sin actividad</p>'}
+                    </div>
+                </div>
+              `;
+          }).join('');
+          standingsGrid.innerHTML = gridHTML;
+      }
+
+      // F. Feed y Resumen (Sidebar)
+      if(activityList && stats.recent_votes) {
+          activityList.innerHTML = stats.recent_votes.map((vote: any) => {
+              const time = new Date(vote.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+              return `
+                <div class="py-2 px-3 hover:bg-white/5 flex flex-col gap-1 border-l-2 border-green-500/50 ml-1">
+                    <div class="flex justify-between items-center">
+                        <p class="text-gray-300 text-xs font-bold text-white">${vote.nominee_name}</p>
+                        <span class="text-[10px] bg-white/5 px-1 rounded text-gray-500">${vote.category_id}</span>
+                    </div>
+                    <p class="text-gray-600 text-[10px] font-mono">${time}</p>
+                </div>
+              `;
+          }).join('');
+      }
+      
+      if(summaryList && stats.category_breakdown) {
+          const topCat = stats.category_breakdown[0];
+          const topCatName = topCat ? (categories.find(c => c.id === topCat.category_id)?.title || topCat.category_id) : '---';
+          const avgVotes = stats.unique_voters > 0 ? (totalVotes / stats.unique_voters).toFixed(1) : 0;
+
+          summaryList.innerHTML = `
+            <li class="flex gap-3 items-start border-b border-white/5 pb-2 last:border-0">
+                <span class="text-green-500 mt-0.5">➜</span>
+                <div>
+                    <p class="text-gray-400 text-xs uppercase font-bold">Categoría Hot</p>
+                    <p class="text-white font-bold">${topCatName} <span class="text-green-400 text-xs">(${topCat ? Math.round((topCat.c / totalVotes)*100) : 0}%)</span></p>
+                </div>
+            </li>
+            <li class="flex gap-3 items-start border-b border-white/5 pb-2 last:border-0">
+                <span class="text-blue-500 mt-0.5">➜</span>
+                <div>
+                    <p class="text-gray-400 text-xs uppercase font-bold">Engagement</p>
+                    <p class="text-white font-bold">${avgVotes} <span class="text-gray-500 text-xs font-normal">votos/usuario</span></p>
+                </div>
+            </li>
+          `;
+      }
+  };
+
+  // --- 3. RESETEO ---
+  if (resetBtn) {
+      resetBtn.addEventListener('click', async () => {
+          const confirmacion = window.prompt("⚠️ ELIMINAR TODO ⚠️\nEscribe BORRAR para confirmar:");
+          if (confirmacion === 'BORRAR') {
+              resetBtn.textContent = "💥 Destruyendo...";
+              await resetAllVotes();
+              window.location.reload();
+          }
+      });
+  }
+
+  document.addEventListener('DOMContentLoaded', checkAdminAccess);
+</script>
