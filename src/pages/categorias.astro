@@ -166,6 +166,15 @@ import categories from "../data/categories.ts";
                     id="media-container"
                     class="relative aspect-square rounded-xl overflow-hidden border-4 border-purple-500/30 shadow-[0_0_30px_rgba(168,85,247,0.3)] group bg-black transition-all duration-300"
                   >
+                  <iframe
+        id="detail-youtube"
+        class="hidden w-full h-full absolute inset-0 z-20"
+        src=""
+        title="YouTube video player"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+    ></iframe>
                     <img
                       id="detail-img"
                       src=""
@@ -437,19 +446,14 @@ import categories from "../data/categories.ts";
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   }
-  .category-card-bg {
-    filter: blur(1px);
-  }
+  .category-card-bg { filter: blur(1px); }
   .category-card-glass {
-    background-color: rgba(15, 23, 42, 0.372); /* oscuro opaco */
+    background-color: rgba(15, 23, 42, 0.372);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     border-radius: 1.5rem;
     border: 3px solid rgba(250, 204, 21, 0.9);
-    box-shadow:
-      0 0 25px rgba(250, 204, 21, 0.45),
-      0 18px 45px rgba(0, 0, 0, 0.75),
-      0 0 30px rgba(15, 23, 42, 0.9);
+    box-shadow: 0 0 25px rgba(250, 204, 21, 0.45), 0 18px 45px rgba(0, 0, 0, 0.75), 0 0 30px rgba(15, 23, 42, 0.9);
   }
   .nav-arrow {
     position: relative;
@@ -466,51 +470,24 @@ import categories from "../data/categories.ts";
     box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
     transition: transform 200ms ease, box-shadow 200ms ease, background-color 200ms ease;
   }
-/* lo del artwork*/
-  #artwork-lightbox {
-    backdrop-filter: blur(6px);
-    touch-action: none;
-  }
-  #lightbox-img {
-    transition: transform 0.1s ease-out;
-    touch-action: none;
-  }
-  .artwork-fit-contain {
-    object-fit: contain !important;
-  }
-  .artwork-fit-cover {
-    object-fit: cover !important;
-  }
-  .artwork-detail-wrap:hover .artwork-zoom-img {
-    transform: scale(1.03);
-  }
-
-  .artwork-detail-wrap:hover #artwork-zoom-hint {
-    opacity: 1;
-    transform: translateY(0);
-  }
-/* la televisión de nominados */
+  /* TV & Artwork styles */
+  #artwork-lightbox { backdrop-filter: blur(6px); touch-action: none; }
+  #lightbox-img { transition: transform 0.1s ease-out; touch-action: none; }
+  .artwork-fit-contain { object-fit: contain !important; }
+  .artwork-fit-cover { object-fit: cover !important; }
+  .artwork-detail-wrap:hover .artwork-zoom-img { transform: scale(1.03); }
+  .artwork-detail-wrap:hover #artwork-zoom-hint { opacity: 1; transform: translateY(0); }
   .tv-frame {
     border-radius: 2.5rem;
-    border: 4px solid rgba(250, 204, 21, 0.9); /* amarillo similar a los nominados */
-    box-shadow:
-      0 0 25px rgba(250, 204, 21, 0.5),
-      0 0 60px rgba(88, 28, 135, 0.4);
-    padding: 2.5rem 1.25rem 2rem; /* más padding arriba para la cabecera */
-    background: radial-gradient(circle at top center, rgba(255, 255, 255, 0.06), transparent 55%),
-                rgba(10, 10, 20, 0.95);
+    border: 4px solid rgba(250, 204, 21, 0.9);
+    box-shadow: 0 0 25px rgba(250, 204, 21, 0.5), 0 0 60px rgba(88, 28, 135, 0.4);
+    padding: 2.5rem 1.25rem 2rem;
+    background: radial-gradient(circle at top center, rgba(255, 255, 255, 0.06), transparent 55%), rgba(10, 10, 20, 0.95);
     overflow: hidden;
   }
-
-  /* Capa interior de la pantalla.*/
   .tv-screen-bg {
-    background-image:
-      radial-gradient(circle at 20% 0%, rgba(250, 204, 21, 0.12), transparent 55%),
-      radial-gradient(circle at 80% 100%, rgba(147, 51, 234, 0.18), transparent 55%),
-      linear-gradient(to bottom, rgba(3, 7, 18, 0.95), rgba(15, 23, 42, 0.98));
-    background-size: cover;
-    background-position: center;
-    opacity: 0.6;
+    background-image: radial-gradient(circle at 20% 0%, rgba(250, 204, 21, 0.12), transparent 55%), radial-gradient(circle at 80% 100%, rgba(147, 51, 234, 0.18), transparent 55%), linear-gradient(to bottom, rgba(3, 7, 18, 0.95), rgba(15, 23, 42, 0.98));
+    background-size: cover; background-position: center; opacity: 0.6;
   }
   .tv-header-glass {
     background-color: rgba(15, 23, 42, 0.82);
@@ -518,132 +495,62 @@ import categories from "../data/categories.ts";
     -webkit-backdrop-filter: blur(14px);
     border-radius: 1.5rem;
     border: 1px solid rgba(148, 163, 184, 0.4);
-    box-shadow:
-      0 18px 45px rgba(0, 0, 0, 0.75),
-      0 0 25px rgba(15, 23, 42, 0.9);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.75), 0 0 25px rgba(15, 23, 42, 0.9);
   }
-/* animaciones para las transiciones, cuando cambias de categoría */
-  .nominee-anim-container {
-    position: relative;
-  }
-  .slide-out-left {
-    animation: slideOutLeft 260ms ease forwards;
-  }
-  .slide-in-right {
-    animation: slideInRight 260ms ease forwards;
-  }
-  .slide-out-right {
-    animation: slideOutRight 260ms ease forwards;
-  }
-  .slide-in-left {
-    animation: slideInLeft 260ms ease forwards;
-  }
-  @keyframes slideOutLeft {
-    from {
-      opacity: 1;
-      transform: translateX(0);
-    }
-    to {
-      opacity: 0;
-      transform: translateX(-40px);
-    }
-  }
-  @keyframes slideInRight {
-    from {
-      opacity: 0;
-      transform: translateX(40px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-  @keyframes slideOutRight {
-    from {
-      opacity: 1;
-      transform: translateX(0);
-    }
-    to {
-      opacity: 0;
-      transform: translateX(40px);
-    }
-  }
-  @keyframes slideInLeft {
-    from {
-      opacity: 0;
-      transform: translateX(-40px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-  .nav-arrow:hover {
-    background-color: rgba(126, 34, 206, 0.9);
-    transform: scale(1.1);
-    box-shadow: 0 0 30px rgba(168, 85, 247, 0.8);
-  }
-  .stroke-text-white {
-    -webkit-text-stroke: 1.5px white;
-    text-stroke: 1.5px white;
-    color: transparent;
-  }
-  @media (max-width: 768px) {
-    .nav-arrow {
-      width: 2.75rem;
-      height: 2.75rem;
-    }
-  }
+  /* Animations */
+  .nominee-anim-container { position: relative; }
+  .slide-out-left { animation: slideOutLeft 260ms ease forwards; }
+  .slide-in-right { animation: slideInRight 260ms ease forwards; }
+  .slide-out-right { animation: slideOutRight 260ms ease forwards; }
+  .slide-in-left { animation: slideInLeft 260ms ease forwards; }
+  @keyframes slideOutLeft { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(-40px); } }
+  @keyframes slideInRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+  @keyframes slideOutRight { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(40px); } }
+  @keyframes slideInLeft { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
+  .nav-arrow:hover { background-color: rgba(126, 34, 206, 0.9); transform: scale(1.1); box-shadow: 0 0 30px rgba(168, 85, 247, 0.8); }
+  .stroke-text-white { -webkit-text-stroke: 1.5px white; text-stroke: 1.5px white; color: transparent; }
+  @media (max-width: 768px) { .nav-arrow { width: 2.75rem; height: 2.75rem; } }
 </style>
 
 <script>
-  // 1. IMPORTACIONES (Arquitectura limpia: Datos + Lógica + Estado)
   import { voteForNominee, getUserVotes, getCategoryTotalVotes } from '../lib/voting';
   import categories from '../data/categories.ts';
   import { $currentUser } from '../stores/authStore';
   import confetti from 'canvas-confetti';
 
   document.addEventListener("DOMContentLoaded", () => {
-    // --- ESTADO LOCAL ---
-    let userVotes = {}; // { "categoriaId": "nombreNominado" }
-    let categoryCounts = {}; // { "categoriaId": totalVotos }
+    let userVotes = {}; 
+    let categoryCounts = {}; 
 
-    // --- REFERENCIAS DOM ---
+    // DOM Refs
     const categoryView = document.getElementById("category-view");
     const nomineeView = document.getElementById("nominee-view");
     const detailView = document.getElementById("detail-view");
     const categoryGrid = document.getElementById("category-grid");
-
     const nomineeContent = document.getElementById("nominee-content");
     const nomineeTitle = document.getElementById("nominee-title");
     const nomineeList = document.getElementById("nominee-list");
-    
     const backToCategoriesBtn = document.getElementById("back-to-categories");
     const backToNomineesBtn = document.getElementById("back-to-nominees");
     const prevBtn = document.getElementById("prev-category");
     const nextBtn = document.getElementById("next-category");
 
-    // Referencias Detalle
+    // Media & Detail
     const mediaContainer = document.getElementById("media-container");
     const detailImg = document.getElementById("detail-img");
     const detailName = document.getElementById("detail-name");
     const detailCreator = document.getElementById("detail-creator");
     const detailDesc = document.getElementById("detail-desc");
-    
-    // MÁS COSAS PARA EL ARTWORK...
-    const artworkZoomHint = document.getElementById("artwork-zoom-hint");
-
-    // REFERENCIA AL CONTADOR DE VOTOS
     const voteCountNumber = document.getElementById("vote-count-number");
+    const detailYoutube = document.getElementById("detail-youtube");
 
-    // Referencias Audio/Video
+    // Controls & Lightbox
     const audioOverlay = document.getElementById("audio-overlay");
     const playBtn = document.getElementById("play-btn");
     const iconPlay = document.getElementById("icon-play");
     const iconPause = document.getElementById("icon-pause");
     const audioVolumeControls = document.getElementById("audio-volume-controls");
     const audioVolumeSlider = document.getElementById("audio-volume-slider");
-
     const detailVideo = document.getElementById("detail-video");
     const videoControls = document.getElementById("video-controls");
     const videoPlayPauseBtn = document.getElementById("video-play-pause-btn");
@@ -654,16 +561,13 @@ import categories from "../data/categories.ts";
     const totalDurationSpan = document.getElementById("total-duration");
     const videoVolumeSlider = document.getElementById("video-volume-slider");
     const fullscreenBtn = document.getElementById("fullscreen-btn");
-
-    let currentCategoryIndex = 0;
-    let currentAudio = null;
-
-
-    // lo del artwork...
     const artworkLightbox = document.getElementById("artwork-lightbox");
     const lightboxImg = document.getElementById("lightbox-img");
     const lightboxClose = document.getElementById("lightbox-close");
+    const artworkZoomHint = document.getElementById("artwork-zoom-hint");
 
+    let currentCategoryIndex = 0;
+    let currentAudio = null;
     let lastDetailImageSrc = "";
     let lastIsArtwork = false;
     let zoomScale = 1;
@@ -673,19 +577,11 @@ import categories from "../data/categories.ts";
     let panStartX = 0;
     let panStartY = 0;
 
-    const updateLightboxTransform = () => {
-      if (!lightboxImg) return;
-      lightboxImg.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomScale})`;
-    };
+    // Lightbox logic
+    const updateLightboxTransform = () => { if (lightboxImg) lightboxImg.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomScale})`; };
+    const resetLightboxView = () => { zoomScale = 1; panX = 0; panY = 0; updateLightboxTransform(); };
 
-    const resetLightboxView = () => {
-      zoomScale = 1;
-      panX = 0;
-      panY = 0;
-      updateLightboxTransform();
-    };
-    // Abrir visor al hacer click en la imagen de detalle para los artworks
-  if (detailImg && artworkLightbox && lightboxImg) {
+    if (detailImg && artworkLightbox && lightboxImg) {
       detailImg.addEventListener("click", () => {
           if (!lastIsArtwork || !lastDetailImageSrc) return;
           lightboxImg.src = lastDetailImageSrc;
@@ -694,19 +590,15 @@ import categories from "../data/categories.ts";
           artworkLightbox.classList.add("flex");
           document.body.style.overflow = "hidden";
       });
-  }
-
-  // Cerrar visor
-  if (lightboxClose && artworkLightbox) {
+    }
+    if (lightboxClose && artworkLightbox) {
       lightboxClose.addEventListener("click", () => {
           artworkLightbox.classList.add("hidden");
           artworkLightbox.classList.remove("flex");
           document.body.style.overflow = "";
       });
-  }
-
-  // Cerrar clickeando fuera de la imagen
-  if (artworkLightbox) {
+    }
+    if (artworkLightbox) {
       artworkLightbox.addEventListener("click", (e) => {
           if (e.target === artworkLightbox) {
               artworkLightbox.classList.add("hidden");
@@ -714,129 +606,16 @@ import categories from "../data/categories.ts";
               document.body.style.overflow = "";
           }
       });
-  }
-
-  // Zoom con la rueda
-  if (lightboxImg) {
-    lightboxImg.addEventListener("dragstart", (e) => {
-      e.preventDefault();
-    });
-
-    lightboxImg.addEventListener(
-      "wheel",
-      (e) => {
-        if (!artworkLightbox || artworkLightbox.classList.contains("hidden")) return;
-
-        e.preventDefault();
-        const delta = e.deltaY > 0 ? -0.1 : 0.1;
-
-        zoomScale = Math.min(4, Math.max(1, zoomScale + delta));
-        updateLightboxTransform();
-      },
-      { passive: false }
-    );
-
-    lightboxImg.addEventListener("mousedown", (e) => {
-      // Permitir paneo si hay zoom > 1 o si la imagen ya es más grande que el contenedor
-      const wrapper = lightboxImg.parentElement;
-      const rect = lightboxImg.getBoundingClientRect();
-      const canPanAtScale1 =
-        wrapper &&
-        (rect.width > wrapper.clientWidth + 1 ||
-          rect.height > wrapper.clientHeight + 1);
-
-      if (zoomScale === 1 && !canPanAtScale1) return;
-
-      isPanning = true;
-      lightboxImg.style.cursor = "grabbing";
-      panStartX = e.clientX - panX;
-      panStartY = e.clientY - panY;
-    });
-
-    window.addEventListener("mousemove", (e) => {
-      if (!isPanning) return;
-      panX = e.clientX - panStartX;
-      panY = e.clientY - panStartY;
-      updateLightboxTransform();
-    });
-
-    window.addEventListener("mouseup", () => {
-      if (!isPanning) return;
-      isPanning = false;
-      lightboxImg.style.cursor = "grab";
-    });
-
-
-    // soporte para las máquinas tiktok
-      lightboxImg.addEventListener("touchstart", (e) => {
-        if (!artworkLightbox || artworkLightbox.classList.contains("hidden")) return;
-        const touch = e.touches[0];
-        if (!touch) return;
-
-        const wrapper = lightboxImg.parentElement;
-        const rect = lightboxImg.getBoundingClientRect();
-        const canPanAtScale1 =
-          wrapper &&
-          (rect.width > wrapper.clientWidth + 1 ||
-            rect.height > wrapper.clientHeight + 1);
-
-        if (zoomScale === 1 && !canPanAtScale1) return;
-
-        isPanning = true;
-        lightboxImg.style.cursor = "grabbing";
-        panStartX = touch.clientX - panX;
-        panStartY = touch.clientY - panY;
-      }, { passive: true }); // start puede ser passive
-
-      window.addEventListener("touchmove", (e) => {
-        if (!isPanning) return;
-
-        const touch = e.touches[0];
-        if (!touch) return;
-
-        e.preventDefault();
-
-        panX = touch.clientX - panStartX;
-        panY = touch.clientY - panStartY;
-        updateLightboxTransform();
-      }, { passive: false }); 
-
-      window.addEventListener("touchend", () => {
-        if (!isPanning) return;
-        isPanning = false;
-        lightboxImg.style.cursor = "grab";
-      });
-
-      window.addEventListener("touchcancel", () => {
-        if (!isPanning) return;
-        isPanning = false;
-        lightboxImg.style.cursor = "grab";
-      });
-
-
-  }
-
-  // las caricaturas
-    const tvScreenBgEls = document.querySelectorAll(".tv-screen-bg");
-
-    // --- CARGA DE DATOS (INICIAL Y REACTIVA) ---
+    }
+    
+    // Cargar Datos
     const loadData = async () => {
-        // Esperamos un poco para asegurar que la sesión de authStore esté lista
-        setTimeout(async () => {
-            userVotes = await getUserVotes();
-            console.log("Mis votos cargados:", userVotes);
-        }, 500);
-        
-        // Cargar totales globales por categoría
+        setTimeout(async () => { userVotes = await getUserVotes(); }, 500);
         categoryCounts = await getCategoryTotalVotes();
-        console.log("Conteos globales cargados:", categoryCounts);
     };
-
-    // Ejecutar al inicio y cuando cambie el usuario (login/logout)
     loadData();
     $currentUser.subscribe(() => loadData());
 
-    // --- HELPERS ---
     const formatTime = (seconds) => {
       const minutes = Math.floor(seconds / 60);
       const remainingSeconds = Math.floor(seconds % 60);
@@ -844,14 +623,9 @@ import categories from "../data/categories.ts";
     };
 
     const stopAllMedia = () => {
-      if (currentAudio) {
-        currentAudio.pause();
-        currentAudio = null;
-      }
-      if (detailVideo && !detailVideo.paused) {
-        detailVideo.pause();
-      }
-      // Resetear iconos visuales
+      if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+      if (detailVideo && !detailVideo.paused) detailVideo.pause();
+      if (detailYoutube) { detailYoutube.classList.add("hidden"); detailYoutube.src = ""; } // Reset YouTube
       if (iconPlay) iconPlay.classList.remove("hidden");
       if (iconPause) iconPause.classList.add("hidden");
       if (videoIconPlay) videoIconPlay.classList.remove("hidden");
@@ -859,79 +633,51 @@ import categories from "../data/categories.ts";
       if (videoControls) videoControls.classList.add("hidden");
     };
 
-    // --- LÓGICA PRINCIPAL ---
-
     const showCategoryDetails = (index, direction = "none") => {
       currentCategoryIndex = index;
       const category = categories[index];
+      if (!category) return;
 
-      if (!category) {
-        console.error("Categoría no encontrada en índice:", index);
-        return;
+      const tvScreenBgEls = document.querySelectorAll(".tv-screen-bg");
+      if (tvScreenBgEls && tvScreenBgEls.length) {
+        tvScreenBgEls.forEach((el) => {
+          if (category.tvBackground) {
+            el.style.backgroundImage = `url('${category.tvBackground}')`;
+            el.style.opacity = "0.9";
+          } else {
+            el.style.backgroundImage = "";
+            el.style.opacity = "0.6";
+          }
+        });
       }
 
-      // las caricaturas...
-    if (tvScreenBgEls && tvScreenBgEls.length) {
-      tvScreenBgEls.forEach((el) => {
-        if (category.tvBackground) {
-          el.style.backgroundImage = `url('${category.tvBackground}')`;
-          el.style.opacity = "0.9";
-        } else {
-          el.style.backgroundImage = "";
-          el.style.opacity = "0.6";
-        }
-      });
-    }
+      const ANIM_DURATION = 260;
+      nomineeContent.classList.remove("slide-out-left", "slide-out-right", "slide-in-left", "slide-in-right");
+      let outClass = direction === "next" ? "slide-out-left" : (direction === "prev" ? "slide-out-right" : "slide-out-left");
+      let inClass = direction === "next" ? "slide-in-right" : (direction === "prev" ? "slide-in-left" : "slide-in-right");
 
-      const ANIM_DURATION = 260; 
-
-      nomineeContent.classList.remove(
-        "slide-out-left",
-        "slide-out-right",
-        "slide-in-left",
-        "slide-in-right"
-      );
-
-      let outClass = "";
-      let inClass = "";
-
-      if (direction === "next") {
-        outClass = "slide-out-left";
-        inClass = "slide-in-right";
-      } else if (direction === "prev") {
-        outClass = "slide-out-right";
-        inClass = "slide-in-left";
-      } else {
-        outClass = "slide-out-left";
-        inClass = "slide-in-right";
-      }
-
-      // Animación de salida
       nomineeContent.classList.add(outClass);
-
       setTimeout(() => {
-        // --- ACTUALIZAR CONTENIDO DE LA CATEGORÍA ---
         nomineeTitle.textContent = category.title;
         nomineeList.innerHTML = "";
 
         category.nominees.forEach((nominee) => {
           const nomineeEl = document.createElement("div");
-          nomineeEl.className =
-            "relative aspect-square overflow-hidden rounded-lg border-4 border-amber-400 transition-transform transform hover:scale-105 group shadow-lg cursor-pointer basis-1/2 md:basis-1/3 lg:basis-1/4 max-w-xs";
-
+          nomineeEl.className = "relative aspect-square overflow-hidden rounded-lg border-4 border-amber-400 transition-transform transform hover:scale-105 group shadow-lg cursor-pointer basis-1/2 md:basis-1/3 lg:basis-1/4 max-w-xs";
           const nameLength = nominee.name.length;
           const hasSpaces = nominee.name.includes(" ");
           let largeNameClass = "text-3xl sm:text-5xl break-words";
+          if (!hasSpaces && nameLength > 10) largeNameClass = "text-xl sm:text-2xl break-all leading-none";
+          else if (nameLength > 25) largeNameClass = "text-xl sm:text-2xl break-words leading-tight";
+          else if (nameLength > 15) largeNameClass = "text-2xl sm:text-3xl break-words leading-tight";
 
-          if (!hasSpaces && nameLength > 10)
-            largeNameClass = "text-xl sm:text-2xl break-all leading-none";
-          else if (nameLength > 25)
-            largeNameClass = "text-xl sm:text-2xl break-words leading-tight";
-          else if (nameLength > 15)
-            largeNameClass = "text-2xl sm:text-3xl break-words leading-tight";
+          // IMAGEN REDUCIDA PARA TARJETA
+          const thumbSrc = nominee.image && nominee.image.includes('imagekit') 
+            ? `${nominee.image}?tr=w-400,q-80,f-auto` 
+            : (nominee.image || '');
 
           nomineeEl.innerHTML = `
-            <img src="${nominee.image}" alt="${nominee.name}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+            <img src="${thumbSrc}" alt="${nominee.name}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
             <div class="absolute bottom-0 left-0 right-0 w-full p-4 text-center bg-gradient-to-t from-black/90 via-black/70 to-transparent transition-opacity duration-300 group-hover:opacity-0 z-10">
                 <h4 class="font-bold text-2xl text-white drop-shadow-md break-words truncate">${nominee.name}</h4>
             </div>
@@ -940,65 +686,48 @@ import categories from "../data/categories.ts";
                 <span class="mt-2 text-purple-300 font-bold tracking-wider text-xs sm:text-sm uppercase">Ver Detalles</span>
             </div>
           `;
-
           nomineeEl.addEventListener("click", () => showNomineeDetailView(nominee));
           nomineeList.appendChild(nomineeEl);
         });
 
-        
         nomineeContent.classList.remove(outClass);
         nomineeContent.classList.add(inClass);
-
-        
-        setTimeout(() => {
-          nomineeContent.classList.remove(inClass);
-        }, ANIM_DURATION);
+        setTimeout(() => { nomineeContent.classList.remove(inClass); }, ANIM_DURATION);
       }, ANIM_DURATION);
     };
-
 
     const showNomineeDetailView = (nominee) => {
       stopAllMedia();
       const currentCategory = categories[currentCategoryIndex];
       const isArtworkCategory = currentCategory.id === "3"; 
 
-      // 1. MOSTRAR CONTEO GENERAL DE LA CATEGORÍA
       const catKey = currentCategory.id;
       let currentTotal = categoryCounts[catKey] || 0;
       if (voteCountNumber) voteCountNumber.textContent = currentTotal;
 
-      // 2. GESTIÓN INTELIGENTE DEL BOTÓN (Votado / Bloqueado / Disponible)
       const voteBtn = document.getElementById('detail-vote-btn');
-      
       if (voteBtn) {
-          // Consultar estado
-          const votedNomineeInThisCategory = userVotes[currentCategory.id]; 
+          const votedNomineeInThisCategory = userVotes[currentCategory.id];
           const hasVoted = !!votedNomineeInThisCategory; 
-          const isMyPick = votedNomineeInThisCategory === nominee.name; 
-
-          // Clonar para limpiar listeners viejos
+          const isMyPick = votedNomineeInThisCategory === nominee.name;
           const newVoteBtn = voteBtn.cloneNode(true);
           voteBtn.parentNode.replaceChild(newVoteBtn, voteBtn);
 
           if (hasVoted) {
               if (isMyPick) {
-                  // CASO: YA VOTADO POR ESTE (VERDE)
                   newVoteBtn.innerHTML = `✅ Voto Registrado`;
                   newVoteBtn.className = "w-full md:w-auto px-8 py-4 bg-green-600/90 text-white rounded-lg text-xl font-bold cursor-default shadow-inner border border-green-500/50 opacity-100";
                   newVoteBtn.disabled = true;
               } else {
-                  // CASO: YA VOTÓ POR OTRO (GRIS / BLOQUEADO)
                   newVoteBtn.innerHTML = `🔒 Ya votaste en esta categoría`;
                   newVoteBtn.className = "w-full md:w-auto px-8 py-4 bg-gray-800 text-gray-500 rounded-lg text-lg font-bold cursor-not-allowed border border-gray-700 opacity-75";
                   newVoteBtn.disabled = true;
               }
           } else {
-              // CASO: DISPONIBLE PARA VOTAR (AZUL / ROJO)
               newVoteBtn.innerHTML = `<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"></path></svg> Votar Ahora`;
               newVoteBtn.className = "w-full md:w-auto px-8 py-4 bg-linear-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 rounded-lg text-xl font-bold text-white shadow-lg transition-all transform hover:scale-105 flex items-center justify-center gap-3";
               newVoteBtn.disabled = false;
 
-              // Listener de Voto
               newVoteBtn.addEventListener('click', async () => {
                   try {
                       newVoteBtn.innerHTML = `<span class="animate-spin">⏳</span> Procesando...`;
@@ -1008,40 +737,22 @@ import categories from "../data/categories.ts";
                       const success = await voteForNominee(currentCategory.id, nominee.name);
 
                       if (success) {
-                          // 1. Actualizar estado local (Optimistic Update)
                           userVotes[currentCategory.id] = nominee.name;
-                          
-                          // 2. Actualizar contador visual
                           currentTotal++;
                           categoryCounts[catKey] = currentTotal;
                           if (voteCountNumber) voteCountNumber.textContent = currentTotal;
 
-                          // 3. Cambiar botón a verde
                           newVoteBtn.innerHTML = `✅ Voto Registrado`;
                           newVoteBtn.className = "w-full md:w-auto px-8 py-4 bg-green-600 hover:bg-green-500 rounded-lg text-xl font-bold text-white shadow-lg transition-all flex items-center justify-center gap-3";
                           newVoteBtn.classList.remove('cursor-not-allowed', 'opacity-70');
                           
                           const successAudio = new Audio('/audio/success.mp3');
-successAudio.volume = 0.5;
-successAudio.play().catch(e => console.log("Audio bloqueado por navegador", e));
-
-                          confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6, x: 0.1 }, // Desde la izq
-      colors: ['#ef4444', '#eab308', '#a855f7'] // Rojo, Amarillo, Morado (Tus colores)
-    });
-    // Lanzar un cañonazo desde la derecha
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6, x: 0.9 }, // Desde la der
-      colors: ['#ef4444', '#eab308', '#a855f7']
-    });
-
-
+                          successAudio.volume = 0.5;
+                          successAudio.play().catch(e => console.log("Audio bloqueado por navegador", e));
+                          
+                          confetti({ particleCount: 100, spread: 70, origin: { y: 0.6, x: 0.1 }, colors: ['#ef4444', '#eab308', '#a855f7'] });
+                          confetti({ particleCount: 100, spread: 70, origin: { y: 0.6, x: 0.9 }, colors: ['#ef4444', '#eab308', '#a855f7'] });
                       } else {
-                          // Error controlado (ej: no logueado o error de red)
                           newVoteBtn.innerHTML = `⚠️ No se pudo votar`;
                           setTimeout(() => {
                               newVoteBtn.innerHTML = `Votar Ahora`;
@@ -1060,7 +771,6 @@ successAudio.play().catch(e => console.log("Audio bloqueado por navegador", e));
           }
       }
 
-      // Actualizar textos y multimedia (Igual que siempre)
       detailName.textContent = nominee.name;
       detailCreator.textContent = nominee.creator ? `Creado por: ${nominee.creator}` : "";
       detailDesc.textContent = nominee.description || "Sin descripción disponible.";
@@ -1073,23 +783,34 @@ successAudio.play().catch(e => console.log("Audio bloqueado por navegador", e));
       detailVideo.classList.add("hidden");
       audioVolumeControls.classList.add("hidden");
       videoControls.classList.add("hidden");
+      if (detailYoutube) detailYoutube.classList.add("hidden"); // Ocultar YT por defecto
 
       if (mediaContainer) {
         mediaContainer.classList.remove("artwork-detail-wrap");
+        mediaContainer.classList.remove("aspect-[9/16]", "max-w-sm", "mx-auto", "aspect-video", "aspect-square");
       }
+      if (artworkZoomHint) artworkZoomHint.classList.add("hidden");
 
-      if (artworkZoomHint) {
-        artworkZoomHint.classList.add("hidden");
-      }
-
-      if (mediaContainer) {
-        mediaContainer.classList.add("aspect-square");
-        mediaContainer.classList.remove("aspect-video");
-      }
-
-      if (nominee.audio) {
-        detailImg.src = nominee.image;
+      // --- LÓGICA MULTIMEDIA ---
+      if (nominee.youtubeId) {
+        // 🔴 YOUTUBE SHORT
+        if (mediaContainer) mediaContainer.classList.add("aspect-[9/16]", "max-w-sm", "mx-auto");
+        if (detailYoutube) {
+            detailYoutube.classList.remove("hidden");
+            detailYoutube.src = `https://www.youtube.com/embed/${nominee.youtubeId}?autoplay=1&rel=0&loop=1&playlist=${nominee.youtubeId}`;
+        }
+      } else if (nominee.audio) {
+        // 🎵 AUDIO
+        if (mediaContainer) mediaContainer.classList.add("aspect-square");
+        
+        // Imagen HD para detalle
+        let hdSrc = nominee.image || '';
+        if (hdSrc.includes('imagekit')) hdSrc += '?tr=w-800,q-90,f-auto';
+        
+        detailImg.src = hdSrc;
         detailImg.classList.remove("hidden");
+        detailImg.classList.add("artwork-fit-cover");
+        
         audioOverlay.classList.remove("hidden");
         audioVolumeControls.classList.remove("hidden");
         currentAudio = new Audio(nominee.audio);
@@ -1099,60 +820,36 @@ successAudio.play().catch(e => console.log("Audio bloqueado por navegador", e));
           if(iconPause) iconPause.classList.add("hidden");
         };
       } else if (nominee.video) {
-        if (mediaContainer) {
-          mediaContainer.classList.remove("aspect-square");
-          mediaContainer.classList.add("aspect-video");
-        }
+        // 📹 VIDEO FILE
+        if (mediaContainer) mediaContainer.classList.add("aspect-video");
         detailVideo.classList.remove("hidden");
         detailVideo.src = nominee.video;
         if (videoVolumeSlider) detailVideo.volume = videoVolumeSlider.value;
         detailVideo.load();
         videoControls.classList.remove("hidden");
-        
         if (videoProgress) videoProgress.value = 0;
         if (currentTimeSpan) currentTimeSpan.textContent = "0:00";
-        
-        detailVideo.onloadedmetadata = () => {
-          if (totalDurationSpan) totalDurationSpan.textContent = formatTime(detailVideo.duration);
-        };
-        detailVideo.ontimeupdate = () => {
-          if (videoProgress) videoProgress.value = (detailVideo.currentTime / detailVideo.duration) * 100;
-          if (currentTimeSpan) currentTimeSpan.textContent = formatTime(detailVideo.currentTime);
-        };
-        detailVideo.onended = () => {
-          if(videoIconPlay) videoIconPlay.classList.remove("hidden");
-          if(videoIconPause) videoIconPause.classList.add("hidden");
-          detailVideo.currentTime = 0;
-        };
+        detailVideo.onloadedmetadata = () => { if (totalDurationSpan) totalDurationSpan.textContent = formatTime(detailVideo.duration); };
+        detailVideo.ontimeupdate = () => { if (videoProgress) videoProgress.value = (detailVideo.currentTime / detailVideo.duration) * 100; if (currentTimeSpan) currentTimeSpan.textContent = formatTime(detailVideo.currentTime); };
+        detailVideo.onended = () => { if(videoIconPlay) videoIconPlay.classList.remove("hidden"); if(videoIconPause) videoIconPause.classList.add("hidden"); detailVideo.currentTime = 0; };
       } else {
-        detailImg.src = nominee.image;
+        // 🖼️ IMAGEN / ARTWORK
+        if (mediaContainer) mediaContainer.classList.add("aspect-square");
+        
+        let hdSrc = nominee.image || '';
+        if (hdSrc.includes('imagekit')) hdSrc += '?tr=w-800,q-90,f-auto';
+        
+        detailImg.src = hdSrc;
         detailImg.classList.remove("hidden");
-
-        lastDetailImageSrc = nominee.image;
+        lastDetailImageSrc = hdSrc;
         lastIsArtwork = isArtworkCategory;
 
         if (isArtworkCategory) {
-          // Ajuste especial para artworks
           detailImg.classList.add("artwork-fit-contain", "cursor-zoom-in", "artwork-zoom-img");
-          detailImg.classList.remove("artwork-fit-cover");
-
-          if (mediaContainer) {
-            mediaContainer.classList.add("artwork-detail-wrap");
-          }
-          if (artworkZoomHint) {
-            artworkZoomHint.classList.remove("hidden");
-          }
+          if (mediaContainer) mediaContainer.classList.add("artwork-detail-wrap");
+          if (artworkZoomHint) artworkZoomHint.classList.remove("hidden");
         } else {
-          // Resto de categorías: comportamiento normal
           detailImg.classList.add("artwork-fit-cover");
-          detailImg.classList.remove("artwork-fit-contain", "cursor-zoom-in", "artwork-zoom-img");
-
-          if (mediaContainer) {
-            mediaContainer.classList.remove("artwork-detail-wrap");
-          }
-          if (artworkZoomHint) {
-            artworkZoomHint.classList.add("hidden");
-          }
         }     
       }
 
@@ -1164,8 +861,7 @@ successAudio.play().catch(e => console.log("Audio bloqueado por navegador", e));
       }, 300);
     };
 
-    // --- EVENT LISTENERS GLOBALES ---
-
+    // Listeners Globales
     if (categoryGrid) {
       categoryGrid.addEventListener("click", (e) => {
         const card = e.target.closest("[data-category-id]");

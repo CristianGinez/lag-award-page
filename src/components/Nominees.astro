@@ -1,136 +1,120 @@
 ---
-const nominees = [
-	{
-		id: 1,
-		name: "Clip Épico",
-		category: "Mejor Clip",
-		thumbnail: "🎬",
-		votes: "12.5K",
-		image: "/img/lag_uconstr_placeholder.png" // estas cosas todavía se tienen que cambiar, solo son imagenes placeholder.
-	},
-	{
-		id: 2,
-		name: "Momento Legendario",
-		category: "Mejor Momento",
-		thumbnail: "⚡",
-		votes: "9.8K",
-		image: "/img/lag_uconstr_placeholder.png"
-	},
-	{
-		id: 3,
-		name: "Reacción Pura",
-		category: "Mejor Reacción",
-		thumbnail: "😮",
-		votes: "8.3K",
-		image: "/img/lag_uconstr_placeholder.png"
-	},
-	{
-		id: 4,
-		name: "Edit Masterpiece",
-		category: "Mejor Edición",
-		thumbnail: "🎨",
-		votes: "7.2K",
-		image: "/img/lag_uconstr_placeholder.png"
-	},
-	{
-		id: 5,
-		name: "Fail Épico",
-		category: "Mejor Fail",
-		thumbnail: "💥",
-		votes: "6.9K",
-		image: "/img/lag_uconstr_placeholder.png"
-	},
-	{
-		id: 6,
-		name: "Juego Inesperado",
-		category: "Sorpresa del Año",
-		thumbnail: "🎮",
-		votes: "5.4K",
-		image: "/img/lag_uconstr_placeholder.png"
-	},
-];
+import categories from '../data/categories.ts';
+
+const nominees = categories.flatMap((category) => 
+  category.nominees.map((nominee, index) => ({
+    uniqueId: `${category.id}-${index}`,
+    name: nominee.name,
+    categoryTitle: category.title,
+    categoryId: category.id,
+    thumbnail: category.icon, 
+    initialVotes: category.votes, 
+    image: nominee.image
+  }))
+);
 ---
 
 <section class="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
 	<div class="absolute inset-0 bg-linear-to-r from-red-600/5 via-transparent to-purple-600/5"></div>
 
 	<div class="relative z-10 container mx-auto">
-		<!-- Título -->
 		<div class="text-center mb-16">
 			<h2 class="text-5xl sm:text-6xl font-black mb-4">
 				<span class="text-white">Nominados</span>
 				<br />
 				<span class="text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-red-400">Destacados</span>
 			</h2>
-			<p class="text-gray-400 text-lg">Los mejores momentos de la comunidad LAG</p>
+			<p class="text-gray-400 text-lg">Los protagonistas de la comunidad LAG</p>
 		</div>
 
-		<!-- Grid de nominados -->
-		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-fr">
 			{nominees.map((nominee, index) => {
-			const total = nominees.length;
-			const remainder = total % 3;
+                const total = nominees.length;
+                const remainder = total % 3;
+                const isLonelyLast = remainder === 1 && index === total - 1;
+                const isFirstOfLastPair = remainder === 2 && index === total - 2;
+                const extraClass = isLonelyLast || isFirstOfLastPair ? " lg:col-start-2" : "";
 
-			const isLonelyLast = remainder === 1 && index === total - 1;
-			const isFirstOfLastPair = remainder === 2 && index === total - 2;
+                return (
+                    <div
+                        class={
+                        "group relative h-full flex flex-col backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-red-500/50 transition-all duration-500 transform hover:scale-105" +
+                        extraClass
+                        }
+                    >
+                        <div class="relative h-48 flex-shrink-0 flex items-center justify-center overflow-hidden">
+                            {nominee.image && (
+                                <img
+                                    src={nominee.image}
+                                    alt={`Fondo ${nominee.name}`}
+                                    class="absolute inset-0 w-full h-full object-cover opacity-85 group-hover:opacity-95 transition-all duration-500 transform group-hover:scale-110"
+                                />
+                            )}
 
-			const extraClass =
-			isLonelyLast || isFirstOfLastPair ? " lg:col-start-2" : "";
+                            <div class="absolute inset-0 bg-linear-to-br from-gray-800/40 to-gray-900/40 mix-blend-overlay group-hover:from-red-900/30 group-hover:to-purple-900/30 transition-all duration-300"></div>
+                        
+                            <div class="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        </div>
 
-			return (
-			<div
-				class={
-				"group relative backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-red-500/50 transition-all duration-500 transform hover:scale-105" +
-				extraClass
-				}
-			>
-				{/* Thumbnail */}
-				<div class="relative h-48 flex items-center justify-center overflow-hidden">
-				{nominee.image && (
-					<img
-					src={nominee.image}
-					alt={`Fondo ${nominee.name}`}
-					class="absolute inset-0 w-full h-full object-cover opacity-85 group-hover:opacity-95 transition-all duration-500 transform group-hover:scale-110"
-					/>
-				)}
+                        <div class="p-6 flex flex-col flex-grow">
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="w-full pr-2">
+                                    <h3 
+                                        class="text-xl font-black text-white mb-1 line-clamp-2 min-h-[3.5rem] leading-tight" 
+                                        title={nominee.name}
+                                    >
+                                        {nominee.name}
+                                    </h3>
+                                    <p class="text-sm text-red-400 font-bold truncate">{nominee.categoryTitle}</p>
+                                </div>
+                                
+                                <div class="text-right flex-shrink-0 flex flex-col items-end">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-2xl filter grayscale-0 leading-none" title="Categoría">{nominee.thumbnail}</span>
+                                        <div 
+                                            class="text-yellow-400 font-black text-3xl category-realtime-vote leading-none filter drop-shadow-[0_0_10px_rgba(250,204,21,0.3)]" 
+                                            data-cat-id={nominee.categoryId}
+                                        >
+                                            {nominee.initialVotes}
+                                        </div>
+                                    </div>
+                                    <div class="text-[10px] uppercase font-bold tracking-wider text-gray-500 mt-1">Votos Totales</div>
+                                </div>
+                            </div>
 
-				<div class="absolute inset-0 bg-linear-to-br from-gray-800/40 to-gray-900/40 mix-blend-overlay group-hover:from-red-900/30 group-hover:to-purple-900/30 transition-all duration-300"></div>
+                            <div class="mt-auto">
+                                <div class="mb-4 h-2 bg-gray-800 rounded-full overflow-hidden">
+                                    <div class="h-full bg-linear-to-r from-red-600 to-orange-500 rounded-full" style={"width: " + (Math.random() * 60 + 20) + "%"}></div>
+                                </div>
 
-				<div class="relative z-10 text-8xl transform group-hover:scale-125 transition-transform duration-300">
-					{nominee.thumbnail}
-				</div>
-
-				<div class="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-				</div>
-
-				{/* Contenido */}
-				<div class="p-6">
-				<div class="flex justify-between items-start mb-3">
-					<div>
-					<h3 class="text-xl font-black text-white mb-1">{nominee.name}</h3>
-					<p class="text-sm text-red-400 font-bold">{nominee.category}</p>
-					</div>
-					<div class="text-right">
-					<div class="text-yellow-400 font-black text-lg">{nominee.votes}</div>
-					<div class="text-xs text-gray-500">votos</div>
-					</div>
-				</div>
-
-				<div class="mt-4 h-2 bg-gray-800 rounded-full overflow-hidden">
-					<div
-					class="h-full bg-linear-to-r from-red-600 to-orange-500 rounded-full"
-					style={"width: " + (Math.random() * 80 + 20) + "%"}
-					></div>
-				</div>
-
-				<button class="w-full mt-4 py-2 px-4 bg-linear-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-bold rounded-lg transition-all duration-300 transform hover:scale-105">
-					Votar
-				</button>
-				</div>
-			</div>
-			);
-		})
-			}
+                                <a href="/categorias" class="block w-full text-center py-2 px-4 bg-linear-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-bold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-red-900/20">
+                                    Ir a Votar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                );
+			})}
 		</div>
 	</div>
 </section>
+
+<script>
+    import { getCategoryTotalVotes } from '../lib/voting';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        const voteElements = document.querySelectorAll('.category-realtime-vote');
+        if(voteElements.length === 0) return;
+
+        const realVotesMap = await getCategoryTotalVotes();
+
+        voteElements.forEach((el) => {
+            const catId = el.getAttribute('data-cat-id');
+            if (catId && realVotesMap[catId] !== undefined) {
+                el.textContent = realVotesMap[catId];
+                el.classList.add('animate-pulse'); 
+                setTimeout(() => el.classList.remove('animate-pulse'), 1000);
+            }
+        });
+    });
+</script>
