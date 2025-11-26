@@ -7,7 +7,7 @@ const categories = [
     image: "/img/ph-1.jpg",
     color: "from-red-600 to-red-700",
     votes: "12.5K",
-    tvBackground: "/img/colbars.gif", // <-- mirá vó cris, si quieres personalizar el fondo de cada categoría solo cambia este coso jdsjsd
+    tvBackground: "https://res.cloudinary.com/dkjaq3i9p/image/upload/v1764183196/emoteloop_xg111m.gif", // <-- mirá vó cris, si quieres personalizar el fondo de cada categoría solo cambia este coso jdsjsd
     nominees: [
       {
         name: "excitado",
@@ -39,7 +39,7 @@ const categories = [
     image: "/img/ph-1.jpg",
     color: "from-purple-600 to-purple-700",
     votes: "8.3K",
-    tvBackground: "/img/colbars.gif",
+    tvBackground: "https://res.cloudinary.com/dkjaq3i9p/image/upload/v1764183705/cate-discord_qsflbk.gif",
     nominees: [
       {
         name: "Grox",
@@ -75,7 +75,7 @@ const categories = [
     image: "/img/ph-1.jpg",
     color: "from-orange-600 to-orange-700",
     votes: "7.1K",
-    tvBackground: "/img/colbars.gif",
+    tvBackground: "https://res.cloudinary.com/dkjaq3i9p/image/upload/v1764185578/cate-artwork_qq75dh.gif",
     nominees: [
       {
         name: "6Tarex",
@@ -107,7 +107,7 @@ const categories = [
     image: "/img/ph-1.jpg",
     color: "from-yellow-600 to-yellow-700",
     votes: "9.4K",
-    tvBackground: "/img/colbars.gif",
+    tvBackground: "https://res.cloudinary.com/dkjaq3i9p/image/upload/v1764185833/cate_soty_mpqjlh.gif",
     nominees: [
       {
         name: "El TLAG Español",
@@ -145,34 +145,30 @@ const categories = [
     image: "/img/ph-1.jpg",
     color: "from-green-600 to-green-700",
     votes: "11.2K",
-    tvBackground: "/img/colbars.gif",
+    tvBackground: "https://res.cloudinary.com/dkjaq3i9p/image/upload/v1764187194/cate_Letplay_ngzf5e.gif",
     nominees: [
       {
         name: "No im not a human",
         creator: "TheNikito",
-        image: "/img/lag_uconstr_placeholder.png",
-        video: "https://ik.imagekit.io/tlag/nominees/Lets%20Play%203%20The%20Nikito.webm/ik-video.mp4?updatedAt=1764120526507",
+        video: "https://res.cloudinary.com/dkjaq3i9p/video/upload/v1764131233/Lets_Play_3_The_Nikito_uiluci.webm",
         description: "Cuando el lag te sorprende en el peor momento.",
       },
       {
         name: "LOTR: BFME II: The Rise of the Witch-king",
         creator: "TheKratos86",
-        image: "/img/lag_uconstr_placeholder.png",
-        video: "https://ik.imagekit.io/tlag/nominees/Lets%20Play%202%20Thekratos.webm/ik-video.mp4?updatedAt=1764120528782",
+        video: "https://res.cloudinary.com/dkjaq3i9p/video/upload/v1764130877/Lets_Play_2_Thekratos_xk2lk6.webm",
         description: "La cara que pones cuando ves un bug épico.",
       },
       {
         name: "Mafia Mobile2",
         creator: "Alejo Gameplayer",
-        image: "/img/lag_uconstr_placeholder.png",
-        video: "https://ik.imagekit.io/tlag/nominees/Lets%20Play%204%20Alejogameplayer.webm/ik-video.mp4?updatedAt=1764120526335",
+        video: "https://res.cloudinary.com/dkjaq3i9p/video/upload/v1764130938/Lets_Play_4_Alejogameplayer_mhyzgd.webm",
         description: "Ese momento incómodo en el stream.",
       },
       {
         name: "Left 4 Dead 2 Lima Infection",
         creator: "Johan00",
-        image: "/img/lag_uconstr_placeholder.png",
-        video: "https://ik.imagekit.io/tlag/nominees/Lets%20Play%201%20Johan.webm/ik-video.mp4?updatedAt=1764120526447",
+        video: "https://res.cloudinary.com/dkjaq3i9p/video/upload/v1764130940/Lets_Play_1_Johan_pqnrf4.webm",
         description: "Cuando tu emote favorito se vuelve viral.",
       },
     ],
@@ -185,6 +181,7 @@ const categories = [
     image: "/img/ph-1.jpg",
     color: "from-blue-600 to-blue-700",
     votes: "10.7K",
+    tvBackground: "https://res.cloudinary.com/dkjaq3i9p/image/upload/v1764195170/cate_viewe_xbw2fk.gif",
     nominees: [
       {
         name: "Viewer1",
@@ -206,32 +203,29 @@ const categories = [
     image: "/img/ph-1.jpg",
     color: "from-pink-600 to-pink-700",
     votes: "9.9K",
+    tvBackground: "https://res.cloudinary.com/dkjaq3i9p/image/upload/v1764195778/cate_short_o44yyg.gif",
     nominees: [
       {
         name: "Mas suerte imposible",
         creator: "TheGrox",
-        image: "https://ik.imagekit.io/tlag/nominados/grox_thumb.png",
         youtubeId: "AkxhEbW56s8",
         description: "Mas suerte imposible",
       },
       {
         name: "los pinchos te pinchan",
         creator: "kidfirewantslove",
-        image: "https://ik.imagekit.io/tlag/nominados/kidfire_thumb.png",
         youtubeId: "ICiVdXB6QZA",
         description: "los pinchos te pinchan",
       },
       {
         name: "Conocí  al cantante de los palmeras (versión chafa)",
         creator: "LupitoxTV",
-        image: "https://ik.imagekit.io/tlag/nominados/lupitox_thumb.png",
         youtubeId: "ta6XDdeHqH0",
         description: "Conocí al baterista de los palmeras",
       },
       {
         name: "el hombre que usaba sniper en cs2",
         creator: "LAG",
-        image: ":https://ik.imagekit.io/tlag/nominados/lag_thumb.png",
         youtubeId: "t16YChNnYdk",
         description: "el hombre que usaba sniper en cs2",
       }
@@ -245,6 +239,7 @@ const categories = [
     image: "/img/ph-1.jpg",
     color: "from-teal-600 to-teal-700",
     votes: "8.8K",
+    tvBackground: "https://res.cloudinary.com/dkjaq3i9p/image/upload/v1764196066/cate_susto_qvklka.gif",
     nominees: [
       {
         name: "Susto1",
@@ -276,6 +271,7 @@ const categories = [
     image: "/img/ph-1.jpg",
     color: "from-lime-600 to-lime-700",
     votes: "7.6K",
+    tvBackground: "https://res.cloudinary.com/dkjaq3i9p/image/upload/v1764196062/cate_troll_igbzte.gif",
     nominees: [
       {
         name: "FAIL AUTITO HL2 CARRETERA 17",
@@ -307,6 +303,7 @@ const categories = [
     image: "/img/ph-1.jpg",
     color: "from-amber-600 to-amber-700",
     votes: "6.4K",
+    tvBackground: "https://res.cloudinary.com/dkjaq3i9p/image/upload/v1764196066/cate_timing_pqy2kx.gif",
     nominees: [
       {
         creator: "CristianTuVieja",
@@ -342,6 +339,7 @@ const categories = [
     image: "/img/ph-1.jpg",
     color: "from-cyan-600 to-cyan-700",
     votes: "5.2K",
+    tvBackground: "https://res.cloudinary.com/dkjaq3i9p/image/upload/v1764195778/cate_tentada_mszv3h.gif",
     nominees: [
       {
         name: "El lore del Trigger",
@@ -373,6 +371,7 @@ const categories = [
     image: "/img/ph-1.jpg",
     color: "from-gray-600 to-gray-700",
     votes: "4.0K",
+    tvBackground: "https://res.cloudinary.com/dkjaq3i9p/image/upload/v1764194650/cate_jugada_jhw6zi.gif",
     nominees: [
       {
         creator: "KZ",
@@ -408,6 +407,7 @@ const categories = [
     image: "/img/ph-1.jpg",
     color: "from-indigo-600 to-indigo-700",
     votes: "3.5K",
+    tvBackground: "https://res.cloudinary.com/dkjaq3i9p/image/upload/v1764194645/cate_failanio_xnpyva.gif",
     nominees: [
       {
         creator: "TheGrox",
@@ -424,13 +424,13 @@ const categories = [
       {
         creator: "LAG",
         name: "De una",
-        video: "https://res.cloudinary.com/dkjaq3i9p/video/upload/v1764175664/Jugada_2_-_Headshot_krhbxo.webm",
+        video: "https://res.cloudinary.com/dkjaq3i9p/video/upload/v1764175738/Jugada_4_-_2_De_Una_jtapy2.webm",
         description: "Scoutazo",
       },
       {
         creator: "LAG",
-        name: "Headshot4",
-        video: "https://res.cloudinary.com/dkjaq3i9p/video/upload/v1764175664/Jugada_2_-_Headshot_krhbxo.webm",
+        name: "Si me sale me sale",
+        video: "https://res.cloudinary.com/dkjaq3i9p/video/upload/v1764175817/Jugada_7_-_Si_Me_Sale_Me_Sale_uohcdt.webm",
         description: "Un headshot que destacó por su rapidez y eficacia.",
       }
     ],
@@ -443,6 +443,7 @@ const categories = [
     image: "/img/ph-1.jpg",
     color: "from-red-400 to-red-500",
     votes: "2.8K",
+    tvBackground: "https://res.cloudinary.com/dkjaq3i9p/image/upload/v1764194660/cate_fail_n11ddl.gif",
     nominees: [
       {
         name: "Fail1",
@@ -459,6 +460,7 @@ const categories = [
     image: "/img/ph-1.jpg",
     color: "from-green-400 to-green-500",
     votes: "2.3K",
+    tvBackground: "https://res.cloudinary.com/dkjaq3i9p/image/upload/v1764194786/cate_ciplazo_q30ywg.gif",
     nominees: [
       {
         name: "Clipazo1",
@@ -475,6 +477,7 @@ const categories = [
     image: "/img/ph-1.jpg",
     color: "from-yellow-400 to-yellow-500",
     votes: "1.8K",
+    tvBackground: "https://res.cloudinary.com/dkjaq3i9p/image/upload/v1764194782/cate_creador_j8mlkr.gif",
     nominees: [
       {
         name: "TheKratos86",
@@ -506,6 +509,7 @@ const categories = [
     image: "/img/ph-1.jpg",
     color: "from-blue-400 to-blue-500",
     votes: "1.2K",
+    tvBackground: "https://res.cloudinary.com/dkjaq3i9p/image/upload/v1764194790/cate_streamer_sokvre.gif",
     nominees: [
       {
         name: "Johan009",

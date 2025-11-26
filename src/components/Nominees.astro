@@ -2,15 +2,38 @@
 import categories from '../data/categories.ts';
 
 const nominees = categories.flatMap((category) => 
-  category.nominees.map((nominee, index) => ({
-    uniqueId: `${category.id}-${index}`,
-    name: nominee.name,
-    categoryTitle: category.title,
-    categoryId: category.id,
-    thumbnail: category.icon, 
-    initialVotes: category.votes, 
-    image: nominee.image
-  }))
+  category.nominees.map((nominee, index) => {
+    
+    // 1. DETERMINAR LA IMAGEN AUTOMÁTICA
+    let finalImage = nominee.image;
+
+    // CASO A: YouTube (Shorts o Videos normales)
+    // Si no hay imagen manual y existe un ID de YouTube, usamos su miniatura
+    if (!finalImage && nominee.youtubeId) {
+        finalImage = `https://img.youtube.com/vi/${nominee.youtubeId}/hqdefault.jpg`;
+    }
+    
+    // CASO B: Cloudinary
+    // Si no hay imagen y el video es de Cloudinary, cambiamos extensión a .jpg
+    if (!finalImage && nominee.video && nominee.video.includes('cloudinary')) {
+        finalImage = nominee.video.replace(/\.[^/.]+$/, ".jpg");
+    }
+    
+    // CASO C: Fallback (Placeholder)
+    if (!finalImage) {
+        finalImage = "/img/lag_uconstr_placeholder.png";
+    }
+
+    return {
+      uniqueId: `${category.id}-${index}`,
+      name: nominee.name,
+      categoryTitle: category.title,
+      categoryId: category.id,
+      thumbnail: category.icon, 
+      initialVotes: category.votes,
+      image: finalImage 
+    };
+  })
 );
 ---
 
