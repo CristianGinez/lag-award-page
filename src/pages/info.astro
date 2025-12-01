@@ -109,7 +109,125 @@ import Footer from '../layouts/Footer.astro'; // Importamos el footer
         </div>
       </div>
 
+
+<section class="mt-32 pt-20 border-t border-white/5 relative">
+        
+        <div class="text-center mb-20">
+          <span class="text-purple-400 font-mono text-xs uppercase tracking-[0.3em] mb-2 block">Equipo de Desarrollo</span>
+          <h2 class="text-4xl md:text-5xl font-bold text-white font-orbitron">
+            Arquitectura & Desarrollo
+          </h2>
+          <p class="text-gray-400 mt-4 max-w-2xl mx-auto font-light">
+            Conoce a las mentes detrás de la plataforma. Un proyecto open-source construido con las últimas tecnologías web.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto px-4">
+          
+          <div class="group bg-[#0a0a0a] border border-white/10 rounded-2xl p-8 hover:border-purple-500/30 transition-all duration-300 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-purple-600/10 blur-[80px] rounded-full -z-10 group-hover:bg-purple-600/20 transition-all"></div>
+            
+            <div class="flex flex-col md:flex-row gap-8 items-start">
+                <div class="relative">
+                    <div class="w-24 h-24 rounded-2xl overflow-hidden border border-white/10 shadow-2xl grayscale group-hover:grayscale-0 transition-all duration-500">
+                        <img src="https://res.cloudinary.com/dkjaq3i9p/image/upload/v1764350849/image_2025-11-28_122729111_ughfdt.png" alt="Cristian" class="w-full h-full object-cover" />
+                    </div>
+                    <div class="absolute -bottom-3 -right-3 bg-[#111] border border-white/10 p-1.5 rounded-lg">
+                        <span class="text-xs">🚀</span>
+                    </div>
+                </div>
+
+                <div class="flex-1 w-full">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-2xl font-bold text-white font-orbitron">Cristian Ginez</h3>
+                            <p class="text-purple-400 text-sm font-medium tracking-wide uppercase mt-1">Lead Full-Stack Engineer</p>
+                        </div>
+                        <div class="flex gap-3">
+                            <a href="https://github.com/CristianGinez" class="text-gray-500 hover:text-white transition-colors" title="GitHub"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" /></svg></a>
+                            <a href="#" class="text-gray-500 hover:text-blue-400 transition-colors" title="LinkedIn"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 space-y-4">
+                        <div>
+                            <h4 class="text-xs font-bold text-gray-500 uppercase mb-2">Responsabilidades</h4>
+                            <p class="text-sm text-gray-300 leading-relaxed">
+                                Diseño de arquitectura escalable, integración de autenticación OAuth, modelado de base de datos PostgreSQL y lógica de seguridad (RLS).
+                            </p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-xs font-bold text-gray-500 uppercase mb-2">Core Stack</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 text-[10px] font-mono rounded bg-purple-900/20 text-purple-300 border border-purple-500/20">Astro</span>
+                                <span class="px-2 py-1 text-[10px] font-mono rounded bg-green-900/20 text-green-300 border border-green-500/20">Supabase</span>
+                                <span class="px-2 py-1 text-[10px] font-mono rounded bg-blue-900/20 text-blue-300 border border-blue-500/20">TypeScript</span>
+                                <span class="px-2 py-1 text-[10px] font-mono rounded bg-orange-900/20 text-orange-300 border border-orange-500/20">Cloudflare R2</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+          <div class="group bg-[#0a0a0a] border border-white/10 rounded-2xl p-8 hover:border-pink-500/30 transition-all duration-300 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-pink-600/10 blur-[80px] rounded-full -z-10 group-hover:bg-pink-600/20 transition-all"></div>
+
+            <div class="flex flex-col md:flex-row gap-8 items-start">
+                <div class="relative">
+                    <div class="w-24 h-24 rounded-2xl overflow-hidden border border-white/10 shadow-2xl grayscale group-hover:grayscale-0 transition-all duration-500">
+                        <img src="https://github.com/ghost.png" alt="Compañero" class="w-full h-full object-cover" />
+                    </div>
+                    <div class="absolute -bottom-3 -right-3 bg-[#111] border border-white/10 p-1.5 rounded-lg">
+                        <span class="text-xs">🎨</span>
+                    </div>
+                </div>
+
+                <div class="flex-1 w-full">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-2xl font-bold text-white font-orbitron">Jesus Rios</h3>
+                            <p class="text-pink-400 text-sm font-medium tracking-wide uppercase mt-1">Frontend & UI Specialist</p>
+                        </div>
+                        <div class="flex gap-3">
+                            <a href="https://github.com/Jesus-Rios" class="text-gray-500 hover:text-white transition-colors"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" /></svg></a>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 space-y-4">
+                        <div>
+                            <h4 class="text-xs font-bold text-gray-500 uppercase mb-2">Responsabilidades</h4>
+                            <p class="text-sm text-gray-300 leading-relaxed">
+                                Diseño de interfaz responsiva, animaciones CSS avanzadas, experiencia de usuario (UX) y optimización visual de componentes.
+                            </p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-xs font-bold text-gray-500 uppercase mb-2">Core Stack</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 text-[10px] font-mono rounded bg-cyan-900/20 text-cyan-300 border border-cyan-500/20">Tailwind CSS</span>
+                                <span class="px-2 py-1 text-[10px] font-mono rounded bg-pink-900/20 text-pink-300 border border-pink-500/20">Figma</span>
+                                <span class="px-2 py-1 text-[10px] font-mono rounded bg-yellow-900/20 text-yellow-300 border border-yellow-500/20">JavaScript</span>
+                                <span class="px-2 py-1 text-[10px] font-mono rounded bg-white/10 text-gray-300 border border-white/20">Animations</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="max-w-4xl mx-auto mt-16 pt-8 border-t border-white/5 text-center">
+            <p class="text-xs text-gray-600 font-mono">
+                SYSTEM_VERSION: <span class="text-gray-400">1.0.0</span> • BUILT_WITH: <span class="text-gray-400">ASTRO_V5</span>
+            </p>
+        </div>
+      </section>
     </div>
+
+    
     
   </main>
   <Footer />

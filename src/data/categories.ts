@@ -184,15 +184,25 @@ const categories = [
     tvBackground: "https://res.cloudinary.com/dkjaq3i9p/image/upload/v1764195170/cate_viewe_xbw2fk.gif",
     nominees: [
       {
-        name: "Viewer1",
-        image: "/img/viewer1.webp",
+        name: "Josu Wagner",
+        image: "https://zgfpsqsbthjpejqyuhcx.supabase.co/storage/v1/object/public/tlag/nominados/img/Josuwagner.webp",
+        description: "Había una vez un gato atigrado. El gato murió un millón de veces y renació otro millón de veces, tuvo varios dueños pero no quería a ninguno. El gato no le temía a la muerte. Un día el gato fue liberado, era un gato callejero. Él conoció a una gata y los dos gatos vivieron felices juntos. Los años pasaron y la gata se murió de vieja. El gato lloró un millón de veces y después murió. No volvió a revivir.",
+      },
+      {
+        name: "Moonlight",
+        image: "https://zgfpsqsbthjpejqyuhcx.supabase.co/storage/v1/object/public/tlag/nominados/img/Moonlight.webp",
+        description: "Siempre apoyando el canal con buenos comentarios.",
+      },
+      {
+        name: "TriggerP71",
+        image: "https://zgfpsqsbthjpejqyuhcx.supabase.co/storage/v1/object/public/tlag/nominados/img/user_01.webp",
         description: "Un viewer muy activo y participativo.",
       },
       {
-        name: "Viewer2",
-        image: "/img/viewer2.webp",
-        description: "Siempre apoyando el canal con buenos comentarios.",
-      },
+        name: "50 CENTAVOS",
+        image: "https://zgfpsqsbthjpejqyuhcx.supabase.co/storage/v1/object/public/tlag/nominados/img/50%20CENTAVOS.webp",
+        description: "Un viewer que siempre aporta buenas ideas.",
+      }
     ],
   },
   {
@@ -446,10 +456,29 @@ const categories = [
     tvBackground: "https://res.cloudinary.com/dkjaq3i9p/image/upload/v1764194660/cate_fail_n11ddl.gif",
     nominees: [
       {
-        name: "Fail1",
-        image: "/img/fail1.webp",
+        creator: "CristianTuVieja",
+        name: "Cristian",
+        video: "https://res.cloudinary.com/dkjaq3i9p/video/upload/v1764277665/faill-cristian_rrmjab.webm",
         description: "Un fail divertido y memorable.",
       },
+      {
+        creator: "GTA LOCO",
+        name: "DRIVER 3",
+        video: "https://res.cloudinary.com/dkjaq3i9p/video/upload/v1764266292/fail-Gtaloco_kgnz2z.webm",
+        description: "Un fail que te hará reír a carcajadas.",
+      },
+      {
+        creator: "LAG",
+        name: "ninja defuse nikito",
+        video: "https://res.cloudinary.com/dkjaq3i9p/video/upload/v1764266182/fail-Nikito_lelkvv.webm",
+        description: "Un fail que no podrás olvidar.",
+      },
+      {
+        creator: "KZ",
+        name: "Tincho",
+        video: "https://res.cloudinary.com/dkjaq3i9p/video/upload/v1764265909/fail-Tincho_t3htvy.webm",
+        description: "Un fail que se volvió viral.",
+      }
     ],
   },
   {
@@ -463,10 +492,29 @@ const categories = [
     tvBackground: "https://res.cloudinary.com/dkjaq3i9p/image/upload/v1764194786/cate_ciplazo_q30ywg.gif",
     nominees: [
       {
+        creator: "TheKratos86",
         name: "Clipazo1",
-        image: "/img/clipazo1.webp",
+        video: "https://res.cloudinary.com/dkjaq3i9p/video/upload/v1764275757/clip-Thekratos_jbs0si.webm",
         description: "Un clip épico y memorable.",
       },
+      {
+        creator: "KZ",
+        name: "Kidfire",
+        video: "https://res.cloudinary.com/dkjaq3i9p/video/upload/v1764275765/clip-Kidfire_zdp437.webm",
+        description: "Un clip que dejó a todos impresionados.",
+      },
+      {
+        creator: "TheNikito",
+        name: "Clipazo3",
+        video: "https://res.cloudinary.com/dkjaq3i9p/video/upload/v1764275817/clip-Thenikito_ds9ai6.webm",
+        description: "Un clip que demostró habilidad y destreza.",
+      },
+      {
+        creator: "GTA LOCO",
+        name: "Clipazo4",
+        video: "https://res.cloudinary.com/dkjaq3i9p/video/upload/v1764276016/clip-Gtaloco_zjopy5.webm",
+        description: "Un clip que destacó por su estrategia y ejecución.",
+      }
     ],
   },
   {
