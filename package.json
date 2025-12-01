@@ -9,15 +9,16 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@nanostores/persistent": "^1.2.0",
     "@supabase/supabase-js": "^2.84.0",
-    "astro": "^5.15.3",
     "canvas-confetti": "^1.9.4",
     "nanostores": "^1.1.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.16",
     "@types/canvas-confetti": "^1.9.0",
+    "astro": "^5.16.3",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.16"
