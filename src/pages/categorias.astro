@@ -273,10 +273,10 @@ import spinImage from "../assets/spin.gif"; //
   .category-card-bg { filter: blur(1px); }
   .category-card-glass {
     background-color: rgba(15, 23, 42, 0.372);
-    backdrop-filter: blur(14px);
+    backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(14px);
-    border-radius: 1.5rem;
-    border: 3px solid rgba(250, 204, 21, 0.9);
+    border-radius: 1rem;
+    border: 2px solid rgba(250, 204, 21, 0.9);
     box-shadow: 0 0 25px rgba(250, 204, 21, 0.45), 0 18px 45px rgba(0, 0, 0, 0.75), 0 0 30px rgba(15, 23, 42, 0.9);
   }
   .nav-arrow {
@@ -342,8 +342,8 @@ import spinImage from "../assets/spin.gif"; //
   import { $currentUser } from '../stores/authStore';
   import confetti from 'canvas-confetti';
 
-  document.addEventListener("DOMContentLoaded", () => {
-    // --- ESTADO LOCAL ---
+  document.addEventListener("astro:page-load", () => {
+    
     let userVotes = {}; 
     let categoryCounts = {}; 
 
@@ -395,6 +395,7 @@ import spinImage from "../assets/spin.gif"; //
     const lightboxClose = document.getElementById("lightbox-close");
     const artworkZoomHint = document.getElementById("artwork-zoom-hint");
 
+    if (!categoryView) return;
     let currentCategoryIndex = 0;
     let currentAudio = null;
     let lastDetailImageSrc = "";
@@ -526,7 +527,13 @@ import spinImage from "../assets/spin.gif"; //
           }
 
           nomineeEl.innerHTML = `
-            <img src="${thumbSrc}" alt="${nominee.name}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+            <img
+             src="${thumbSrc}" 
+             alt="${nominee.name}" 
+             class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+             loading="lazy" 
+                decoding="async"
+             >
             <div class="absolute bottom-0 left-0 right-0 w-full p-4 text-center bg-gradient-to-t from-black/90 via-black/70 to-transparent transition-opacity duration-300 group-hover:opacity-0 z-10">
                 <h4 class="font-bold text-2xl text-white drop-shadow-md break-words truncate">${nominee.name}</h4>
             </div>

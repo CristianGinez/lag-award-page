@@ -14,7 +14,7 @@ const { title, description, image } = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/img/tl_logo.png" />
 		<title>{title}</title>
 		<meta name="description" content={description} />
-
+		<ClientRouter />
 		<meta property="og:type" content="website" />
 		<meta property="og:url" content={Astro.url} />
 		<meta property="og:title" content={title} />
@@ -29,6 +29,7 @@ const { title, description, image } = Astro.props;
 
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link rel="preconnect" href="https://ik.imagekit.io" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 	</head>
 	<body>

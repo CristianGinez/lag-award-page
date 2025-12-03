@@ -79,19 +79,16 @@ const totalNominees = categories.reduce((acc, cat) => acc + cat.nominees.length,
             <ul class="space-y-4 text-gray-300 text-sm">
               <li class="flex justify-between items-center pb-3 border-b border-white/5">
                 <span>Apertura</span> 
-                <span class="font-mono text-red-400 bg-red-900/20 px-2 py-1 rounded">1 Feb</span>
+                <span class="font-mono text-red-400 bg-red-900/20 px-2 py-1 rounded">3 Diciembre</span>
               </li>
-              <li class="flex justify-between items-center pb-3 border-b border-white/5">
-                <span>Cierre Nominaciones</span> 
-                <span class="font-mono text-red-400 bg-red-900/20 px-2 py-1 rounded">20 Feb</span>
-              </li>
+              
               <li class="flex justify-between items-center pb-3 border-b border-white/5">
                 <span>Votación Público</span> 
-                <span class="font-mono text-purple-400 bg-purple-900/20 px-2 py-1 rounded">25 Feb - 10 Mar</span>
+                <span class="font-mono text-purple-400 bg-purple-900/20 px-2 py-1 rounded"> Hasta 12 Diciembre</span>
               </li>
               <li class="flex justify-between items-center">
                 <span class="text-yellow-400 font-bold">Gala Final</span> 
-                <span class="font-mono text-black bg-yellow-400 px-2 py-1 rounded font-bold">15 Mar</span>
+                <span class="font-mono text-black bg-yellow-400 px-2 py-1 rounded font-bold">12 Diciembre</span>
               </li>
             </ul>
           </div>
@@ -305,7 +302,7 @@ const totalNominees = categories.reduce((acc, cat) => acc + cat.nominees.length,
     import { getCategoryTotalVotes } from '../lib/voting';
 
     // Script para animar los números en tiempo real
-    document.addEventListener('DOMContentLoaded', async () => {
+    document.addEventListener('astro:page-load', async () => {
         const votesEl = document.getElementById('live-total-votes');
         
         if (votesEl) {

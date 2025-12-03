@@ -220,7 +220,7 @@ import Footer from '../layouts/Footer.astro';
         if(emailDisplay) emailDisplay.textContent = user.email;
         
         loadStats();
-        setInterval(loadStats, 5000); // Refresh
+        setInterval(loadStats, 15000); 
 
     } else {
         loadingState.classList.add('hidden');
@@ -398,6 +398,9 @@ import Footer from '../layouts/Footer.astro';
           }
       });
   }
+  document.addEventListener('astro:before-swap', () => {
+        clearInterval(intervalId);
+     }, { once: true });
 
-  document.addEventListener('DOMContentLoaded', checkAdminAccess);
+  document.addEventListener('astro:page-load', checkAdminAccess);
 </script>

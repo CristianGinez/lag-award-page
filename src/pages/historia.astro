@@ -4,6 +4,34 @@ import Navbar from '../layouts/Navbar.astro';
 import Footer from '../layouts/Footer.astro';
 
 const historyEvents = [
+    
+  {
+    year: "2017",
+    title: "creación del canal",
+    subtitle: "LAG",
+    description: "Nace el canal de YouTube LAG, con la misión de compartir momentos épicos y bugs legendarios del gaming.",
+    icon: "🎮",
+    color: "from-red-600 to-black-600",
+    side: "left"
+  },
+  {
+    year: "2018",
+    title: "Discord TeamLAG",
+    subtitle: "Creacion del Discord Oficial TeamLag",
+    description: "Se funda el servidor de Discord oficial del TeamLAG, un espacio para la comunidad y los seguidores.",
+    icon: "💬",
+    color: "from-blue-600 to-indigo-600",
+    side: "right"
+  },
+  {
+    year: "2017",
+    title: "LAG Rewind",
+    subtitle: "Primer Lag Rewind",
+    description: "El primer LAG Rewind se lanza, recopilando los mejores momentos y bugs del año en un solo video épico.",
+    icon: "🎉",
+    color: "from-green-600 to-emerald-600",
+    side: "left"
+  },
   {
     year: "2020",
     title: "TorneoCSGO",
@@ -222,7 +250,7 @@ const historyEvents = [
     
     import VanillaTilt from 'vanilla-tilt';
 
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('astro:page-load', () => {
         
         // 1. INICIALIZAR TILT (Efecto 3D)
         const cards = document.querySelectorAll('.tilt-card');

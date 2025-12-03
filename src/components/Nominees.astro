@@ -125,7 +125,7 @@ const nominees = categories.flatMap((category) =>
 <script>
     import { getCategoryTotalVotes } from '../lib/voting';
 
-    document.addEventListener('DOMContentLoaded', async () => {
+    document.addEventListener('astro:page-load', async () => {
         const voteElements = document.querySelectorAll('.category-realtime-vote');
         if(voteElements.length === 0) return;
 
