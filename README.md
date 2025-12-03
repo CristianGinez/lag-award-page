@@ -1,36 +1,63 @@
-# 🏆 Premios LAGAWARDS
+# 🏆 LAGAWARDS — Sitio Oficial
 
-Este es el repositorio del sitio web para los **Premios LAGAWARDS**. El proyecto está construido con [Astro](https://astro.build/) y estilizado con [Tailwind CSS](https://tailwindcss.com/).
+Sitio web oficial de los Premios LAGAWARDS: celebramos clips, creadores y comunidad. Construido con `Astro` y estilizado con `Tailwind CSS`.
 
-## 🚀 Estructura del Proyecto
+## ✨ Características
+- Diseño moderno con efectos `glass` y tipografía `Orbitron`.
+- Páginas: `Información`, `Categorías`, `Nominados`, `Inicio` y `404` personalizada.
+- Navegación responsiva con logo centrado y menú móvil.
+- Sección de categorías interactiva: vista de cuadrícula y detalle con nominados en miniaturas, navegación por flechas.
 
-La estructura del proyecto es la siguiente:
+## 🧰 Stack Tecnológico
+- Astro `^5.15.3`
+- Tailwind CSS `^4.x` con PostCSS (`@tailwindcss/postcss`, `postcss`, `autoprefixer`)
+
+## 🚀 Inicio Rápido
+
+```powershell
+npm install
+npm run dev
+```
+
+Servidor de desarrollo en `http://localhost:4321`.
+
+Build de producción:
+
+```powershell
+npm run build
+npm run preview
+```
+
+## 📁 Estructura del Proyecto
 
 ```text
 /
-├── public/               # Archivos estáticos (imágenes, fuentes, etc.)
+├── public/                 # Estáticos (ej: /img, /favicon)
 ├── src/
-│   ├── assets/           # Assets procesados por Astro
-│   ├── components/       # Componentes de Astro (.astro)
-│   ├── layouts/          # Plantillas de página
-│   └── pages/            # Páginas y rutas del sitio
-├── astro.config.mjs      # Configuración de Astro
-├── tailwind.config.cjs   # Configuración de Tailwind CSS
-├── postcss.config.cjs    # Configuración de PostCSS
-└── package.json          # Dependencias y scripts del proyecto
+│   ├── assets/
+│   ├── components/         # Navbar, Hero, Awards, Nominees, Footer
+│   ├── layouts/            # Layout.astro (importa estilos globales)
+│   └── pages/              # index, info, categorias, 404
+├── src/styles/global.css   # Importa Tailwind y estilos globales
+├── tailwind.config.cjs     # Rutas de contenido
+├── postcss.config.cjs      # Plugins PostCSS (Tailwind + Autoprefixer)
+├── astro.config.mjs        # Config Astro
+└── package.json            # Scripts y dependencias
 ```
 
-## 🧞 Comandos
+## 🎨 Estilos y Tailwind
+- Importación en `src/styles/global.css`:
+	- `@import "tailwindcss";` (Tailwind v4)
+- Tailwind escanea: `./src/**/*.{astro,html,js,ts,jsx,tsx}`.
+- Si usas `@apply` dentro de `<style>` en componentes, añade `lang="postcss"` o mueve utilidades al HTML.
 
-Todos los comandos se ejecutan desde la raíz del proyecto en una terminal:
+## 🔧 Troubleshooting
+- Error “Cannot apply unknown utility class”: usa utilidades en HTML o `lang="postcss"`.
+- Error “Unterminated string literal”: revisa `<script>` en `.astro` y evita cadenas mal cerradas.
+- Si las clases no aplican, verifica que `global.css` se importa en `Layout.astro` y que PostCSS usa `@tailwindcss/postcss`.
 
-| Comando                   | Acción                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Instala las dependencias del proyecto.           |
-| `npm run dev`             | Inicia el servidor de desarrollo en `localhost:4321`. |
-| `npm run build`           | Compila el sitio para producción en `./dist/`.   |
-| `npm run preview`         | Previsualiza el sitio compilado localmente.      |
+## 📦 Deploy
+- Compatible con Vercel/Netlify. Ejecuta build (`npm run build`) y sirve `/dist`.
 
-## 👀 ¿Quieres saber más?
-
-Puedes consultar la [documentación de Astro](https://docs.astro.build) o unirte a su [servidor de Discord](https://astro.build/chat).
+## 🤝 Contribuir
+- PRs bienvenidas. Usa la rama `main`. Mantén el estilo consistente y evita cambios no relacionados.
