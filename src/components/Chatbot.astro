@@ -5,7 +5,7 @@
   <!-- Chat Window -->
   <div id="chat-window" class="hidden flex-col w-80 h-96 bg-[#111] border border-white/10 rounded-2xl shadow-2xl overflow-hidden mb-4 transition-all transform origin-bottom-right">
     <!-- Header -->
-    <div class="bg-gradient-to-r from-purple-900 to-blue-900 p-4 flex justify-between items-center border-b border-white/10">
+    <div class="bg-linear-to-r from-purple-900 to-blue-900 p-4 flex justify-between items-center border-b border-white/10">
       <div class="flex items-center gap-2">
         <span class="text-xl">🦎</span>
         <div>
@@ -13,7 +13,7 @@
             <p class="text-[10px] text-gray-300 flex items-center gap-1"><span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span> Online</p>
         </div>
       </div>
-      <button id="close-chat" class="text-gray-400 hover:text-white transition-colors">
+      <button id="close-chat" class="cursor-pointer text-gray-400 hover:text-white transition-colors">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
         </svg>
@@ -42,7 +42,7 @@
         />
         <button 
           type="submit" 
-          class="bg-purple-600 hover:bg-purple-700 text-white p-2 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          class="cursor-pointer bg-purple-600 hover:bg-purple-700 text-white p-2 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
             <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
@@ -53,16 +53,37 @@
   </div>
 
   <!-- Toggle Button -->
-  <button id="toggle-chat" class="group flex items-center justify-center w-14 h-14 bg-gradient-to-br from-purple-600 to-blue-600 rounded-full shadow-[0_0_20px_rgba(147,51,234,0.5)] hover:scale-110 transition-all duration-300 border border-white/20">
+  <button id="toggle-chat" class="cursor-pointer group flex items-center justify-center w-14 h-14 bg-linear-to-br from-purple-600 to-blue-600 rounded-full shadow-[0_0_20px_rgba(147,51,234,0.5)] hover:scale-110 transition-all duration-300 border border-white/20">
     <span class="text-2xl group-hover:rotate-12 transition-transform">💬</span>
     <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-[#050505] animate-bounce"></span>
   </button>
 </div>
 
 <style>
-  .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+  /* Scrollbar personalizada */
+  .custom-scrollbar::-webkit-scrollbar { 
+    width: 4px; 
+  }
   .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
   .custom-scrollbar::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+
+  /* ESTILOS PARA EL CONTENIDO DEL BOT (Listas y Negritas) */
+  /* El selector :global() es necesario en Astro para afectar al HTML inyectado dinámicamente */
+  :global(#messages ul) {
+    list-style-type: disc;
+    margin-left: 1.2rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  :global(#messages li) {
+    margin-bottom: 0.2rem;
+  }
+
+  :global(#messages strong) {
+    color: #c084fc; /* Un tono morado claro para resaltar */
+    font-weight: 800;
+  }
 </style>
 
 <script>

@@ -1,0 +1,49 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../layouts/Navbar.astro';
+import Footer from '../layouts/Footer.astro';
+---
+
+<Layout title="Política de Privacidad - LAG AWARDS">
+  <Navbar />
+  <main class="pt-24 min-h-screen text-white bg-[#050505] relative overflow-hidden">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_var(--tw-gradient-stops))] from-green-900/10 via-black to-black -z-10"></div>
+    
+    <div class="container mx-auto px-6 py-12 max-w-4xl">
+      <h1 class="text-4xl md:text-6xl font-black font-orbitron text-white mb-8 flex items-center gap-4">
+        <span class="text-green-500">🔒</span> Privacidad
+      </h1>
+
+      <div class="space-y-8 text-gray-300 leading-relaxed">
+        <div class="bg-[#111] border border-white/10 p-8 rounded-2xl">
+          <h2 class="text-2xl font-bold text-white mb-4 font-orbitron">1. Datos que recolectamos</h2>
+          <p class="mb-4">Para garantizar la integridad de las votaciones en los LAG AWARDS, utilizamos el sistema de autenticación de <strong>Google (OAuth)</strong>. Solo almacenamos la siguiente información pública de tu perfil:</p>
+          <ul class="list-disc list-inside space-y-2 ml-4 text-sm font-mono text-green-400">
+            <li>ID único de Google (para identificar tu voto)</li>
+            <li>Correo electrónico (para evitar multicuentas)</li>
+            <li>Nombre y Foto de perfil (para mostrar en la barra de navegación)</li>
+          </ul>
+        </div>
+
+        <div class="bg-[#111] border border-white/10 p-8 rounded-2xl">
+          <h2 class="text-2xl font-bold text-white mb-4 font-orbitron">2. Uso de la información</h2>
+          <p>Tus datos se utilizan <strong>exclusivamente</strong> para:</p>
+          <ul class="list-disc list-inside space-y-2 mt-2">
+            <li>Permitirte votar en las categorías.</li>
+            <li>Evitar que una misma persona vote dos veces en la misma categoría.</li>
+            <li>Mostrarte tu estado de sesión en la web.</li>
+          </ul>
+          <p class="mt-4 text-yellow-400 text-sm border-l-4 border-yellow-400 pl-4 italic">
+            NO compartimos, vendemos ni utilizamos tus datos para publicidad de terceros.
+          </p>
+        </div>
+
+        <div class="bg-[#111] border border-white/10 p-8 rounded-2xl">
+          <h2 class="text-2xl font-bold text-white mb-4 font-orbitron">3. Cookies y Almacenamiento</h2>
+          <p>Utilizamos almacenamiento local (Cookies/LocalStorage) estrictamente necesario para mantener tu sesión activa mientras navegas por la página.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>

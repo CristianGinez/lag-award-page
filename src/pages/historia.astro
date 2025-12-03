@@ -1,0 +1,277 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../layouts/Navbar.astro';
+import Footer from '../layouts/Footer.astro';
+
+const historyEvents = [
+  {
+    year: "2020",
+    title: "TorneoCSGO",
+    subtitle: "1v1 CON SUSCRIPTORES",
+    description: "El primer gran evento. Caos total, bugs épicos y risas aseguradas. Nace una leyenda.",
+    icon: "⚡",
+    color: "from-purple-600 to-indigo-600",
+    side: "left"
+  },
+  {
+    year: "2021",
+    title: "LAG AWARDS",
+    subtitle: "1ra EDICIÓN",
+    description: "Primera edición histórica. Un PowerPoint pixelado, 10 espectadores fieles y mucha polémica en el chat.",
+    icon: "🏆",
+    color: "from-yellow-500 to-orange-600",
+    side: "right"
+  },
+  {
+    year: "2022",
+    title: "LAG AWARDS",
+    subtitle: "2da EDICIÓN",
+    description: "Este año contamos con más de 20 categorías, premios como muestra de agradecimiento por formar parte de nuestro Team.",
+    icon: "💣",
+    color: "from-red-600 to-rose-700",
+    side: "left"
+  },
+  {
+    year: "2023",
+    title: "Clipazos & Memes",
+    subtitle: "Expansión Viral",
+    description: "La comunidad empieza a clipear todo. Nacen los emotes legendarios y el servidor de Discord cobra vida propia.",
+    icon: "🎬",
+    color: "from-blue-500 to-cyan-500",
+    side: "right"
+  },
+  {
+    year: "2025",
+    title: "TORNEO DE MORTAL KOMBAT",
+    subtitle: "SOLO PARA MACHOS",
+    description: "PRIMER TORNEO DE MORTAL KOMBAT 9.",
+    icon: "🚀",
+    color: "from-emerald-500 to-green-600",
+    side: "left"
+  },
+  {
+    year: "2025",
+    title: "EL GRAN EVENTO",
+    subtitle: "Next Level",
+    description: "Web App propia, votaciones en tiempo real y una gala intergaláctica. Hacemos historia juntos.",
+    icon: "🔥",
+    color: "from-pink-500 to-purple-600",
+    side: "right"
+  }
+];
+---
+
+<Layout title="Nuestra Historia - LAGAWARDS">
+  <Navbar />
+  
+  <main class="pt-24 min-h-screen text-white relative overflow-hidden bg-[#020205] perspective-container">
+    
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)] animate-grid-flow"></div>
+        
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-[128px] animate-pulse-slow"></div>
+        <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-[128px] animate-pulse-slow" style="animation-delay: 2s;"></div>
+    </div>
+
+    <div class="container mx-auto px-4 md:px-6 py-20 relative z-10">
+      
+      <div class="text-center mb-32 relative">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-32 bg-purple-500/20 blur-[100px] -z-10"></div>
+        
+        <span class="inline-block py-1 px-4 rounded-full bg-white/5 border border-white/20 text-purple-300 text-xs font-mono font-bold mb-6 uppercase tracking-[0.5em] animate-fade-in-up">
+            Timeline_V2.0
+        </span>
+        
+        <h1 class="text-6xl md:text-8xl font-black font-orbitron text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/50 mb-6 filter drop-shadow-[0_0_30px_rgba(168,85,247,0.5)] animate-glitch">
+          LEGADO <span class="text-purple-500">LAG</span>
+        </h1>
+        
+        <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-light">
+            Un viaje a través de los bugs, los gritos y la gloria.
+        </p>
+      </div>
+
+      <div class="relative max-w-6xl mx-auto">
+        
+        <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-1 md:-translate-x-1/2 bg-white/10 rounded-full overflow-hidden">
+            <div id="timeline-progress" class="w-full bg-gradient-to-b from-purple-500 via-blue-500 to-red-500 h-0 shadow-[0_0_20px_rgba(168,85,247,1)] transition-all duration-100 ease-out"></div>
+        </div>
+
+        <div class="space-y-24 md:space-y-32 pb-32">
+          {historyEvents.map((evt, index) => (
+            <div class={`timeline-row flex flex-col md:flex-row items-center w-full ${evt.side === 'left' ? 'md:flex-row-reverse' : ''} group perspective-1000`}>
+              
+              <div class="hidden md:block w-1/2"></div>
+
+              <div class="absolute left-4 md:left-1/2 w-12 h-12 -translate-x-1/2 flex items-center justify-center z-20">
+                <div class="w-4 h-4 bg-[#050505] border-2 border-gray-600 rounded-full group-hover:border-white group-hover:scale-150 transition-all duration-500 relative">
+                    <div class={`absolute inset-0 bg-gradient-to-r ${evt.color} rounded-full opacity-0 group-hover:opacity-100 animate-ping`}></div>
+                </div>
+              </div>
+
+              <div class="w-full md:w-1/2 pl-16 md:pl-0 md:px-16">
+                <div 
+                    class="tilt-card relative transform-gpu transition-all duration-500"
+                    data-tilt
+                    data-tilt-max="15"
+                    data-tilt-speed="400"
+                    data-tilt-glare
+                    data-tilt-max-glare="0.2"
+                >
+                    <h2 class="absolute -top-10 -left-4 text-8xl font-black text-white/5 select-none font-orbitron z-0 group-hover:text-white/10 transition-colors duration-500">
+                        {evt.year}
+                    </h2>
+
+                    <div class={`
+                        relative z-10 bg-[#0a0a0a]/80 backdrop-blur-xl border border-white/10 p-8 rounded-3xl 
+                        overflow-hidden shadow-2xl group-hover:shadow-[0_0_50px_rgba(100,100,255,0.2)]
+                        transition-all duration-300
+                    `}>
+                        <div class={`absolute inset-0 bg-gradient-to-br ${evt.color} opacity-0 group-hover:opacity-20 transition-opacity duration-500`}></div>
+                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover:animate-shimmer"></div>
+
+                        <div class="relative flex items-start gap-6">
+                            <div class={`
+                                flex-shrink-0 w-16 h-16 rounded-2xl bg-gradient-to-br ${evt.color} 
+                                flex items-center justify-center text-3xl shadow-lg transform group-hover:rotate-12 transition-transform duration-500
+                            `}>
+                                {evt.icon}
+                            </div>
+
+                            <div>
+                                <span class={`text-xs font-bold uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r ${evt.color} mb-1 block`}>
+                                    {evt.subtitle}
+                                </span>
+                                <h3 class="text-3xl font-bold text-white font-orbitron mb-3 leading-tight">
+                                    {evt.title}
+                                </h3>
+                                <p class="text-gray-400 text-sm leading-relaxed font-light">
+                                    {evt.description}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="absolute top-4 right-4 flex gap-1">
+                            <div class="w-1 h-1 bg-white/30 rounded-full"></div>
+                            <div class="w-1 h-1 bg-white/30 rounded-full"></div>
+                            <div class="w-1 h-1 bg-white/30 rounded-full"></div>
+                        </div>
+                        <div class="absolute bottom-4 right-4 text-[10px] font-mono text-white/20">
+                            ID_EVENT::{evt.year}
+                        </div>
+                    </div>
+                </div>
+              </div>
+
+            </div>
+          ))}
+        </div>
+
+        <div class="flex justify-center mt-20 relative z-10 pb-20">
+             <div class="group cursor-pointer px-10 py-5 bg-[#111] border border-white/20 rounded-full text-center hover:border-purple-500 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(168,85,247,0.4)]">
+                <p class="font-orbitron text-sm text-gray-400 uppercase tracking-widest group-hover:text-white transition-colors">
+                    🚀 El futuro continúa...
+                </p>
+             </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+    /* Animación de Fondo Grid */
+    @keyframes gridFlow {
+        0% { background-position: 0 0; }
+        100% { background-position: 4rem 4rem; }
+    }
+    .animate-grid-flow {
+        animation: gridFlow 20s linear infinite;
+    }
+
+    /* Animación de Brillo que pasa */
+    @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+    }
+    .group:hover .group-hover\:animate-shimmer {
+        animation: shimmer 1.5s infinite;
+    }
+
+    /* Animación de entrada Scroll */
+    .timeline-row {
+        opacity: 0;
+        transform: translateY(100px) scale(0.9);
+        transition: all 1s cubic-bezier(0.17, 0.55, 0.55, 1);
+        filter: blur(10px);
+    }
+    .timeline-row.active {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+</style>
+
+<script>
+    // Importamos Vanilla-Tilt dinámicamente si lo prefieres, 
+    // pero aquí haremos una versión ligera nativa para no depender de paquetes externos si no quieres.
+    // OJO: Para el efecto Tilt pro, instalar 'vanilla-tilt' es lo mejor.
+    // npm install vanilla-tilt
+    
+    import VanillaTilt from 'vanilla-tilt';
+
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        // 1. INICIALIZAR TILT (Efecto 3D)
+        const cards = document.querySelectorAll('.tilt-card');
+        VanillaTilt.init(Array.from(cards) as HTMLElement[], {
+            max: 10,
+            speed: 400,
+            glare: true,
+            "max-glare": 0.2,
+            scale: 1.02
+        });
+
+        // 2. BARRA DE PROGRESO LÁSER
+        const updateProgress = () => {
+            const timeline = document.querySelector('.relative.max-w-6xl');
+            const progressBar = document.getElementById('timeline-progress');
+            
+            if (timeline && progressBar) {
+                const rect = timeline.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+                const start = rect.top;
+                const end = rect.bottom;
+                const totalHeight = end - start;
+                
+                // Calcular cuánto hemos scrolleado dentro del timeline
+                let progress = (windowHeight / 2 - start) / (totalHeight - windowHeight);
+                
+                // Limites 0 a 100%
+                progress = Math.max(0, Math.min(1, progress));
+                
+                progressBar.style.height = `${progress * 100}%`;
+            }
+        };
+
+        window.addEventListener('scroll', updateProgress);
+
+        // 3. SCROLL REVEAL (Aparición mágica)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: "0px 0px -100px 0px" // Se activa un poco antes de entrar del todo
+        });
+
+        document.querySelectorAll('.timeline-row').forEach(row => {
+            observer.observe(row);
+        });
+    });
+</script>

@@ -2,15 +2,14 @@ import type { APIRoute } from 'astro';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import categories from '../../data/categories';
 
-const API_KEY = "AIzaSyCZWtp0aATHomMzWsBBOvL73fF9f5APi64";
+// LEER LA CLAVE DE FORMA SEGURA
+const API_KEY = import.meta.env.GEMINI_API_KEY;
 
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
-    console.log("Recibida solicitud de chat");
-
     if (!API_KEY) {
-        return new Response(JSON.stringify({ error: 'Configuración de API Key faltante' }), {
+        return new Response(JSON.stringify({ error: 'Falta la API Key de Gemini en el servidor (.env)' }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' }
         });
@@ -27,33 +26,56 @@ export const POST: APIRoute = async ({ request }) => {
             });
         }
 
-        // Preparar contexto con los datos de categorías y nominados
+        // Preparar contexto con los datos
         const context = categories.map(cat => {
             const nominees = cat.nominees.map((nom: any) =>
-                `- ${nom.name} (${nom.creator || 'Sin creador'}): ${nom.description}`
+                `- ${nom.name} (${nom.creator || 'Sin creador'})`
             ).join('\n');
-            return `Categoría: ${cat.title}\nDescripción: ${cat.description}\nNominados:\n${nominees}`;
+            return `Categoría: ${cat.title}\nNominados:\n${nominees}`;
         }).join('\n\n');
 
         const systemPrompt = `
-      Eres el asistente virtual de los "LAG AWARDS 2025", un evento de premios para una comunidad de gaming y streaming.
-      Tu objetivo es responder preguntas sobre el evento, las categorías y los nominados basándote en la siguiente información.
-      
-      INFORMACIÓN DEL EVENTO:
-      ${context}
-      
-      INSTRUCCIONES:
-      - Responde de manera amigable, divertida y con "jerga gamer" leve (no exageres).
-      - Si te preguntan por algo que no está en la información, di que no tienes datos sobre eso pero invita a votar en las categorías existentes.
-      - Sé conciso.
-      - Si te preguntan quién va a ganar, di que eso lo decide la comunidad con sus votos.
-      - El evento celebra fails, jugadas épicas, momentos graciosos, etc.
-      - IMPORTANTE: Tu respuesta se mostrará en una web. USA FORMATO HTML para que se vea bien:
-        - Usa <strong> para resaltar nombres o categorías.
-        - Usa <ul> y <li> para hacer listas (por ejemplo, al listar nominados).
-        - Usa <br> para saltos de línea.
-        - NO uses Markdown (como ** o -), usa solo HTML.
-    `;
+            Eres el "LAG BOT" 🦎, la IA oficial de los LAG AWARDS 2025.
+
+            TEAMLAG: La mejor comunidad argentina el teamLag lo conforman:
+            - Lag(Lagarto, Lagartovich, el usuario, Nicolas chinchirini,)
+            creador de contido y responsable de los Lag Awards y la creacion del TeamLag
+            - KZMartin (KZ, KzMartin, El tincho, Martin)
+            Un tipazo el tipo, toca metal con su guitarra bien pro, dibuja, juega juegos indie y de granja, produce musica y gran amigo de todos
+            - KidFire (El kid, KidFireWantsLove, El pibe del fuego, El kid fuego,)
+            Le encanta Megadeth, toca tambien la guitarra re pro, es falopero pero buen pibe, le gusta el skate, Juega mucho DayZ con Grox
+            - GTA LOCO (Uruguay, Uruguayo, El viejo, Felipe, Leonardo del Rio, el Gey)
+            El uruguayo del grupo, buen pibe, le gusta demasiado la saga de juegos YAKUZA, es el mas homo del grupo y el q mas duerme
+            -Trigger (Tr1gg3r,TriggerLUL)
+            el mas amado por todos y el que esta en todos los directos, tiene aspecto a textura missing, le gusta midnight club y todo referente e juegos de carros
+
+            
+            TU PERSONALIDAD:
+            - Eres un gamer de internet, sarcástico y divertido, argentino y de la comunidad TeamLag.
+            - Usas jerga de internet (XD, Adewr, Adewreperrr, etc.) muy moderadamente.
+            - Si te piden un modo específico (ej: "modo uwu"), ¡HAZLO! (Usa emojis, "nya", tartamudeo, etc).
+            - si te dicen 5 di solo "POR EL CULO TE LA INCO PUTOOOOOOO EHEH"
+            - si te dicen 13 di solo "MAS ME AGARRAS MAS ME CRECEEE EHEHEHEHEHEHPUTOOOOO"
+            - si te dicen Resident Evil(solo Resident Evil) tu di "Sieeeeeeeteeeeeeeee"
+            - tienes frases como (no las uses demasiado, con moderacion, siempre para respuesta, no uses mas de 2 frases en una oracion):
+            "Adewreperrr", "Adewwr"(puedes alagarar los adwer), "HOP", HopitiHop", "Escuch"
+             "Esaa",
+              "RE PORNO"(para referirse a algo de muy alta calidad, no lo uses para algo de grandeza, solo para algo de muy buena calidad como un video porno re HD),
+              "Ehehhe putooooo"
+            
+            INFORMACIÓN DEL EVENTO:
+            ${context}
+
+            REGLAS DE FORMATO (MUY IMPORTANTE):
+            1. **NO USES MARKDOWN**. No uses asteriscos (** o *) para negritas o listas. El chat NO soporta Markdown.
+            2. **USA HTML PURO**:
+               - Para títulos o resaltar: Usa <strong>Texto</strong> (se verá en negrita).
+               - Para listas: Usa obligatoriamente <ul> y <li>.
+               - Ejemplo de lista correcta: 
+                 "Aquí están los nominados: <br> <strong>Mejor Emote:</strong> <ul><li>Nominado 1</li><li>Nominado 2</li></ul>"
+            3. Sé visualmente ordenado.
+            4. Responde preguntas sobre quién está nominado en qué categoría usando la información provista.
+        `;
 
         const genAI = new GoogleGenerativeAI(API_KEY);
         const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
@@ -66,7 +88,7 @@ export const POST: APIRoute = async ({ request }) => {
                 },
                 {
                     role: "model",
-                    parts: [{ text: "Entendido. ¡Estoy listo para responder sobre los LAG AWARDS 2025! ¿Qué necesitas saber, crack?" }],
+                    parts: [{ text: "Entendido. Usaré etiquetas HTML como <strong> y <ul> para formatear mis respuestas y nada de Markdown. ¡Estoy listo!" }],
                 },
             ],
         });
@@ -81,6 +103,7 @@ export const POST: APIRoute = async ({ request }) => {
         });
 
     } catch (error: any) {
+        console.error("Error en API Chat:", error);
         return new Response(JSON.stringify({
             error: 'Error procesando tu solicitud',
             details: error.message || String(error)

@@ -13,11 +13,13 @@
     "@nanostores/persistent": "^1.2.0",
     "@supabase/supabase-js": "^2.84.0",
     "canvas-confetti": "^1.9.4",
-    "nanostores": "^1.1.0"
+    "nanostores": "^1.1.0",
+    "vanilla-tilt": "^1.8.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.16",
     "@types/canvas-confetti": "^1.9.0",
+    "@types/vanilla-tilt": "^1.4.1",
     "astro": "^5.16.3",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",

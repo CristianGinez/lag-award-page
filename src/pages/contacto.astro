@@ -1,0 +1,33 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../layouts/Navbar.astro';
+import Footer from '../layouts/Footer.astro';
+---
+
+<Layout title="Contacto - LAG AWARDS">
+  <Navbar />
+  <main class="pt-24 min-h-screen text-white bg-[#050505] flex items-center justify-center relative overflow-hidden">
+    <div class="absolute inset-0 bg-[url('/img/grid.png')] opacity-10 pointer-events-none"></div>
+    
+    <div class="container mx-auto px-6 py-12 max-w-2xl text-center">
+      <span class="inline-block mb-4 p-3 rounded-full bg-blue-500/10 text-4xl">📬</span>
+      <h1 class="text-5xl font-black font-orbitron text-white mb-6">Contáctanos</h1>
+      <p class="text-gray-400 text-lg mb-12">
+        ¿Tienes dudas, encontraste un bug o quieres reportar una irregularidad?
+        <br /> Estamos siempre activos en nuestros canales oficiales.
+      </p>
+
+      <div class="grid grid-cols-1  gap-6">
+        <a href="https://discord.gg/YWJZBAUqQK" target="_blank" class="group relative p-8 bg-[#111] border border-indigo-500/30 rounded-2xl hover:border-indigo-500 transition-all hover:-translate-y-1">
+          <div class="absolute inset-0 bg-indigo-500/5 group-hover:bg-indigo-500/10 transition-colors rounded-2xl"></div>
+          <h3 class="text-2xl font-bold text-white font-orbitron mb-2">Discord</h3>
+          <p class="text-sm text-gray-400">Soporte rápido y comunidad.</p>
+          <span class="mt-4 inline-block text-indigo-400 font-bold text-sm group-hover:underline">Unirse al servidor &rarr;</span>
+        </a>
+
+       
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>

@@ -1,0 +1,50 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../layouts/Navbar.astro';
+import Footer from '../layouts/Footer.astro';
+
+const faqs = [
+  {
+    q: "¿Hasta cuándo puedo votar?",
+    a: "Las votaciones cierran el 10 de Marzo a las 23:59. ¡Asegúrate de dejar tu voto antes de esa fecha!"
+  },
+  {
+    q: "¿Puedo cambiar mi voto?",
+    a: "No. Una vez emitido, el voto es definitivo para garantizar la transparencia y evitar manipulaciones de último minuto."
+  },
+  {
+    q: "¿Necesito pagar para votar?",
+    a: "¡Jamás! Los LAG AWARDS son 100% gratuitos y comunitarios."
+  },
+  {
+    q: "¿Dónde veo la gala final?",
+    a: "Se transmitirá en vivo en nuestro canal de YouTube y Twitch. Puedes ver el enlace directo en la sección 'EN VIVO' del menú."
+  }
+];
+---
+
+<Layout title="FAQ - LAG AWARDS">
+  <Navbar />
+  <main class="pt-24 min-h-screen text-white bg-[#050505]">
+    <div class="container mx-auto px-6 py-12 max-w-3xl">
+      <h1 class="text-4xl md:text-6xl font-black font-orbitron text-center mb-12">
+        PREGUNTAS <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">FRECUENTES</span>
+      </h1>
+
+      <div class="space-y-4">
+        {faqs.map((item) => (
+          <details class="group bg-[#111] border border-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:border-purple-500/50">
+            <summary class="flex justify-between items-center cursor-pointer p-6 font-bold text-lg select-none">
+              {item.q}
+              <span class="transition-transform group-open:rotate-180 text-purple-500">▼</span>
+            </summary>
+            <div class="px-6 pb-6 text-gray-400 leading-relaxed border-t border-white/5 pt-4">
+              {item.a}
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>

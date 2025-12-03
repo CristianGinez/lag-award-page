@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import Navbar from "../layouts/Navbar.astro";
 import Footer from "../layouts/Footer.astro";
 import categories from "../data/categories.ts";
-
+import spinImage from "../assets/spin.gif"; //
 
 ---
 
@@ -150,285 +150,109 @@ import categories from "../data/categories.ts";
 
           <!-- Contenido por encima del fondo -->
           <div class="relative z-10">
-
             <div class="mb-10 px-4 sm:px-8 py-5 md:py-6 tv-header-glass flex flex-col gap-4 md:gap-6">
-            <button
-              id="back-to-nominees"
-              class="cursor-pointer flex items-center gap-2 text-purple-400 font-bold mb-8 hover:text-purple-300 transition-colors"
-            >
-              &larr; Volver a Nominados
-            </button>
-              <div
-                class="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center lg:items-start"
-              >
-                <div class="w-full lg:w-1/2">
-                  <div
-                    id="media-container"
-                    class="relative aspect-square rounded-xl overflow-hidden border-4 border-purple-500/30 shadow-[0_0_30px_rgba(168,85,247,0.3)] group bg-black transition-all duration-300"
-                  >
-                  <iframe
-        id="detail-youtube"
-        class="hidden w-full h-full absolute inset-0 z-20"
-        src=""
-        title="YouTube video player"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen
-    ></iframe>
-                    <img
-                      id="detail-img"
-                      src=""
-                      alt="Imagen del nominado"
-                      class="w-full h-full object-cover absolute inset-0 transition-opacity duration-300"
-                    />
+                <button id="back-to-nominees" class="cursor-pointer flex items-center gap-2 text-purple-400 font-bold mb-8 hover:text-purple-300 transition-colors">
+                  &larr; Volver a Nominados
+                </button>
+                
+                <div class="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center lg:items-start">
+                    <div class="w-full lg:w-1/2">
+                        <div id="media-container" class="relative aspect-square rounded-xl overflow-hidden border-4 border-purple-500/30 shadow-[0_0_30px_rgba(168,85,247,0.3)] group bg-black transition-all duration-300">
+                            
+                            <div id="media-loader" class="hidden absolute inset-0 z-40 flex items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-300">
+                                <img src={spinImage.src} alt="Cargando..." class="w-16 h-16 opacity-90 animate-pulse" />
+                            </div>
 
-                    <div
-                      id="artwork-zoom-hint"
-                      class="hidden pointer-events-none absolute bottom-3 right-3 px-3 py-1 rounded-full bg-black/70 text-[0.7rem] md:text-xs font-semibold text-purple-200 opacity-0 translate-y-1 transition-all duration-200"
-                    >
-                      Click para ampliar
+                            <img id="detail-img" src="" alt="Imagen del nominado" class="w-full h-full object-cover absolute inset-0 transition-opacity duration-300" />
+
+                            <div id="artwork-zoom-hint" class="hidden pointer-events-none absolute bottom-3 right-3 px-3 py-1 rounded-full bg-black/70 text-[0.7rem] md:text-xs font-semibold text-purple-200 opacity-0 translate-y-1 transition-all duration-200 z-30">
+                                Click para ampliar
+                            </div>
+
+                            <div id="audio-overlay" class="absolute inset-0 flex items-center justify-center cursor-pointer transition-colors hover:bg-black/50 z-20">
+                                <button id="play-btn" class="cursor-pointer bg-white/90 hover:bg-white text-purple-600 rounded-full p-6 w-24 h-24 flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.5)] transition-transform hover:scale-110 active:scale-95">
+                                    <svg id="icon-play" class="w-12 h-12 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+                                    <svg id="icon-pause" class="w-12 h-12 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>
+                                </button>
+                            </div>
+
+                            <video 
+                                id="detail-video" 
+                                class="hidden w-full h-full object-contain bg-black" 
+                                controls={false}
+                                playsinline
+                                preload="metadata"
+                            ></video>
+
+                            <iframe 
+                                id="detail-youtube" 
+                                class="hidden w-full h-full absolute inset-0 z-20" 
+                                src="" 
+                                title="YouTube video player" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen
+                            ></iframe>
+
+                            <div id="video-controls" class="hidden absolute bottom-0 left-0 right-0 p-3 bg-linear-to-t from-black/80 to-transparent transition-opacity duration-300 opacity-0 group-hover:opacity-100 z-30">
+                                <div class="flex justify-between text-sm text-gray-400 mt-2">
+                                    <span id="current-time">0:00</span>
+                                    <span id="total-duration">0:00</span>
+                                </div>
+                                <input type="range" id="video-progress" min="0" max="100" value="0" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500" />
+                                <div class="flex items-center gap-4 mt-2">
+                                    <button id="video-play-pause-btn" class="cursor-pointer text-white hover:text-red-400 transition-colors">
+                                        <svg id="video-icon-play" class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+                                        <svg id="video-icon-pause" class="w-8 h-8 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>
+                                    </button>
+                                    <input type="range" id="video-volume-slider" min="0" max="1" step="0.1" value="0.5" class="w-40 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500" />
+                                    <button id="fullscreen-btn" class="cursor-pointer text-white hover:text-red-400 transition-colors ml-auto">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div
-                      id="audio-overlay"
-                      class="absolute inset-0 flex items-center justify-center cursor-pointer transition-colors hover:bg-black/50"
-                    >
-                      <button
-                        id="play-btn"
-                        class="cursor-pointer bg-white/90 hover:bg-white text-purple-600 rounded-full p-6 w-24 h-24 flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.5)] transition-transform hover:scale-110 active:scale-95"
-                      >
-                        <svg
-                          id="icon-play"
-                          class="w-12 h-12 ml-1"
-                          fill="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path d="M8 5v14l11-7z"></path>
-                        </svg>
-                        <svg
-                          id="icon-pause"
-                          class="w-12 h-12 hidden"
-                          fill="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"
-                          ></path>
-                        </svg>
-                      </button>
+                    <div class="w-full lg:w-1/2 flex flex-col justify-center text-left space-y-6">
+                        <div>
+                            <h2 id="detail-name" class="text-4xl md:text-6xl font-bold font-orbitron text-white mb-2"></h2>
+                            <p id="detail-creator" class="text-xl text-purple-300 font-semibold"></p>
+                        </div>
+
+                        <div class="h-1 w-24 bg-linear-to-r from-purple-500 to-transparent rounded-full"></div>
+
+                        <div id="audio-volume-controls" class="flex bg-purple-900/30 p-4 rounded-lg border border-purple-500/20 items-center gap-4">
+                            <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path></svg>
+                            <input id="audio-volume-slider" type="range" min="0" max="1" step="0.1" value="0.5" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500" />
+                        </div>
+
+                        <p id="detail-desc" class="text-lg text-gray-300 leading-relaxed"></p>
+
+                        <div class="pt-6">
+                            <button id="detail-vote-btn" class="w-full md:w-auto px-8 py-4 bg-linear-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 rounded-lg text-xl font-bold text-white shadow-lg transition-all transform hover:scale-105 flex items-center justify-center gap-3">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"></path></svg>
+                                Votar Ahora
+                            </button>
+                            <p id="detail-votes" class="text-lg text-yellow-400 font-bold mt-2 flex items-center gap-2">
+                                <span class="text-2xl">🔥</span>
+                                <span id="vote-count-number">0</span> Votos en esta categoría
+                            </p>
+                        </div>
                     </div>
-
-                    <video
-                      id="detail-video"
-                      class="hidden w-full h-full object-contain bg-black"
-                      controls={false}
-                    ></video>
-
-                    <div
-                      id="video-controls"
-                      class="hidden absolute bottom-0 left-0 right-0 p-3 bg-linear-to-t from-black/80 to-transparent transition-opacity duration-300 opacity-0 group-hover:opacity-100"
-                    >
-                      <div
-                        class="flex justify-between text-sm text-gray-400 mt-2"
-                      >
-                        <span id="current-time">0:00</span>
-                        <span id="total-duration">0:00</span>
-                      </div>
-                      <input
-                        type="range"
-                        id="video-progress"
-                        min="0"
-                        max="100"
-                        value="0"
-                        class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
-                      />
-
-                      <div class="flex items-center gap-4 mt-2">
-                        <button
-                          id="video-play-pause-btn"
-                          class="cursor-pointer text-white hover:text-red-400 transition-colors"
-                        >
-                          <svg
-                            id="video-icon-play"
-                            class="w-8 h-8"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path d="M8 5v14l11-7z"></path>
-                          </svg>
-                          <svg
-                            id="video-icon-pause"
-                            class="w-8 h-8 hidden"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"
-                            ></path>
-                          </svg>
-                        </button>
-
-                        <svg
-                          class="w-6 h-6 text-gray-300"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
-                          ></path>
-                        </svg>
-                        <input
-                          type="range"
-                          id="video-volume-slider"
-                          min="0"
-                          max="1"
-                          step="0.1"
-                          value="0.5"
-                          class="w-40 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
-                        />
-
-                        <button
-                          id="fullscreen-btn"
-                          class="cursor-pointer text-white hover:text-red-400 transition-colors ml-auto"
-                        >
-                          <svg
-                            class="w-6 h-6"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
-                            ></path>
-                          </svg>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
                 </div>
-
-                <div
-                  class="w-full lg:w-1/2 flex flex-col justify-center text-left space-y-6"
-                >
-                  <div>
-                    <h2
-                      id="detail-name"
-                      class="text-4xl md:text-6xl font-bold font-orbitron text-white mb-2"
-                    >
-                    </h2>
-                    <p
-                      id="detail-creator"
-                      class="text-xl text-purple-300 font-semibold"
-                    >
-                    </p>
-                  </div>
-
-                  <div
-                    class="h-1 w-24 bg-linear-to-r from-purple-500 to-transparent rounded-full"
-                  >
-                  </div>
-
-                  <div
-                    id="audio-volume-controls"
-                    class="flex bg-purple-900/30 p-4 rounded-lg border border-purple-500/20 items-center gap-4"
-                  >
-                    <svg
-                      class="w-6 h-6 text-gray-300"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
-                      ></path>
-                    </svg>
-                    <input
-                      id="audio-volume-slider"
-                      type="range"
-                      min="0"
-                      max="1"
-                      step="0.1"
-                      value="0.5"
-                      class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
-                    />
-                  </div>
-
-                  <p
-                    id="detail-desc"
-                    class="text-lg text-gray-300 leading-relaxed"
-                  >
-                  </p>
-
-                  <div class="pt-6">
-                    <button
-                      id="detail-vote-btn"
-                      class="w-full md:w-auto px-8 py-4 bg-linear-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 rounded-lg text-xl font-bold text-white shadow-lg transition-all transform hover:scale-105 flex items-center justify-center gap-3"
-                    >
-                      <svg
-                        class="w-6 h-6"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"
-                        >
-                        </path>
-                      </svg>
-                      Votar Ahora
-                    </button>
-                    <p
-                      id="detail-votes"
-                      class="text-lg text-yellow-400 font-bold mt-2 flex items-center gap-2"
-                    >
-                      <span class="text-2xl">🔥</span>
-                      <span id="vote-count-number">0</span> Votos en esta
-                      categoría
-                    </p>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   
-  <!--esto es para que en la pantalla de artworks puedas ver más a detalle un dibujo -->
-    <div
-      id="artwork-lightbox"
-      class="fixed inset-0 bg-black/80 z-50 hidden"
-    >
+    <div id="artwork-lightbox" class="fixed inset-0 bg-black/80 z-50 hidden">
       <div class="w-full h-full flex items-center justify-center px-4">
-        <div
-          class="relative max-w-5xl w-full max-h-[90vh] h-[90vh] flex items-center justify-center"
-        >
-          <button
-            id="lightbox-close"
-            class="absolute top-4 right-4 z-10 rounded-full bg-black/70 hover:bg-black text-white px-3 py-1 text-sm font-semibold"
-          >
-            Cerrar ✕
-          </button>
-
-          <div
-            class="w-full h-full bg-black rounded-xl overflow-hidden flex items-center justify-center"
-          >
-            <img
-              id="lightbox-img"
-              src=""
-              alt="Vista ampliada del artwork"
-              class="max-w-none select-none cursor-grab"
-              draggable="false"
-            />
+        <div class="relative max-w-5xl w-full max-h-[90vh] h-[90vh] flex items-center justify-center">
+          <button id="lightbox-close" class="absolute top-4 right-4 z-10 rounded-full bg-black/70 hover:bg-black text-white px-3 py-1 text-sm font-semibold">Cerrar ✕</button>
+          <div class="w-full h-full bg-black rounded-xl overflow-hidden flex items-center justify-center">
+            <img id="lightbox-img" src="" alt="Vista ampliada del artwork" class="max-w-none select-none cursor-grab" draggable="false" />
           </div>
         </div>
       </div>
@@ -449,10 +273,10 @@ import categories from "../data/categories.ts";
   .category-card-bg { filter: blur(1px); }
   .category-card-glass {
     background-color: rgba(15, 23, 42, 0.372);
-    backdrop-filter: blur(2px);
+    backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
-    border-radius: 1rem;
-    border: 2px solid rgba(250, 204, 21, 0.9);
+    border-radius: 1.5rem;
+    border: 3px solid rgba(250, 204, 21, 0.9);
     box-shadow: 0 0 25px rgba(250, 204, 21, 0.45), 0 18px 45px rgba(0, 0, 0, 0.75), 0 0 30px rgba(15, 23, 42, 0.9);
   }
   .nav-arrow {
@@ -513,7 +337,6 @@ import categories from "../data/categories.ts";
 </style>
 
 <script>
-  // 1. IMPORTACIONES
   import { voteForNominee, getUserVotes, getCategoryTotalVotes } from '../lib/voting';
   import categories from '../data/categories.ts';
   import { $currentUser } from '../stores/authStore';
@@ -540,13 +363,14 @@ import categories from "../data/categories.ts";
 
     // Referencias Detalle
     const mediaContainer = document.getElementById("media-container");
+    const mediaLoader = document.getElementById("media-loader"); // LOADER NUEVO
     const detailImg = document.getElementById("detail-img");
     const detailName = document.getElementById("detail-name");
     const detailCreator = document.getElementById("detail-creator");
     const detailDesc = document.getElementById("detail-desc");
     const voteCountNumber = document.getElementById("vote-count-number");
     
-    // Referencia YouTube (NUEVO)
+    // Referencia YouTube
     const detailYoutube = document.getElementById("detail-youtube");
 
     // Referencias Audio/Video/Lightbox
@@ -578,9 +402,6 @@ import categories from "../data/categories.ts";
     let zoomScale = 1;
     let panX = 0;
     let panY = 0;
-    let isPanning = false;
-    let panStartX = 0;
-    let panStartY = 0;
 
     // --- LIGHTBOX LOGIC ---
     const updateLightboxTransform = () => { if (lightboxImg) lightboxImg.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomScale})`; };
@@ -632,11 +453,14 @@ import categories from "../data/categories.ts";
       if (currentAudio) { currentAudio.pause(); currentAudio = null; }
       if (detailVideo && !detailVideo.paused) detailVideo.pause();
       
-      // Detener YouTube al salir
+      // Detener YouTube
       if (detailYoutube) { 
           detailYoutube.classList.add("hidden"); 
           detailYoutube.src = ""; 
       }
+
+      // Ocultar Loader
+      if (mediaLoader) mediaLoader.classList.add("hidden");
 
       if (iconPlay) iconPlay.classList.remove("hidden");
       if (iconPause) iconPause.classList.add("hidden");
@@ -685,33 +509,21 @@ import categories from "../data/categories.ts";
           else if (nameLength > 25) largeNameClass = "text-xl sm:text-2xl break-words leading-tight";
           else if (nameLength > 15) largeNameClass = "text-2xl sm:text-3xl break-words leading-tight";
 
-          // ============================================================
-          // 🚀 LÓGICA MAESTRA DE MINIATURAS (YOUTUBE + CLOUDINARY)
-          // ============================================================
+          // MINIATURA AUTOMÁTICA
           let thumbSrc = nominee.image;
           
-          // CASO A: Si tiene YouTube ID y no hay imagen manual
           if (!thumbSrc && nominee.youtubeId) {
-             // Truco: YouTube nos da la imagen HQ gratis con esta URL
              thumbSrc = `https://img.youtube.com/vi/${nominee.youtubeId}/hqdefault.jpg`;
           }
-          
-          // CASO B: Si es video de Cloudinary y no hay imagen manual
           if (!thumbSrc && nominee.video && nominee.video.includes('cloudinary')) {
-             // Truco: Cambiamos la extensión del video (.mp4/.webm) por .jpg
              thumbSrc = nominee.video.replace(/\.[^/.]+$/, ".jpg");
           }
-          
-          // CASO C: Fallback (Si no hay nada)
           if (!thumbSrc) {
               thumbSrc = "/img/lag_uconstr_placeholder.png";
           }
-
-          // Optimización ImageKit (Solo si la URL viene de ahí)
           if (thumbSrc.includes('imagekit')) {
               thumbSrc += '?tr=w-400,q-80,f-auto';
           }
-          // ============================================================
 
           nomineeEl.innerHTML = `
             <img src="${thumbSrc}" alt="${nominee.name}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
@@ -723,7 +535,6 @@ import categories from "../data/categories.ts";
                 <span class="mt-2 text-purple-300 font-bold tracking-wider text-xs sm:text-sm uppercase">Ver Detalles</span>
             </div>
           `;
-
           nomineeEl.addEventListener("click", () => showNomineeDetailView(nominee));
           nomineeList.appendChild(nomineeEl);
         });
@@ -740,12 +551,11 @@ import categories from "../data/categories.ts";
       const currentCategory = categories[currentCategoryIndex];
       const isArtworkCategory = currentCategory.id === "3"; 
 
-      // Mostrar conteo
       const catKey = currentCategory.id;
       let currentTotal = categoryCounts[catKey] || 0;
       if (voteCountNumber) voteCountNumber.textContent = currentTotal;
 
-      // Gestión del Botón de Voto
+      // Voto
       const voteBtn = document.getElementById('detail-vote-btn');
       if (voteBtn) {
           const votedNomineeInThisCategory = userVotes[currentCategory.id];
@@ -813,12 +623,10 @@ import categories from "../data/categories.ts";
           }
       }
 
-      // Textos
       detailName.textContent = nominee.name;
       detailCreator.textContent = nominee.creator ? `Creado por: ${nominee.creator}` : "";
       detailDesc.textContent = nominee.description || "Sin descripción disponible.";
 
-      // Reset Visibilidad
       detailImg.classList.add("hidden");
       detailImg.classList.remove("cursor-zoom-in", "artwork-zoom-img", "artwork-fit-contain", "artwork-fit-cover");
       lastDetailImageSrc = "";
@@ -837,24 +645,21 @@ import categories from "../data/categories.ts";
       // --- LÓGICA MULTIMEDIA ---
 
       if (nominee.youtubeId) {
-        // 🔴 CASO YOUTUBE (SHORTS O NORMAL)
+        // 🔴 CASO YOUTUBE
         if (mediaContainer) {
-            // Si es la categoría de Shorts (ID 7), usamos formato vertical celular
             if (currentCategory.id === "7") {
                 mediaContainer.classList.add("aspect-[9/16]", "max-w-sm", "mx-auto");
             } else {
                 mediaContainer.classList.add("aspect-video");
             }
         }
-        
         if (detailYoutube) {
             detailYoutube.classList.remove("hidden");
-            // Loop, autoplay, modesto
             detailYoutube.src = `https://www.youtube.com/embed/${nominee.youtubeId}?autoplay=1&rel=0&modestbranding=1&loop=1&playlist=${nominee.youtubeId}`;
         }
 
       } else if (nominee.audio) {
-        // 🎵 CASO AUDIO
+        // 🎵 AUDIO
         if (mediaContainer) mediaContainer.classList.add("aspect-square");
         
         let hdSrc = nominee.image || '/img/lag_uconstr_placeholder.png';
@@ -863,9 +668,9 @@ import categories from "../data/categories.ts";
         detailImg.src = hdSrc;
         detailImg.classList.remove("hidden");
         detailImg.classList.add("artwork-fit-cover");
-        
         audioOverlay.classList.remove("hidden");
         audioVolumeControls.classList.remove("hidden");
+        
         currentAudio = new Audio(nominee.audio);
         if (audioVolumeSlider) currentAudio.volume = audioVolumeSlider.value;
         currentAudio.onended = () => {
@@ -874,8 +679,12 @@ import categories from "../data/categories.ts";
         };
 
       } else if (nominee.video) {
-        // 📹 CASO VIDEO (Cloudinary o Directo)
+        // 📹 VIDEO (Directo)
         if (mediaContainer) mediaContainer.classList.add("aspect-video");
+        
+        // LÓGICA DE LOADER
+        if (mediaLoader) mediaLoader.classList.remove("hidden");
+
         detailVideo.classList.remove("hidden");
         detailVideo.src = nominee.video;
         if (videoVolumeSlider) detailVideo.volume = videoVolumeSlider.value;
@@ -885,15 +694,25 @@ import categories from "../data/categories.ts";
         if (videoProgress) videoProgress.value = 0;
         if (currentTimeSpan) currentTimeSpan.textContent = "0:00";
         
+        // Eventos de carga
+        detailVideo.onwaiting = () => { if(mediaLoader) mediaLoader.classList.remove("hidden"); };
+        detailVideo.onplaying = () => { if(mediaLoader) mediaLoader.classList.add("hidden"); };
+        detailVideo.oncanplay = () => { if(mediaLoader) mediaLoader.classList.add("hidden"); };
+
         detailVideo.onloadedmetadata = () => { if (totalDurationSpan) totalDurationSpan.textContent = formatTime(detailVideo.duration); };
         detailVideo.ontimeupdate = () => { if (videoProgress) videoProgress.value = (detailVideo.currentTime / detailVideo.duration) * 100; if (currentTimeSpan) currentTimeSpan.textContent = formatTime(detailVideo.currentTime); };
         detailVideo.onended = () => { if(videoIconPlay) videoIconPlay.classList.remove("hidden"); if(videoIconPause) videoIconPause.classList.add("hidden"); detailVideo.currentTime = 0; };
 
       } else {
-        // 🖼️ CASO IMAGEN (Artwork o defecto)
+        // 🖼️ IMAGEN
         if (mediaContainer) mediaContainer.classList.add("aspect-square");
         
-        let hdSrc = nominee.image || '/img/lag_uconstr_placeholder.png';
+        let hdSrc = nominee.image;
+        if (!hdSrc && nominee.video && nominee.video.includes('cloudinary')) {
+           hdSrc = nominee.video.replace(/\.[^/.]+$/, ".jpg");
+        }
+        if (!hdSrc) hdSrc = '/img/lag_uconstr_placeholder.png';
+
         if (hdSrc.includes('imagekit')) hdSrc += '?tr=w-800,q-90,f-auto';
         
         detailImg.src = hdSrc;
@@ -918,7 +737,7 @@ import categories from "../data/categories.ts";
       }, 300);
     };
 
-    // Listeners Globales
+    // Listeners
     if (categoryGrid) {
       categoryGrid.addEventListener("click", (e) => {
         const card = e.target.closest("[data-category-id]");

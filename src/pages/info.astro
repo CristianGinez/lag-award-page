@@ -1,111 +1,179 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../layouts/Navbar.astro';
-import Footer from '../layouts/Footer.astro'; // Importamos el footer
+import Footer from '../layouts/Footer.astro';
+import categories from '../data/categories.ts';
+
+// 2. Cálculos automáticos (Se actualizan al hacer build)
+const totalCategories = categories.length;
+const totalNominees = categories.reduce((acc, cat) => acc + cat.nominees.length, 0);
+---
 ---
 
 <Layout title="Información - LAGAWARDS">
   <Navbar />
-  <main class="pt-24 text-white overflow-hidden">
+  <main class="pt-24 text-white overflow-hidden relative bg-[#050505]">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-purple-900/20 via-black to-black -z-10"></div>
+    
     <div class="container mx-auto px-6 py-16">
       
-      <!-- Encabezado -->
-      <div class="text-center mb-16">
-        <span class="inline-block bg-yellow-400/10 text-yellow-400 text-sm font-bold px-4 py-1 rounded-full mb-4">Guía del Evento</span>
-        <h1 class="text-5xl md:text-7xl font-bold font-orbitron">
+      <div class="text-center mb-16 animate-fade-in">
+        <span class="inline-block bg-yellow-400/10 border border-yellow-400/20 text-yellow-400 text-sm font-bold px-4 py-1 rounded-full mb-4">Guía del Evento</span>
+        <h1 class="text-5xl md:text-7xl font-bold font-orbitron mb-6">
           Información <span class="bg-linear-to-r from-red-500 to-orange-500 text-transparent bg-clip-text">General</span>
         </h1>
-        <p class="text-xl text-gray-300 mt-4 max-w-3xl mx-auto">
-          Todo lo que necesitas saber sobre los LAG Awards: fechas, reglas y cómo participar.
+        <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+          Todo lo que necesitas saber sobre los LAG Awards: fechas, reglas y cómo participar en la fiesta del año.
         </p>
       </div>
 
-      <!-- Grid Principal -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20">
         
-        <!-- Columna Izquierda (más ancha) -->
         <div class="lg:col-span-2 space-y-8">
-          <div class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-lg p-8">
-            <h2 class="text-2xl font-bold font-orbitron mb-4">Sobre los LAG Awards</h2>
-            <p class="text-gray-400 mb-6">Los LAG Awards celebran a creadores y momentos destacados de nuestra comunidad. Este año contamos con nuevas categorías y un sistema de votación mejorado.</p>
-            <div class="grid grid-cols-2 gap-4 mb-6 text-center">
-              <div class="bg-white/5 border border-white/10 rounded-lg py-3 px-2 text-sm font-semibold">24 categorías</div>
-              <div class="bg-white/5 border border-white/10 rounded-lg py-3 px-2 text-sm font-semibold">1000+ creadores</div>
-              <div class="bg-white/5 border border-white/10 rounded-lg py-3 px-2 text-sm font-semibold">Global y online</div>
-              <div class="bg-white/5 border border-white/10 rounded-lg py-3 px-2 text-sm font-semibold">Final en vivo</div>
+          <div class="bg-[#111] backdrop-blur-md rounded-2xl border border-white/10 shadow-2xl p-8 relative overflow-hidden group">
+            <div class="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-purple-500/20 rounded-full blur-3xl group-hover:bg-purple-500/30 transition-all duration-500"></div>
+            
+            <h2 class="text-2xl font-bold font-orbitron mb-4 relative z-10">Sobre los LAG Awards</h2>
+            <p class="text-gray-400 mb-8 leading-relaxed relative z-10">
+              Los LAG Awards celebran a los creadores y momentos más destacados de nuestra comunidad.
+              Este año contamos con nuevas categorías y un sistema de votación en tiempo real transparente y seguro.
+            </p>
+
+            <div class="grid grid-cols-2 gap-4 mb-8 text-center">
+              <div class="bg-white/5 border border-white/10 rounded-xl py-4 px-2 hover:border-purple-500/50 transition-colors">
+                <div class="text-2xl font-bold text-white mb-1">{totalCategories}</div>
+                <div class="text-xs text-gray-500 uppercase font-bold tracking-wider">Categorías</div>
+              </div>
+              <div class="bg-white/5 border border-white/10 rounded-xl py-4 px-2 hover:border-blue-500/50 transition-colors">
+                <div class="text-2xl font-bold text-white mb-1">20+</div>
+                <div class="text-xs text-gray-500 uppercase font-bold tracking-wider">Creadores</div>
+              </div>
+              <div class="bg-white/5 border border-white/10 rounded-xl py-4 px-2 hover:border-green-500/50 transition-colors">
+                <div class="text-2xl font-bold text-white mb-1">Global</div>
+                <div class="text-xs text-gray-500 uppercase font-bold tracking-wider">Comunidad</div>
+              </div>
+              <div class="bg-white/5 border border-white/10 rounded-xl py-4 px-2 hover:border-red-500/50 transition-colors">
+                <div class="text-2xl font-bold text-white mb-1">En Vivo</div>
+                <div class="text-xs text-gray-500 uppercase font-bold tracking-wider">Gala Final</div>
+              </div>
             </div>
-            <div class="grid grid-cols-2 gap-4 text-center">
+
+            <div class="grid grid-cols-2 gap-4 text-center border-t border-white/5 pt-8">
               <div>
-                <div class="text-4xl font-bold text-yellow-400">85K</div>
-                <div class="text-sm text-gray-400">Votos emitidos</div>
+                <div id="live-total-votes" class="text-5xl font-black text-yellow-400 font-orbitron tracking-tighter">...</div>
+                <div class="text-sm text-gray-400 font-bold mt-2 uppercase tracking-widest">Votos Emitidos</div>
               </div>
               <div>
-                <div class="text-4xl font-bold text-orange-400">320</div>
-                <div class="text-sm text-gray-400">Nominaciones</div>
+                <div class="text-5xl font-black text-orange-400 font-orbitron tracking-tighter">{totalNominees}</div>
+                <div class="text-sm text-gray-400 font-bold mt-2 uppercase tracking-widest">Nominaciones</div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Columna Derecha -->
         <div class="space-y-8">
-          <div class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-lg p-6">
-            <h3 class="text-xl font-bold font-orbitron mb-4">Fechas Clave</h3>
-            <ul class="space-y-3 text-gray-300">
-              <li class="flex justify-between"><span>Apertura de nominaciones</span> <span class="font-mono text-red-400">1 Feb</span></li>
-              <li class="flex justify-between"><span>Cierre de nominaciones</span> <span class="font-mono text-red-400">20 Feb</span></li>
-              <li class="flex justify-between"><span>Votación del público</span> <span class="font-mono text-purple-400">25 Feb - 10 Mar</span></li>
-              <li class="flex justify-between"><span>Gala y anuncio</span> <span class="font-mono text-yellow-400">15 Mar</span></li>
+          <div class="bg-[#111] backdrop-blur-md rounded-2xl border border-white/10 shadow-lg p-6">
+            <h3 class="text-xl font-bold font-orbitron mb-6 text-white flex items-center gap-2">
+                <span class="text-red-500">📅</span> Fechas Clave
+            </h3>
+            <ul class="space-y-4 text-gray-300 text-sm">
+              <li class="flex justify-between items-center pb-3 border-b border-white/5">
+                <span>Apertura</span> 
+                <span class="font-mono text-red-400 bg-red-900/20 px-2 py-1 rounded">1 Feb</span>
+              </li>
+              <li class="flex justify-between items-center pb-3 border-b border-white/5">
+                <span>Cierre Nominaciones</span> 
+                <span class="font-mono text-red-400 bg-red-900/20 px-2 py-1 rounded">20 Feb</span>
+              </li>
+              <li class="flex justify-between items-center pb-3 border-b border-white/5">
+                <span>Votación Público</span> 
+                <span class="font-mono text-purple-400 bg-purple-900/20 px-2 py-1 rounded">25 Feb - 10 Mar</span>
+              </li>
+              <li class="flex justify-between items-center">
+                <span class="text-yellow-400 font-bold">Gala Final</span> 
+                <span class="font-mono text-black bg-yellow-400 px-2 py-1 rounded font-bold">15 Mar</span>
+              </li>
             </ul>
           </div>
-          <div class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-lg p-6">
-            <h3 class="text-xl font-bold font-orbitron mb-4">¿Quién puede nominar?</h3>
-            <p class="text-gray-400 text-sm">Cualquier miembro verificado de la comunidad LAG.</p>
-          </div>
-           <div class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-lg p-6">
-            <h3 class="text-xl font-bold font-orbitron mb-4">¿Cómo se cuentan los votos?</h3>
-            <p class="text-gray-400 text-sm">Un voto por categoría por usuario. Auditoría automática.</p>
+        
+          <div class="bg-[#111] backdrop-blur-md rounded-2xl border border-white/10 shadow-lg p-6">
+            <h3 class="text-xl font-bold font-orbitron mb-4 text-white">Sistema de Votación</h3>
+            <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                Utilizamos tecnología segura para garantizar un voto justo por usuario.
+            </p>
+            <div class="flex items-center gap-2 text-xs text-gray-500 font-mono bg-black/30 p-3 rounded border border-white/5">
+                <span class="text-green-500">✔</span> Un voto por categoría
+                <br>
+                <span class="text-green-500">✔</span> Login verificado
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="max-w-4xl mx-auto space-y-12 pb-10">
-        <section>
-          <h2 class="text-3xl font-bold font-orbitron mb-4 border-l-4 border-red-500 pl-4">¿Qué son los LAGAWARDS?</h2>
-          <p class="text-gray-400 leading-relaxed">
-            Los LAGAWARDS son un evento anual dedicado a celebrar y premiar la creatividad, el talento y los momentos más memorables de la comunidad de creadores de contenido. Desde clips virales hasta las personalidades más influyentes, nuestro objetivo es reconocer a quienes hacen de internet un lugar más entretenido y vibrante.
+      <div class="max-w-4xl mx-auto space-y-16 pb-20">
+        <section class="relative pl-8 border-l-2 border-red-500/50">
+          <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-red-500 shadow-[0_0_15px_#ef4444]"></div>
+          <h2 class="text-3xl font-bold font-orbitron mb-4 text-white">¿Qué son los LAGAWARDS?</h2>
+          <p class="text-gray-400 leading-relaxed text-lg">
+            Los LAGAWARDS son un evento anual dedicado a celebrar y premiar la creatividad, 
+            el talento y los momentos más memorables de la comunidad de creadores de contenido.
+            Desde clips virales hasta las personalidades más influyentes, nuestro objetivo es reconocer a quienes hacen de internet un lugar más entretenido y vibrante.
           </p>
         </section>
 
-        <section>
-          <h2 class="text-3xl font-bold font-orbitron mb-4 border-l-4 border-purple-500 pl-4">Nuestra Misión</h2>
-          <p class="text-gray-400 leading-relaxed">
-            Nuestra misión es simple: dar visibilidad y reconocimiento a los creadores de todos los tamaños. Creemos en el poder de la comunidad para descubrir y apoyar el talento emergente, y los LAGAWARDS son la plataforma para que esa voz se escuche.
+        <section class="relative pl-8 border-l-2 border-purple-500/50">
+          <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-purple-500 shadow-[0_0_15px_#a855f7]"></div>
+          <h2 class="text-3xl font-bold font-orbitron mb-4 text-white">Nuestra Misión</h2>
+          <p class="text-gray-400 leading-relaxed text-lg">
+            Nuestra misión es simple: dar visibilidad y reconocimiento a los creadores de todos los tamaños.
+            Creemos en el poder de la comunidad para descubrir y apoyar el talento emergente, y los LAGAWARDS son la plataforma para que esa voz se escuche.
           </p>
         </section>
 
-        <section>
-          <h2 class="text-3xl font-bold font-orbitron mb-4 border-l-4 border-yellow-400 pl-4">Proceso de Votación</h2>
-          <p class="text-gray-400 leading-relaxed">
-            El proceso es totalmente impulsado por la comunidad. Los nominados son seleccionados en base a la popularidad y el impacto de su contenido durante el año. Posteriormente, se abre un período de votación donde el público puede apoyar a sus favoritos en cada categoría. ¡Tu voto decide quién se lleva el premio!
+        <section class="relative pl-8 border-l-2 border-yellow-500/50">
+          <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-yellow-500 shadow-[0_0_15px_#eab308]"></div>
+          <h2 class="text-3xl font-bold font-orbitron mb-4 text-white">Proceso de Votación</h2>
+          <p class="text-gray-400 leading-relaxed text-lg">
+            El proceso es totalmente impulsado por la comunidad.
+            Los nominados son seleccionados en base a la popularidad y el impacto de su contenido durante el año.
+            Posteriormente, se abre un período de votación donde el público puede apoyar a sus favoritos en cada categoría.
+            ¡Tu voto decide quién se lleva el premio!
           </p>
         </section>
       </div>
 
-      <br/>
-
-      <!-- Guía Rápida para Participar -->
-      <div class="max-w-4xl mx-auto text-center">
-        <h2 class="text-4xl font-bold font-orbitron mb-8">Guía Rápida para Participar</h2>
-        <div class="space-y-6">
-          <div class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-lg p-4 text-lg"><strong>1. Propón una nominación:</strong> Comparte el enlace del clip o perfil del creador.</div>
-          <div class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-lg p-4 text-lg"><strong>2. Verificación:</strong> Nuestro equipo revisa elegibilidad y categoría.</div>
-          <div class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-lg p-4 text-lg"><strong>3. Vota:</strong> Apoya a tus favoritos durante el período de votación.</div>
-          <div class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-lg p-4 text-lg"><strong>4. Celebra:</strong> Únete a la gala final y comparte los resultados.</div>
+      <div class="max-w-5xl mx-auto bg-gradient-to-r from-[#111] to-[#0a0a0a] border border-white/10 rounded-3xl p-8 md:p-12 text-center relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 via-purple-500 to-blue-500"></div>
+        
+        <h2 class="text-3xl md:text-4xl font-bold font-orbitron mb-10">¿Cómo participar?</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 text-left">
+            <div class="p-4 rounded-xl bg-white/5 border border-white/5 hover:border-white/20 transition-colors">
+                <div class="text-2xl mb-2">💡</div>
+                <h4 class="font-bold text-white mb-1">1. Propón</h4>
+                <p class="text-sm text-gray-400">Nomina tus clips favoritos.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-white/5 border border-white/5 hover:border-white/20 transition-colors">
+                <div class="text-2xl mb-2">🕵️</div>
+                <h4 class="font-bold text-white mb-1">2. Verifica</h4>
+                <p class="text-sm text-gray-400">El staff revisa las categorías.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-white/5 border border-white/5 hover:border-white/20 transition-colors">
+                <div class="text-2xl mb-2">🗳️</div>
+                <h4 class="font-bold text-white mb-1">3. Vota</h4>
+                <p class="text-sm text-gray-400">Apoya a los finalistas.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-white/5 border border-white/5 hover:border-white/20 transition-colors">
+                <div class="text-2xl mb-2">🎉</div>
+                <h4 class="font-bold text-white mb-1">4. Celebra</h4>
+                <p class="text-sm text-gray-400">Disfruta la gala en vivo.</p>
+            </div>
         </div>
-        <div class="mt-10 flex justify-center gap-4">
-          <a href="/nominar" class="px-8 py-3 bg-linear-to-r from-red-600 to-orange-500 text-white font-bold rounded-full transition-transform transform hover:scale-105">Ir a Nominados</a>
-          <a href="/reglas" class="px-8 py-3 bg-transparent border-2 border-purple-500 text-white font-bold rounded-full transition-all hover:bg-purple-500/10">Reglas completas</a>
+
+        <div class="mt-12 flex flex-col sm:flex-row justify-center gap-4">
+          <a href="/categorias" class="px-8 py-3 bg-white text-black font-bold rounded-full hover:scale-105 transition-transform shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+            Ir a Votar Ahora
+          </a>
         </div>
       </div>
 
@@ -233,3 +301,46 @@ import Footer from '../layouts/Footer.astro'; // Importamos el footer
   <Footer />
 </Layout>
 
+<script>
+    import { getCategoryTotalVotes } from '../lib/voting';
+
+    // Script para animar los números en tiempo real
+    document.addEventListener('DOMContentLoaded', async () => {
+        const votesEl = document.getElementById('live-total-votes');
+        
+        if (votesEl) {
+            // 1. Obtener datos reales
+            const votesMap = await getCategoryTotalVotes();
+            
+            // 2. Sumar todos los valores del objeto
+            const totalVotes = Object.values(votesMap).reduce((a, b) => a + b, 0);
+
+            // 3. Animación de conteo (Count Up)
+            const duration = 2000; // 2 segundos
+            const start = 0;
+            const end = totalVotes;
+            const startTime = performance.now();
+
+            const animate = (currentTime: number) => {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Función de easing para que frene al final
+                const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                
+                const current = Math.floor(start + (end - start) * easeOutQuart);
+                
+                // Formato con "K" si es muy grande (opcional)
+                votesEl.textContent = current.toLocaleString(); 
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    votesEl.textContent = end.toLocaleString(); // Asegurar valor final exacto
+                }
+            };
+
+            requestAnimationFrame(animate);
+        }
+    });
+</script>
