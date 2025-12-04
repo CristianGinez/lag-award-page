@@ -403,10 +403,21 @@ import categories from "../data/categories.ts";
     let zoomScale = 1;
     let panX = 0;
     let panY = 0;
-
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
     // --- LIGHTBOX LOGIC ---
-    const updateLightboxTransform = () => { if (lightboxImg) lightboxImg.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomScale})`; };
-    const resetLightboxView = () => { zoomScale = 1; panX = 0; panY = 0; updateLightboxTransform(); };
+    const updateLightboxTransform = () => { 
+        if (lightboxImg) {
+            lightboxImg.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomScale})`;
+        }
+    };
+    const resetLightboxView = () => { 
+        zoomScale = 1; 
+        panX = 0; 
+        panY = 0; 
+        updateLightboxTransform(); 
+    };
 
     if (detailImg && artworkLightbox && lightboxImg) {
       detailImg.addEventListener("click", () => {
@@ -418,6 +429,46 @@ import categories from "../data/categories.ts";
           document.body.style.overflow = "hidden";
       });
     }
+    if (lightboxImg) {
+        // 1. Iniciar arrastre
+        lightboxImg.addEventListener('mousedown', (e) => {
+            e.preventDefault(); // Evita que el navegador intente "arrastrar" la imagen como archivo
+            isDragging = true;
+            // Calculamos el offset inicial restando la posición actual
+            startX = e.clientX - panX;
+            startY = e.clientY - panY;
+            lightboxImg.style.cursor = 'grabbing';
+        });
+
+        // 2. Mover la imagen
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            panX = e.clientX - startX;
+            panY = e.clientY - startY;
+            updateLightboxTransform();
+        });
+
+        // 3. Soltar la imagen
+        window.addEventListener('mouseup', () => {
+            if (isDragging) {
+                isDragging = false;
+                if (lightboxImg) lightboxImg.style.cursor = 'grab';
+            }
+        });
+
+        // 4. Zoom con la rueda del mouse
+        lightboxImg.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const delta = e.deltaY * -0.001; // Ajusta la sensibilidad aquí
+            // Limitamos el zoom entre 0.5x y 5x
+            const newScale = Math.min(Math.max(0.5, zoomScale + delta), 5);
+            zoomScale = newScale;
+            updateLightboxTransform();
+        });
+    }
+
+
     if (lightboxClose && artworkLightbox) {
       lightboxClose.addEventListener("click", () => {
           artworkLightbox.classList.add("hidden");
@@ -434,6 +485,7 @@ import categories from "../data/categories.ts";
           }
       });
     }
+
     
     // --- CARGA DE DATOS ---
     const loadData = async () => {
