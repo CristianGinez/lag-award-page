@@ -1,116 +1,52 @@
 ---
+// src/components/Hero.astro
 ---
 
-<section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-24">
-	<!-- imagen -->
-	<div class="absolute inset-0 -z-10">
-		<img 
-			src="./img/ph-1.jpg" 
-			alt="Fondo principal" 
-			class="w-full h-full object-cover"
-		/>
-	</div>
+<section class="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 z-0">
+        <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-[#050505] z-10"></div>
+        <video 
+            autoplay 
+            loop 
+            muted 
+            playsinline 
+            class="w-full h-full object-cover opacity-60"
+        >
+            <source src="https://res.cloudinary.com/dkjaq3i9p/video/upload/v1764132890/bg-hero_v8z6s2.webm" type="video/webm" />
+        </video>
+    </div>
 
-	<!-- Overlay oscuro -->
-	<div class="absolute inset-0 bg-black/50 -z-10"></div>
+    <div class="relative z-20 text-center px-4 max-w-5xl mx-auto">
+        
+        <div class="mb-6 animate-fade-in-down">
+            <span class="inline-block py-1 px-3 border border-yellow-500/50 rounded-full text-yellow-400 text-xs font-bold tracking-[0.3em] uppercase bg-black/50 backdrop-blur-md">
+                EVENTO FINALIZADO
+            </span>
+        </div>
 
-	<!-- Degradado extra para que la imagen se desvanezca hacia abajo (de opaco a transparente) -->
-	<!-- La parte superior es transparente y de la mitad hacia abajo se oscurece -->
-	<div class="absolute inset-0 -z-10 pointer-events-none" style="background: linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,0.85) 100%);"></div>
+        <h1 class="text-6xl md:text-8xl lg:text-9xl font-black font-orbitron text-transparent bg-clip-text bg-gradient-to-b from-white via-gray-200 to-gray-500 mb-6 drop-shadow-[0_0_35px_rgba(255,255,255,0.3)] leading-none tracking-tighter animate-title">
+            LAG <br/> <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">AWARDS</span>
+        </h1>
 
-	<!-- Fondo con efectos -->
-	<!-- fue bg-linear-to-b -->
-	<div class="absolute inset-0 bg-linear-to-b from-red-600/10 via-transparent to-purple-600/5 -z-10"></div>
-	<div class="absolute inset-0 -z-10">
-		<div class="absolute top-0 -left-40 w-80 h-80 bg-red-600/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
-		<div class="absolute top-1/2 right-0 w-80 h-80 bg-purple-600/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
-		<div class="absolute -bottom-40 left-1/2 w-80 h-80 bg-orange-600/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style="animation-delay: 4s;"></div>
-	</div>
+        <p class="text-xl md:text-2xl text-gray-300 font-light mb-10 max-w-2xl mx-auto animate-fade-in font-orbitron tracking-wide">
+            La comunidad ha elegido a sus leyendas.
+        </p>
 
-	<!-- Contenido principal -->
-	<div class="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-		<!-- Logo/Branding -->
-		<div class="mb-8 animate-fade-in">
-			<span class="inline-block text-sm font-bold text-yellow-400 mb-4 tracking-widest">EVENTO DE PREMIOS</span>
-		</div>
+        <div class="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-up">
+            <a href="/ganadores" class="group relative px-8 py-4 bg-yellow-500 hover:bg-yellow-400 text-black font-black font-orbitron uppercase tracking-widest rounded-none skew-x-[-10deg] transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(234,179,8,0.6)]">
+                <span class="inline-block skew-x-[10deg]">
+                    🏆 VER GANADORES
+                </span>
+            </a>
+            
+            <a href="/historia" class="text-gray-400 hover:text-white font-bold tracking-widest text-sm transition-colors border-b border-transparent hover:border-white pb-1">
+                CONOCER HISTORIA
+            </a>
+        </div>
 
+    </div>
 
-		<div class="relative inline-block">
-            <!-- Imagen del logo de fondo con efecto brillante -->
-            <!-- fue h-4/3 -->
-            <img 
-                src="/img/tl_logo.png" 
-                alt="Logo de fondo"
-                class="absolute inset-0 w-full h-full object-contain -z-10 opacity-10 backdrop-blur-xl animate-pulse"
-            />
-
-		<!-- Título principal con efecto -->
-		<h1 class="text-6xl sm:text-7xl lg:text-8xl font-black mb-6 leading-tight animate-fade-in" style="animation-delay: 0.1s;">
-			<!-- era bg-linear-to-r -->
-			<span class="bg-linear-to-r from-red-500 via-red-400 to-orange-500 text-transparent bg-clip-text">LAG</span>
-			<br />
-			
-			<span class="text-white">AWARDS</span>
-		</h1>
-		</div>
-
-		<!-- Subtítulo -->
-		<p class=" text-xl sm:text-2xl text-gray-300 mx-auto animate-fade-in" style="animation-delay: 0.2s;">
-			Celebrando los mejores clips, creadores y momentos épicos de la comunidad
-		</p>
-		<br />
-
-		<!-- CTA Buttons -->
-		<div class="flex flex-col sm:flex-row gap-4 justify-center mb-12 animate-fade-in" style="animation-delay: 0.3s;">
-			<!-- era bg-linear-to-r -->
-			<a href="/premiacion" class="cursor-pointer relative px-16 py-4 bg-linear-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-bold text-lg rounded transition-all duration-300 transform hover:scale-105 shadow-lg shadow-red-600/50">
-				Ver Gala
-			</a>
-
-		</div>
-		<br />
-		
-        <!--   Debe arreglarse aun -->
-		<!-- Estadísticas rápidas   -->
-		<div class="grid grid-cols-3 gap-4 max-w-xl mx-auto animate-fade-in" style="animation-delay: 0.4s;">
-			<div class="backdrop-blur-md bg-white/5 p-4 border-white/10">
-				<div class="text-3xl font-bold text-yellow-400">69</div>
-				<div class="text-sm text-gray-400">Nominados</div>
-			</div>
-			<div class="backdrop-blur-md bg-white/5 p-4 border-white/10">
-				<div class="text-3xl font-bold text-orange-400">20+</div>
-				<div class="text-sm text-gray-400">Creadores</div>
-			</div>
-			<div class="backdrop-blur-md bg-white/5 p-4  border-white/10">
-				<div class="text-3xl font-bold text-red-400">∞</div>
-				<div class="text-sm text-gray-400">Comunidad</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Scroll indicator (comenté esto porque este elemento se muestra encima de los cuadrados y aparte no se muestra bien jsjs)
-	<div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
-		<svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-		</svg>
-	</div>
-	-->
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce text-white/50">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7-7-7m14-8l-7 7-7-7"></path></svg>
+    </div>
 </section>
-
-<style>
-	@keyframes fade-in {
-		from {
-			opacity: 0;
-			transform: translateY(20px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-
-	.animate-fade-in {
-		animation: fade-in 0.8s ease-out forwards;
-		opacity: 0;
-	}
-</style>  
