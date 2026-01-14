@@ -17,6 +17,7 @@
     "@astrojs/vercel": "^8.0.4",
     "@google/generative-ai": "^0.24.1",
     "@nanostores/persistent": "^1.2.0",
+    "@nanostores/react": "^1.0.0",
     "@supabase/supabase-js": "^2.84.0",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",

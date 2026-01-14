@@ -1,0 +1,49 @@
+---
+const { eventSlug, eventName = "LAG AWARDS" } = Astro.props;
+const currentPath = Astro.url.pathname;
+
+const catLink = `/eventos/${eventSlug}`; 
+const winLink = `/eventos/${eventSlug}/ganadores`; 
+const infoLink = `/eventos/${eventSlug}/info`; 
+---
+
+<div class="w-full bg-black/40 backdrop-blur-md border-b border-white/5 sticky top-20 z-40 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-14">
+            
+            <div class="flex items-center gap-4">
+                <span class="text-purple-500 font-orbitron font-bold text-lg hidden sm:block uppercase">
+                    {eventName}
+                </span>
+                <div class="h-6 w-px bg-white/10 hidden sm:block"></div>
+                
+                <nav class="flex space-x-1 sm:space-x-4">
+                    <a 
+                        href={catLink}
+                        class={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${currentPath === catLink || currentPath === catLink + '/' ? 'bg-purple-600 text-white shadow-[0_0_15px_rgba(147,51,234,0.4)]' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
+                    >
+                        Votación
+                    </a>
+                    
+                    <a 
+                        href={winLink} 
+                        class={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${currentPath === winLink ? 'bg-purple-600 text-white shadow-[0_0_15px_rgba(147,51,234,0.4)]' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
+                    >
+                        Ganadores
+                    </a>
+
+                    <a 
+                        href={infoLink} 
+                        class={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${currentPath === infoLink ? 'bg-purple-600 text-white shadow-[0_0_15px_rgba(147,51,234,0.4)]' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
+                    >
+                        Información
+                    </a>
+                </nav>
+            </div>
+
+            <a href="/eventos" class="text-xs text-gray-500 hover:text-white transition-colors flex items-center gap-1">
+                &larr; <span class="hidden sm:inline">Cambiar Evento</span>
+            </a>
+        </div>
+    </div>
+</div>

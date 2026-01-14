@@ -1,17 +1,31 @@
 ---
-import Layout from './Layout.astro';
-import Navbar from '../shared/components/layouts/Navbar.astro';
-import Footer from '../shared/components/layouts/Footer.astro';
-import categories from '../data/categories';
-import EventNavbar from "../shared/components/EventNavbar.astro";
-import { getWinners } from '../lib/voting';
+import Layout from '../../Layout.astro';
+import Navbar from '../../../shared/components/layouts/Navbar.astro';
+import Footer from '../../../shared/components/layouts/Footer.astro';
+import EventNavbar from "../../../shared/components/EventNavbar.astro";
+
+// Funciones de datos
+import { getWinners } from '../../../lib/voting';
+import { getEventBySlug } from "../../../data/events";
+import { getCategoriesByEventId } from "../../../data/categories";
+
+// --- VALIDACIÓN DE RUTA DINÁMICA ---
+const { eventId } = Astro.params;
+const currentEvent = getEventBySlug(eventId);
+
+if (!currentEvent) {
+  return Astro.redirect('/404');
+}
 
 // --- CONFIGURACIÓN DEL EVENTO ---
+// Nota: Aquí podrías mapear IDs por evento si tienes múltiples años.
+// Por defecto usamos el ID que proporcionaste para 2025.
 const STREAM_ID = "sLfmFxlv7LY"; 
-const EVENT_ID_2025 = '856a7c16-5436-4776-a844-04dcaafb4656'; // UUID Real
+const EVENT_ID_UUID = '856a7c16-5436-4776-a844-04dcaafb4656'; 
 
 // Obtener datos reales
-const winnersData = await getWinners(EVENT_ID_2025);
+const winnersData = await getWinners(EVENT_ID_UUID);
+const categories = getCategoriesByEventId(currentEvent.id);
 
 // Helper para imágenes
 const getOptimizedUrl = (url: string) => {
@@ -24,8 +38,9 @@ const getOptimizedUrl = (url: string) => {
 
 // Procesar ganadores
 const winnersEnriched = categories.map(cat => {
-    const winnerInfo = winnersData.find((w: any) => w.category_id === cat.id);
+    const winnerInfo = winnersData ? winnersData.find((w: any) => w.category_id === cat.id) : null;
     
+    // Si no hay ganador data (evento en curso), retornamos null
     if (!winnerInfo) return null; 
 
     const nomineeDetails = cat.nominees.find(n => n.name === winnerInfo.nominee_name);
@@ -45,9 +60,10 @@ const winnersEnriched = categories.map(cat => {
 }).filter(item => item !== null);
 ---
 
-<Layout title="Ganadores - LAG AWARDS 2025">
+<Layout title={`Ganadores - ${currentEvent.title}`}>
   <Navbar />
-  <EventNavbar /> 
+  <EventNavbar eventSlug={currentEvent.slug} eventName={currentEvent.title} />
+  
   <main 
     id="premiacion-container"
     data-stream-id={STREAM_ID}
@@ -66,11 +82,11 @@ const winnersEnriched = categories.map(cat => {
                     <span class="text-yellow-400 font-mono text-sm font-bold tracking-widest uppercase">Resultados Oficiales</span>
                 </div>
 
-                <h1 class="text-6xl md:text-8xl font-black font-orbitron text-transparent bg-clip-text bg-linear-to-b from-yellow-100 via-yellow-400 to-yellow-800 drop-shadow-[0_0_35px_rgba(234,179,8,0.5)]">
+                <h1 class="text-6xl md:text-8xl font-black font-orbitron text-transparent bg-clip-text bg-gradient-to-b from-yellow-100 via-yellow-400 to-yellow-800 drop-shadow-[0_0_35px_rgba(234,179,8,0.5)]">
                     GANADORES
                 </h1>
                 <p class="text-xl text-yellow-100/60 mt-4 font-light tracking-wide max-w-2xl mx-auto">
-                    La comunidad ha hablado. Estos son los elegidos para la gloria eterna en los LAG Awards 2025.
+                    La comunidad ha hablado. Estos son los elegidos para la gloria eterna en los {currentEvent.title}.
                 </p>
             </div>
 
@@ -138,8 +154,13 @@ const winnersEnriched = categories.map(cat => {
                     ))}
                 </div>
             ) : (
-                <div class="text-center py-20 bg-white/5 rounded-3xl border border-white/10">
-                    <p class="text-gray-400 text-xl">Calculando resultados de la votación...</p>
+                <div class="text-center py-20 bg-white/5 rounded-3xl border border-white/10 backdrop-blur-sm max-w-3xl mx-auto">
+                    <span class="text-4xl mb-4 block">⏳</span>
+                    <h3 class="text-2xl font-bold text-white mb-2">Votaciones en curso</h3>
+                    <p class="text-gray-400 text-lg">Los ganadores se revelarán al finalizar el evento.</p>
+                    <a href={`/eventos/${currentEvent.slug}`} class="inline-block mt-6 px-6 py-2 bg-purple-600 hover:bg-purple-500 rounded-full font-bold transition-colors">
+                        Ir a Votar
+                    </a>
                 </div>
             )}
       </div>
@@ -159,7 +180,6 @@ const winnersEnriched = categories.map(cat => {
                     class="w-full h-full"
                     src={`https://www.youtube.com/embed/${STREAM_ID}?autoplay=0&mute=0&rel=0&modestbranding=1`} 
                     title="LAG AWARDS LIVE" 
-                    frameborder="0" 
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                     allowfullscreen>
                 </iframe>
@@ -178,7 +198,7 @@ const winnersEnriched = categories.map(cat => {
                     <div class="absolute inset-0 flex items-center justify-center text-gray-600 text-xs">
                         Cargando chat...
                     </div>
-                    <iframe id="live-chat-iframe" class="relative z-10 w-full h-full" frameborder="0"></iframe>
+                    <iframe id="live-chat-iframe" class="relative z-10 w-full h-full"></iframe>
                 </div>
             </div>
         </div>
@@ -217,7 +237,7 @@ const winnersEnriched = categories.map(cat => {
 
       setupChat();
 
-      // 3. CONFETI AUTOMÁTICO (Celebración al entrar)
+      // 3. CONFETI AUTOMÁTICO
       const duration = 2000;
       const end = Date.now() + duration;
 
@@ -227,7 +247,7 @@ const winnersEnriched = categories.map(cat => {
               angle: 60,
               spread: 55,
               origin: { x: 0 },
-              colors: ['#eab308', '#ffffff'] // Dorado y blanco
+              colors: ['#eab308', '#ffffff'] 
           });
           confetti({
               particleCount: 5,

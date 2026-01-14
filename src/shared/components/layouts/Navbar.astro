@@ -1,8 +1,8 @@
 ---
 const links = [
-  { name: 'Informacion', href: '/info' },
-  { name: 'Categorias', href: '/categorias' },
-  { name: 'Ganadores', href: '/ganadores' },
+  { name: 'Inicio', href: '/' },           
+  { name: 'Información', href: '/info' },   
+  { name: 'Eventos', href: '/eventos' },   
   { name: 'Historia', href: '/historia' },
 ];
 ---
@@ -24,6 +24,7 @@ const links = [
             </div>
 
             <div class="hidden md:flex w-full items-center justify-between">
+                
                 <div class="flex-1 flex justify-end items-center space-x-8 pr-8">
                     <a href={links[0].href} class="nav-link font-bold tracking-wider hover:text-yellow-400 transition-colors">{links[0].name}</a>
                     <a href={links[1].href} class="nav-link font-bold tracking-wider hover:text-yellow-400 transition-colors">{links[1].name}</a>
@@ -36,7 +37,11 @@ const links = [
                 </div>
 
                 <div class="flex-1 flex justify-start items-center space-x-8 pl-8">
-                    <a href={links[2].href} class="nav-link font-bold tracking-wider hover:text-yellow-400 transition-colors">{links[2].name}</a>
+                    <a href={links[2].href} class="nav-link font-bold tracking-wider hover:text-yellow-400 transition-colors relative group">
+                        {links[2].name}
+                        <span class="absolute -top-3 -right-4 bg-purple-600 text-[9px] px-1.5 py-0.5 rounded-full text-white opacity-80 group-hover:opacity-100 transition-opacity">NEW</span>
+                    </a>
+                    
                     <a href={links[3].href} class="nav-link font-bold tracking-wider hover:text-yellow-400 transition-colors">{links[3].name}</a>
                     
                     <div class="ml-4 pl-4 border-l border-white/20 h-8 flex items-center">
@@ -52,23 +57,23 @@ const links = [
                         </a>
 
                         <div id="user-profile" class="hidden flex items-center gap-3">
-    <a href="/perfil" class="block">
-        <img 
-            id="user-avatar" 
-            src="" 
-            alt="Perfil" 
-            class="w-9 h-9 rounded-full border-2 border-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.5)] object-cover cursor-pointer hover:scale-110 transition-transform" 
-            title="Ir a mi perfil"
-        />
-    </a>
-    
-    <button 
-        id="btn-logout" 
-        class="cursor-pointer text-xs font-bold text-red-400 hover:text-red-300 border border-red-500/30 bg-red-500/10 px-2 py-1 rounded hover:bg-red-500/20 transition-colors"
-    >
-        SALIR
-    </button>
-</div>
+                            <a href="/perfil" class="block">
+                                <img 
+                                    id="user-avatar" 
+                                    src="" 
+                                    alt="Perfil" 
+                                    class="w-9 h-9 rounded-full border-2 border-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.5)] object-cover cursor-pointer hover:scale-110 transition-transform" 
+                                    title="Ir a mi perfil"
+                                />
+                            </a>
+                            
+                            <button 
+                                id="btn-logout" 
+                                class="cursor-pointer text-xs font-bold text-red-400 hover:text-red-300 border border-red-500/30 bg-red-500/10 px-2 py-1 rounded hover:bg-red-500/20 transition-colors"
+                            >
+                                SALIR
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -87,97 +92,60 @@ const links = [
 </nav>
 
 <style>
-	/* Pequeña animación de aparición suave */
-	@keyframes navFade {
-        from {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    @keyframes navFade {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
     }
-
-    nav {
-        animation: navFade 0.8s ease-out forwards;
-    }
-
-	
-
-	.nav-link:hover {
-        text-shadow: 0 0 8px rgba(250, 204, 21, 0.7);
-    }
-
-    /* El estilo de hover para text-shadow no se puede hacer directamente con Tailwind, así que lo mantenemos aquí */
-    a:hover {
-        text-shadow: 0 0 8px rgba(250, 204, 21, 0.7);
-    }
+    nav { animation: navFade 0.8s ease-out forwards; }
+    .nav-link:hover { text-shadow: 0 0 8px rgba(250, 204, 21, 0.7); }
+    a:hover { text-shadow: 0 0 8px rgba(250, 204, 21, 0.7); }
 </style>
 
 <script>
   import { supabase } from '../../../lib/supabase';
   import { $currentUser } from '../../../stores/authStore';
 
-  // Ejecutar lógica cada vez que Astro carga o cambia de página
   document.addEventListener('astro:page-load', () => {
       
-      // 1. OBTENER ELEMENTOS DEL DOM (Siempre frescos)
       const btnLoginLink = document.getElementById('btn-login-link');
       const userProfile = document.getElementById('user-profile');
-      const userAvatar = document.getElementById('user-avatar');
-      const mobileLoginBtn = document.getElementById('mobile-login-btn');
+      const userAvatar = document.getElementById('user-avatar') as HTMLImageElement;
+      const mobileLoginBtn = document.getElementById('mobile-login-btn') as HTMLAnchorElement;
       const btnLogout = document.getElementById('btn-logout');
       const menuToggle = document.getElementById('menu-toggle');
       const mobileMenu = document.getElementById('mobile-menu');
 
-
-      // 2. FUNCIÓN DE ACTUALIZACIÓN DE UI
-      const updateUI = (user) => {
-          if (!btnLoginLink || !userProfile || !userAvatar) return; // Protección si el DOM no está listo
+      const updateUI = (user: any) => {
+          if (!btnLoginLink || !userProfile || !userAvatar) return;
 
           if (user) {
-              // --- MODO: LOGUEADO ---
+              // --- LOGUEADO ---
               btnLoginLink.classList.add('hidden');
-
-              // Forzamos que se muestre el perfil
               userProfile.classList.remove('hidden');
               userProfile.classList.add('flex'); 
 
-              // LÓGICA ROBUSTA DE IMAGEN
-
               const avatarUrl = user.user_metadata?.avatar_url || user.user_metadata?.picture;
-
               const userName = user.user_metadata?.full_name || user.email || 'User';
-              
-              // Si no hay foto, usamos UI Avatars con las iniciales del usuario
               const fallbackUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=random&color=fff&bold=true`;
 
               userAvatar.src = avatarUrl || fallbackUrl;
-              
-              // Si la imagen de Google falla al cargar, cambiamos al fallback inmediatamente
-              userAvatar.onerror = () => {
-                  userAvatar.src = fallbackUrl;
-              };
+              userAvatar.onerror = () => { userAvatar.src = fallbackUrl; };
 
               if (mobileLoginBtn) {
                   mobileLoginBtn.textContent = 'Mi Cuenta';
-
-                  // MODIFICADO: Redirige a la nueva página de perfil
                   mobileLoginBtn.href = '/perfil';
               }
               
-              // NUEVO: Agregar un listener para que el avatar redirija a /perfil
               if (userAvatar && !userAvatar.hasAttribute('data-listener-attached')) {
                   userAvatar.addEventListener('click', (e) => {
                       e.preventDefault(); 
                       window.location.href = '/perfil';
                   });
                   userAvatar.setAttribute('data-listener-attached', 'true');
-          }
+              }
 
-      } else { 
-              // --- MODO: NO LOGUEADO ---
+          } else { 
+              // --- NO LOGUEADO ---
               btnLoginLink.classList.remove('hidden');
               userProfile.classList.add('hidden');
               userProfile.classList.remove('flex');
@@ -189,12 +157,11 @@ const links = [
           }
       };
 
-      // 3. VERIFICAR ESTADO ACTUAL (Al cargar la página)
+      // Verificar estado
       const current = $currentUser.get();
       if (current) {
           updateUI(current);
       } else {
-          // Si no hay store, preguntar a Supabase (persistencia)
           supabase.auth.getSession().then(({ data: { session } }) => {
               if (session?.user) {
                   $currentUser.set(session.user);
@@ -205,30 +172,21 @@ const links = [
           });
       }
 
-      // 4. ESCUCHAR CAMBIOS EN EL STORE (Para login/logout dinámico)
-      const unsubscribe = $currentUser.subscribe(user => {
-          updateUI(user);
-      });
+      $currentUser.subscribe(user => updateUI(user));
 
-      // 5. EVENT LISTENERS
-      // Logout
       if (btnLogout) {
-          // Clonamos el nodo para eliminar listeners viejos (truco para evitar duplicados en Astro)
           const newBtn = btnLogout.cloneNode(true);
-          btnLogout.parentNode.replaceChild(newBtn, btnLogout);
-          
+          btnLogout.parentNode?.replaceChild(newBtn, btnLogout);
           newBtn.addEventListener('click', async () => {
               await supabase.auth.signOut();
               $currentUser.set(null);
-              window.location.href = '/'; // Recarga completa para limpiar estado
+              window.location.href = '/'; 
           });
       }
 
-      // Mobile Menu
       if (menuToggle && mobileMenu) {
           const newToggle = menuToggle.cloneNode(true);
-          menuToggle.parentNode.replaceChild(newToggle, menuToggle);
-
+          menuToggle.parentNode?.replaceChild(newToggle, menuToggle);
           newToggle.addEventListener('click', () => {
               mobileMenu.classList.toggle('hidden');
           });

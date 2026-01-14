@@ -1,4 +1,4 @@
-const categories = [
+const categories2025 = [
   {
     id: "1",
     icon: "😂",
@@ -576,5 +576,14 @@ const categories = [
     ],
   }
 ];
+const dataMap: Record<string, any[]> = {
+  'lag2025': categories2025,
+  // 'lag2024': categories2024 (si tuvieras datos antiguos)
+};
 
-export default categories;
+// Función helper para obtener categorías por ID de evento
+export const getCategoriesByEventId = (eventId: string) => {
+  return dataMap[eventId] || [];
+};
+
+export default categories2025
