@@ -1,6 +1,6 @@
-#  LAGAWARDS — Sitio Oficial
+#  TeamLag — Sitio Oficial
 
-Sitio web oficial de los Premios LAGAWARDS: celebramos clips, creadores y comunidad. Construido con `Astro` y estilizado con `Tailwind CSS`.
+Sitio web oficial de la comunidad del TeamLag. Construido con `Astro` y estilizado con `Tailwind CSS`.
 
 ##  Características
 - Diseño moderno con efectos `glass` y tipografía `Orbitron`.

@@ -116,8 +116,8 @@ const links = [
 </style>
 
 <script>
-  import { supabase } from '../lib/supabase';
-  import { $currentUser } from '../stores/authStore';
+  import { supabase } from '../../../lib/supabase';
+  import { $currentUser } from '../../../stores/authStore';
 
   // Ejecutar lógica cada vez que Astro carga o cambia de página
   document.addEventListener('astro:page-load', () => {
