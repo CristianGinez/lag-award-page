@@ -4,11 +4,16 @@ import Navbar from '../../../shared/components/layouts/Navbar.astro';
 import Footer from '../../../shared/components/layouts/Footer.astro';
 import EventNavbar from "../../../shared/components/EventNavbar.astro";
 
-// Importamos funciones dinámicas para que la info corresponda al evento actual
+// Datos y utilidades
 import { getEventBySlug } from "../../../data/events";
 import { getCategoriesByEventId } from "../../../data/categories";
+import { getCategoryTotalVotes } from '../../../lib/voting';
 
-// --- VALIDACIÓN DE RUTA DINÁMICA ---
+// Importamos los componentes React separados
+import { AwardsInfo } from "../../../components/react/info/AwardsInfo";
+import { LeagueInfo } from "../../../components/react/info/LeagueInfo";
+
+// --- VALIDACIÓN Y DATOS ---
 const { eventId } = Astro.params;
 const currentEvent = getEventBySlug(eventId);
 
@@ -16,347 +21,59 @@ if (!currentEvent) {
   return Astro.redirect('/404');
 }
 
-// Obtenemos las categorías ESPECÍFICAS de este evento para las estadísticas
-const categories = getCategoriesByEventId(currentEvent.id);
+// Lógica condicional
+const isLeague = currentEvent.type === 'league';
 
-// 2. Cálculos automáticos dinámicos
-const totalCategories = categories.length;
-const totalNominees = categories.reduce((acc, cat) => acc + cat.nominees.length, 0);
+// Datos específicos para Premios
+let voteCount = 0;
+let totalCategories = 0;
+let totalNominees = 0;
+
+if (!isLeague) {
+    const categories = getCategoriesByEventId(currentEvent.id);
+    const votesMap = await getCategoryTotalVotes();
+    
+    voteCount = Object.values(votesMap).reduce((a: any, b: any) => a + b, 0) as number;
+    totalCategories = categories.length;
+    totalNominees = categories.reduce((acc, cat) => acc + cat.nominees.length, 0);
+}
 ---
 
 <Layout title={`Información - ${currentEvent.title}`}>
   <Navbar />
   <EventNavbar eventSlug={currentEvent.slug} eventName={currentEvent.title} />
   
-  <main class="pt-24 text-white overflow-hidden relative bg-[#050505]">
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-purple-900/20 via-black to-black -z-10"></div>
+  <main class="pt-24 text-white overflow-hidden relative bg-[#050505] min-h-screen">
+    
+    {/* Fondos dinámicos según evento */}
+    <div class="absolute inset-0 -z-10 pointer-events-none">
+        {isLeague ? (
+             <div class="absolute inset-0 bg-gradient-to-br from-green-900/20 via-black to-black"></div>
+        ) : (
+             <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-purple-900/20 via-black to-black"></div>
+        )}
+    </div>
     
     <div class="container mx-auto px-6 py-16">
       
-      <div class="text-center mb-16 animate-fade-in">
-        <span class="inline-block bg-yellow-400/10 border border-yellow-400/20 text-yellow-400 text-sm font-bold px-4 py-1 rounded-full mb-4">Guía del Evento</span>
-        <h1 class="text-5xl md:text-7xl font-bold font-orbitron mb-6">
-          Información <span class="bg-gradient-to-r from-red-500 to-orange-500 text-transparent bg-clip-text">General</span>
-        </h1>
-        <p class="text-xl text-gray-300 max-w-3xl mx-auto">
-          Todo lo que necesitas saber sobre los {currentEvent.title}: fechas, reglas y cómo participar en la fiesta del año.
-        </p>
-      </div>
+      {isLeague ? (
+        /* VISTA DE LIGA DE FÚTBOL */
+        <LeagueInfo 
+            client:load 
+            event={currentEvent} 
+        />
+      ) : (
+        /* VISTA DE PREMIOS (LAG AWARDS) */
+        <AwardsInfo 
+            client:load 
+            event={currentEvent}
+            totalCategories={totalCategories}
+            totalNominees={totalNominees}
+            voteCount={voteCount}
+        />
+      )}
 
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20">
-        
-        <div class="lg:col-span-2 space-y-8">
-          <div class="bg-[#111] backdrop-blur-md rounded-2xl border border-white/10 shadow-2xl p-8 relative overflow-hidden group">
-            <div class="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-purple-500/20 rounded-full blur-3xl group-hover:bg-purple-500/30 transition-all duration-500"></div>
-            
-            <h2 class="text-2xl font-bold font-orbitron mb-4 relative z-10">Sobre los {currentEvent.title}</h2>
-            <p class="text-gray-400 mb-8 leading-relaxed relative z-10">
-              Los {currentEvent.title} celebran a los creadores y momentos más destacados de nuestra comunidad.
-              Este año contamos con nuevas categorías y un sistema de votación en tiempo real transparente y seguro.
-            </p>
-
-            <div class="grid grid-cols-2 gap-4 mb-8 text-center">
-              <div class="bg-white/5 border border-white/10 rounded-xl py-4 px-2 hover:border-purple-500/50 transition-colors">
-                <div class="text-2xl font-bold text-white mb-1">{totalCategories}</div>
-                <div class="text-xs text-gray-500 uppercase font-bold tracking-wider">Categorías</div>
-              </div>
-              <div class="bg-white/5 border border-white/10 rounded-xl py-4 px-2 hover:border-blue-500/50 transition-colors">
-                <div class="text-2xl font-bold text-white mb-1">20+</div>
-                <div class="text-xs text-gray-500 uppercase font-bold tracking-wider">Creadores</div>
-              </div>
-              <div class="bg-white/5 border border-white/10 rounded-xl py-4 px-2 hover:border-green-500/50 transition-colors">
-                <div class="text-2xl font-bold text-white mb-1">Global</div>
-                <div class="text-xs text-gray-500 uppercase font-bold tracking-wider">Comunidad</div>
-              </div>
-              <div class="bg-white/5 border border-white/10 rounded-xl py-4 px-2 hover:border-red-500/50 transition-colors">
-                <div class="text-2xl font-bold text-white mb-1">En Vivo</div>
-                <div class="text-xs text-gray-500 uppercase font-bold tracking-wider">Gala Final</div>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-4 text-center border-t border-white/5 pt-8">
-              <div>
-                <div id="live-total-votes" class="text-5xl font-black text-yellow-400 font-orbitron tracking-tighter">...</div>
-                <div class="text-sm text-gray-400 font-bold mt-2 uppercase tracking-widest">Votos Emitidos</div>
-              </div>
-              <div>
-                <div class="text-5xl font-black text-orange-400 font-orbitron tracking-tighter">{totalNominees}</div>
-                <div class="text-sm text-gray-400 font-bold mt-2 uppercase tracking-widest">Nominaciones</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="space-y-8">
-          <div class="bg-[#111] backdrop-blur-md rounded-2xl border border-white/10 shadow-lg p-6">
-            <h3 class="text-xl font-bold font-orbitron mb-6 text-white flex items-center gap-2">
-                <span class="text-red-500">📅</span> Fechas Clave
-            </h3>
-            <ul class="space-y-4 text-gray-300 text-sm">
-              <li class="flex justify-between items-center pb-3 border-b border-white/5">
-                <span>Apertura</span> 
-                <span class="font-mono text-red-400 bg-red-900/20 px-2 py-1 rounded">3 Diciembre</span>
-              </li>
-              
-              <li class="flex justify-between items-center pb-3 border-b border-white/5">
-                <span>Votación Público</span> 
-                <span class="font-mono text-purple-400 bg-purple-900/20 px-2 py-1 rounded"> Hasta 12 Diciembre</span>
-              </li>
-              <li class="flex justify-between items-center">
-                <span class="text-yellow-400 font-bold">Gala Final</span> 
-                <span class="font-mono text-black bg-yellow-400 px-2 py-1 rounded font-bold">12 Diciembre</span>
-              </li>
-            </ul>
-          </div>
-        
-          <div class="bg-[#111] backdrop-blur-md rounded-2xl border border-white/10 shadow-lg p-6">
-            <h3 class="text-xl font-bold font-orbitron mb-4 text-white">Sistema de Votación</h3>
-            <p class="text-gray-400 text-sm leading-relaxed mb-4">
-                Utilizamos tecnología segura para garantizar un voto justo por usuario.
-            </p>
-            <div class="flex items-center gap-2 text-xs text-gray-500 font-mono bg-black/30 p-3 rounded border border-white/5">
-                <span class="text-green-500">✔</span> Un voto por categoría
-                <br>
-                <span class="text-green-500">✔</span> Login verificado
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="max-w-4xl mx-auto space-y-16 pb-20">
-        <section class="relative pl-8 border-l-2 border-red-500/50">
-          <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-red-500 shadow-[0_0_15px_#ef4444]"></div>
-          <h2 class="text-3xl font-bold font-orbitron mb-4 text-white">¿Qué son los {currentEvent.title}?</h2>
-          <p class="text-gray-400 leading-relaxed text-lg">
-            Los {currentEvent.title} son un evento anual dedicado a celebrar y premiar la creatividad, 
-            el talento y los momentos más memorables de la comunidad de creadores de contenido.
-            Desde clips virales hasta las personalidades más influyentes, nuestro objetivo es reconocer a quienes hacen de internet un lugar más entretenido y vibrante.
-          </p>
-        </section>
-
-        <section class="relative pl-8 border-l-2 border-purple-500/50">
-          <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-purple-500 shadow-[0_0_15px_#a855f7]"></div>
-          <h2 class="text-3xl font-bold font-orbitron mb-4 text-white">Nuestra Misión</h2>
-          <p class="text-gray-400 leading-relaxed text-lg">
-            Nuestra misión es simple: dar visibilidad y reconocimiento a los creadores de todos los tamaños.
-            Creemos en el poder de la comunidad para descubrir y apoyar el talento emergente, y los {currentEvent.title} son la plataforma para que esa voz se escuche.
-          </p>
-        </section>
-
-        <section class="relative pl-8 border-l-2 border-yellow-500/50">
-          <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-yellow-500 shadow-[0_0_15px_#eab308]"></div>
-          <h2 class="text-3xl font-bold font-orbitron mb-4 text-white">Proceso de Votación</h2>
-          <p class="text-gray-400 leading-relaxed text-lg">
-            El proceso es totalmente impulsado por la comunidad.
-            Los nominados son seleccionados en base a la popularidad y el impacto de su contenido durante el año.
-            Posteriormente, se abre un período de votación donde el público puede apoyar a sus favoritos en cada categoría.
-            ¡Tu voto decide quién se lleva el premio!
-          </p>
-        </section>
-      </div>
-
-      <div class="max-w-5xl mx-auto bg-gradient-to-r from-[#111] to-[#0a0a0a] border border-white/10 rounded-3xl p-8 md:p-12 text-center relative overflow-hidden">
-        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 via-purple-500 to-blue-500"></div>
-        
-        <h2 class="text-3xl md:text-4xl font-bold font-orbitron mb-10">¿Cómo participar?</h2>
-        
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 text-left">
-            <div class="p-4 rounded-xl bg-white/5 border border-white/5 hover:border-white/20 transition-colors">
-                <div class="text-2xl mb-2">💡</div>
-                <h4 class="font-bold text-white mb-1">1. Propón</h4>
-                <p class="text-sm text-gray-400">Nomina tus clips favoritos.</p>
-            </div>
-            <div class="p-4 rounded-xl bg-white/5 border border-white/5 hover:border-white/20 transition-colors">
-                <div class="text-2xl mb-2">🕵️</div>
-                <h4 class="font-bold text-white mb-1">2. Verifica</h4>
-                <p class="text-sm text-gray-400">El staff revisa las categorías.</p>
-            </div>
-            <div class="p-4 rounded-xl bg-white/5 border border-white/5 hover:border-white/20 transition-colors">
-                <div class="text-2xl mb-2">🗳️</div>
-                <h4 class="font-bold text-white mb-1">3. Vota</h4>
-                <p class="text-sm text-gray-400">Apoya a los finalistas.</p>
-            </div>
-            <div class="p-4 rounded-xl bg-white/5 border border-white/5 hover:border-white/20 transition-colors">
-                <div class="text-2xl mb-2">🎉</div>
-                <h4 class="font-bold text-white mb-1">4. Celebra</h4>
-                <p class="text-sm text-gray-400">Disfruta la gala en vivo.</p>
-            </div>
-        </div>
-
-        <div class="mt-12 flex flex-col sm:flex-row justify-center gap-4">
-          <a href={`/eventos/${currentEvent.slug}`} class="px-8 py-3 bg-white text-black font-bold rounded-full hover:scale-105 transition-transform shadow-[0_0_20px_rgba(255,255,255,0.3)]">
-            Ir a Categorías
-          </a>
-        </div>
-      </div>
-
-
-      <section class="mt-32 pt-20 border-t border-white/5 relative">
-        
-        <div class="text-center mb-20">
-          <span class="text-purple-400 font-mono text-xs uppercase tracking-[0.3em] mb-2 block">Equipo de Desarrollo</span>
-          <h2 class="text-4xl md:text-5xl font-bold text-white font-orbitron">
-            Arquitectura & Desarrollo
-          </h2>
-          <p class="text-gray-400 mt-4 max-w-2xl mx-auto font-light">
-            Conoce a las mentes detrás de la plataforma. Un proyecto open-source construido con las últimas tecnologías web.
-          </p>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto px-4">
-          
-          <div class="group bg-[#0a0a0a] border border-white/10 rounded-2xl p-8 hover:border-purple-500/30 transition-all duration-300 relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-64 h-64 bg-purple-600/10 blur-[80px] rounded-full -z-10 group-hover:bg-purple-600/20 transition-all"></div>
-            
-            <div class="flex flex-col md:flex-row gap-8 items-start">
-                <div class="relative">
-                    <div class="w-24 h-24 rounded-2xl overflow-hidden border border-white/10 shadow-2xl grayscale group-hover:grayscale-0 transition-all duration-500">
-                        <img src="https://res.cloudinary.com/dkjaq3i9p/image/upload/v1764350849/image_2025-11-28_122729111_ughfdt.png" alt="Cristian" class="w-full h-full object-cover" />
-                    </div>
-                    <div class="absolute -bottom-3 -right-3 bg-[#111] border border-white/10 p-1.5 rounded-lg">
-                        <span class="text-xs">🚀</span>
-                    </div>
-                </div>
-
-                <div class="flex-1 w-full">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h3 class="text-2xl font-bold text-white font-orbitron">Cristian Ginez</h3>
-                            <p class="text-purple-400 text-sm font-medium tracking-wide uppercase mt-1">Lead Full-Stack Engineer</p>
-                        </div>
-                        <div class="flex gap-3">
-                            <a href="https://github.com/CristianGinez" class="text-gray-500 hover:text-white transition-colors" title="GitHub"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" /></svg></a>
-                            <a href="#" class="text-gray-500 hover:text-blue-400 transition-colors" title="LinkedIn"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
-                            <a href="https://paypal.me/CristianGinez" class="text-gray-500 hover:text-[#0070BA] transition-colors" title="PayPal" target="_blank" rel="noopener noreferrer">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="13 11 22 26">
-                                    <path d="M32.3305 18.0977C32.3082 18.24 32.2828 18.3856 32.2542 18.5351C31.2704 23.5861 27.9046 25.331 23.606 25.331H21.4173C20.8916 25.331 20.4486 25.7127 20.3667 26.2313L19.2461 33.3381L18.9288 35.3527C18.8755 35.693 19.1379 36 19.4815 36H23.3634C23.8231 36 24.2136 35.666 24.286 35.2127L24.3241 35.0154L25.055 30.3772L25.1019 30.1227C25.1735 29.6678 25.5648 29.3338 26.0245 29.3338H26.6051C30.3661 29.3338 33.3103 27.8068 34.1708 23.388C34.5303 21.5421 34.3442 20.0008 33.393 18.9168C33.1051 18.59 32.748 18.3188 32.3305 18.0977Z"></path>
-                                    <path d="M31.3009 17.6871C31.1506 17.6434 30.9955 17.6036 30.8364 17.5678C30.6766 17.5328 30.5127 17.5018 30.3441 17.4748C29.754 17.3793 29.1074 17.334 28.4147 17.334H22.5676C22.4237 17.334 22.2869 17.3666 22.1644 17.4254C21.8948 17.5551 21.6944 17.8104 21.6459 18.1229L20.402 26.0013L20.3662 26.2311C20.4481 25.7126 20.8911 25.3308 21.4168 25.3308H23.6055C27.9041 25.3308 31.2699 23.5851 32.2537 18.5349C32.2831 18.3854 32.3078 18.2398 32.33 18.0975C32.0811 17.9655 31.8115 17.8525 31.5212 17.7563C31.4496 17.7324 31.3757 17.7094 31.3009 17.6871Z"></path>
-                                    <path d="M21.6461 18.1231C21.6946 17.8105 21.895 17.5552 22.1646 17.4264C22.2879 17.3675 22.4239 17.3349 22.5678 17.3349H28.4149C29.1077 17.3349 29.7542 17.3803 30.3444 17.4757C30.513 17.5027 30.6768 17.5338 30.8367 17.5687C30.9957 17.6045 31.1508 17.6443 31.3011 17.688C31.3759 17.7103 31.4498 17.7334 31.5222 17.7564C31.8125 17.8527 32.0821 17.9664 32.331 18.0976C32.6237 16.231 32.3287 14.9601 31.3194 13.8093C30.2068 12.5424 28.1986 12 25.629 12H18.169C17.6441 12 17.1963 12.3817 17.1152 12.9011L14.0079 32.5969C13.9467 32.9866 14.2473 33.3381 14.6402 33.3381H19.2458L20.4022 26.0014L21.6461 18.1231Z"></path>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="mt-6 space-y-4">
-                        <div>
-                            <h4 class="text-xs font-bold text-gray-500 uppercase mb-2">Responsabilidades</h4>
-                            <p class="text-sm text-gray-300 leading-relaxed">
-                                Diseño de arquitectura escalable, integración de autenticación OAuth, modelado de base de datos PostgreSQL y lógica de seguridad (RLS).
-                            </p>
-                        </div>
-                        
-                        <div>
-                            <h4 class="text-xs font-bold text-gray-500 uppercase mb-2">Core Stack</h4>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-2 py-1 text-[10px] font-mono rounded bg-purple-900/20 text-purple-300 border border-purple-500/20">Astro</span>
-                                <span class="px-2 py-1 text-[10px] font-mono rounded bg-green-900/20 text-green-300 border border-green-500/20">Supabase</span>
-                                <span class="px-2 py-1 text-[10px] font-mono rounded bg-blue-900/20 text-blue-300 border border-blue-500/20">TypeScript</span>
-                                <span class="px-2 py-1 text-[10px] font-mono rounded bg-orange-900/20 text-orange-300 border border-orange-500/20">Cloudflare R2</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-          </div>
-
-          <div class="group bg-[#0a0a0a] border border-white/10 rounded-2xl p-8 hover:border-pink-500/30 transition-all duration-300 relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-64 h-64 bg-pink-600/10 blur-[80px] rounded-full -z-10 group-hover:bg-pink-600/20 transition-all"></div>
-
-            <div class="flex flex-col md:flex-row gap-8 items-start">
-                <div class="relative">
-                    <div class="w-24 h-24 rounded-2xl overflow-hidden border border-white/10 shadow-2xl grayscale group-hover:grayscale-0 transition-all duration-500">
-                        <img src="https://res.cloudinary.com/dkjaq3i9p/image/upload/v1764817985/image_2025-12-03_221304332_ozk7sj.png" alt="Compañero" class="w-full h-full object-cover" />
-                    </div>
-                    <div class="absolute -bottom-3 -right-3 bg-[#111] border border-white/10 p-1.5 rounded-lg">
-                        <span class="text-xs">🎨</span>
-                    </div>
-                </div>
-
-                <div class="flex-1 w-full">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h3 class="text-2xl font-bold text-white font-orbitron">Jesus Rios</h3>
-                            <p class="text-pink-400 text-sm font-medium tracking-wide uppercase mt-1">Frontend & UI Specialist</p>
-                        </div>
-                        <div class="flex gap-3">
-                            <a href="https://github.com/Jesus-Rios" class="text-gray-500 hover:text-white transition-colors"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" /></svg></a>
-                        </div>
-                    </div>
-
-                    <div class="mt-6 space-y-4">
-                        <div>
-                            <h4 class="text-xs font-bold text-gray-500 uppercase mb-2">Responsabilidades</h4>
-                            <p class="text-sm text-gray-300 leading-relaxed">
-                                Diseño de interfaz responsiva, animaciones CSS avanzadas, experiencia de usuario (UX) y optimización visual de componentes.
-                            </p>
-                        </div>
-                        
-                        <div>
-                            <h4 class="text-xs font-bold text-gray-500 uppercase mb-2">Core Stack</h4>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-2 py-1 text-[10px] font-mono rounded bg-cyan-900/20 text-cyan-300 border border-cyan-500/20">Tailwind CSS</span>
-                                <span class="px-2 py-1 text-[10px] font-mono rounded bg-pink-900/20 text-pink-300 border border-pink-500/20">Figma</span>
-                                <span class="px-2 py-1 text-[10px] font-mono rounded bg-yellow-900/20 text-yellow-300 border border-yellow-500/20">JavaScript</span>
-                                <span class="px-2 py-1 text-[10px] font-mono rounded bg-white/10 text-gray-300 border border-white/20">Animations</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="max-w-4xl mx-auto mt-16 pt-8 border-t border-white/5 text-center">
-            <p class="text-xs text-gray-600 font-mono">
-                SYSTEM_VERSION: <span class="text-gray-400">1.0.0</span> • BUILT_WITH: <span class="text-gray-400">ASTRO_V5</span>
-            </p>
-        </div>
-      </section>
     </div>
   </main>
   <Footer />
 </Layout>
-
-<script>
-    import { getCategoryTotalVotes } from '../../../lib/voting';
-
-    // Script para animar los números en tiempo real
-    document.addEventListener('astro:page-load', async () => {
-        const votesEl = document.getElementById('live-total-votes');
-        
-        if (votesEl) {
-            // 1. Obtener datos reales
-            const votesMap = await getCategoryTotalVotes();
-            
-            // 2. Sumar todos los valores del objeto
-            const totalVotes = Object.values(votesMap).reduce((a: any, b: any) => a + b, 0);
-
-            // 3. Animación de conteo (Count Up)
-            const duration = 2000; // 2 segundos
-            const start = 0;
-            const end = Number(totalVotes);
-            const startTime = performance.now();
-
-            const animate = (currentTime: number) => {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                
-                // Función de easing para que frene al final
-                const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-                
-                const current = Math.floor(start + (end - start) * easeOutQuart);
-                
-                votesEl.textContent = current.toLocaleString(); 
-
-                if (progress < 1) {
-                    requestAnimationFrame(animate);
-                } else {
-                    votesEl.textContent = end.toLocaleString(); // Asegurar valor final exacto
-                }
-            };
-
-            requestAnimationFrame(animate);
-        }
-    });
-</script>

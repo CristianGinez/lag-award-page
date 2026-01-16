@@ -85,7 +85,7 @@ export const VoteButton: React.FC<VoteButtonProps> = ({ category, nominee }) => 
       onClick={handleVote}
       disabled={loading}
       className={`w-full md:w-auto px-8 py-4 rounded-lg text-xl font-bold text-white shadow-lg transition-all transform hover:scale-105 flex items-center justify-center gap-3
-        ${loading ? 'bg-gray-600 cursor-wait' : 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500'}
+        ${loading ? 'bg-gray-600 cursor-wait' : 'bg-linear-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500'}
       `}
     >
       {loading ? (

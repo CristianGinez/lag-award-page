@@ -3,7 +3,7 @@
 import Layout from "./Layout.astro";
 import Navbar from "../shared/components/layouts/Navbar.astro";
 import Footer from "../shared/components/layouts/Footer.astro";
-import { events } from "../data/events"; // Asegúrate de haber creado este archivo como acordamos
+import { events } from "../data/events"; 
 ---
 
 <Layout title="Eventos - LAGAWARDS">
@@ -19,16 +19,15 @@ import { events } from "../data/events"; // Asegúrate de haber creado este arch
       
       <div class="text-center mb-20">
         <h1 class="text-5xl md:text-7xl font-bold font-orbitron mb-6 text-white tracking-wider">
-          NUESTROS <span class="bg-linear-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text">EVENTOS</span>
+          NUESTROS <span class="bg-gradient-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text">EVENTOS</span>
         </h1>
         <p class="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
           Explora las diferentes ediciones de los premios, vota por tus favoritos y descubre la historia de nuestra comunidad.
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
         
-        {/* Mapeo de eventos dinámicos */}
         {events.map((event) => (
           <a 
             href={`/eventos/${event.slug}`} 
@@ -45,7 +44,7 @@ import { events } from "../data/events"; // Asegúrate de haber creado este arch
 
             <div class="absolute inset-0 p-8 flex flex-col justify-end">
                 <div class="mb-6 transform group-hover:-translate-y-1 transition-transform duration-500">
-                    {/* Badges de Estado */}
+                    
                     {event.status === 'active' && (
                       <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-600/90 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-widest rounded-full mb-4 shadow-[0_0_15px_rgba(147,51,234,0.6)] animate-pulse">
                         <span class="w-1.5 h-1.5 rounded-full bg-white"></span> En Curso
@@ -62,9 +61,19 @@ import { events } from "../data/events"; // Asegúrate de haber creado este arch
                       </span>
                     )}
 
-                    <h2 class="text-3xl font-bold font-orbitron text-white mb-3 group-hover:text-purple-300 transition-colors drop-shadow-lg">
-                      {event.title} <span class="text-white/60 text-2xl">{event.year}</span>
-                    </h2>
+                    <div class="flex items-center gap-4 mb-3">
+                    
+                        <h2 class="text-3xl md:text-4xl font-bold font-orbitron text-white group-hover:text-purple-300 transition-colors drop-shadow-lg leading-none">
+                          {event.title} <span class="text-white/60 text-2xl">{event.year}</span>
+                        </h2>
+                        {(event as any).logo && (
+                            <img 
+                                src={(event as any).logo} 
+                                alt={`${event.title} Logo`} 
+                                class="w-18 h-18 object-contain drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] group-hover:scale-110 transition-transform duration-300"
+                            />
+                        )}
+                    </div>
                     
                     <p class="text-gray-300 text-sm leading-relaxed line-clamp-3 opacity-90 group-hover:opacity-100 transition-opacity">
                       {event.description}
@@ -81,12 +90,9 @@ import { events } from "../data/events"; // Asegúrate de haber creado este arch
           </a>
         ))}
 
-        <div class="relative h-[28rem] rounded-3xl overflow-hidden border-2 border-dashed border-white/5 bg-white/[0.02] flex items-center justify-center group cursor-default hover:border-white/10 transition-colors">
+        <div class="relative h-112 rounded-3xl overflow-hidden border-2 border-dashed border-white/5 bg-white/2 flex items-center justify-center group cursor-default hover:border-white/10 transition-colors">
             <div class="absolute inset-0 bg-[url('/img/colbars.gif')] opacity-[0.03] bg-cover grayscale group-hover:opacity-[0.05] transition-opacity"></div>
             <div class="text-center p-6 relative z-10 opacity-50 group-hover:opacity-80 transition-opacity">
-                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-white/5 flex items-center justify-center">
-                  <svg class="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                </div>
                 <h3 class="text-xl font-bold font-orbitron text-gray-400 mb-1">Más Eventos</h3>
                 <p class="text-sm text-gray-600">Pronto anunciaremos nuevas ediciones</p>
             </div>
@@ -99,7 +105,6 @@ import { events } from "../data/events"; // Asegúrate de haber creado este arch
 </Layout>
 
 <style>
-  /* Animación suave para los fondos de luz */
   @keyframes pulse-slow {
     0%, 100% { opacity: 0.4; transform: scale(1); }
     50% { opacity: 0.25; transform: scale(1.1); }
