@@ -10,11 +10,19 @@ const isLeague = currentEvent?.type === 'league';
 
 // Rutas
 const rootLink = `/eventos/${eventSlug}`; 
+const tablesLink = `/eventos/${eventSlug}/tablas`; // NUEVA RUTA
 const infoLink = `/eventos/${eventSlug}/info`; 
 const winLink = `/eventos/${eventSlug}/ganadores`; 
+
+// Lógica de estado activo
+const isRootActive = currentPath === rootLink || currentPath === rootLink + '/';
+const isTablesActive = currentPath === tablesLink;
+// Info activo si estamos en /info (u otras rutas legacy si fuera necesario)
+const isInfoActive = currentPath === infoLink; 
+
 ---
 
-<div class="w-full bg-black/40 backdrop-blur-md border-b border-white/5 sticky top-20 z-40 transition-all">
+<div class="w-full bg-black/40 backdrop-blur-md border-b border-white/5 sticky top-16 md:top-20 z-40 transition-all">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-14">
             
@@ -29,17 +37,20 @@ const winLink = `/eventos/${eventSlug}/ganadores`;
                     {/* LÓGICA PARA LIGA (PARSEC) */}
                     {isLeague ? (
                         <>
+                            {/* Información (Apunta a raíz donde está LeagueInfo) */}
                             <a 
-                                href={rootLink}
-                                class={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${currentPath === rootLink || currentPath === rootLink + '/' ? 'bg-green-600 text-white shadow-[0_0_15px_rgba(34,197,94,0.4)]' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
+                                href={rootLink} 
+                                class={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${isRootActive ? 'bg-green-600 text-white shadow-[0_0_15px_rgba(34,197,94,0.4)]' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
                             >
-                                📝 Inscripción
+                                Información
                             </a>
+
+                            {/* Botón Tablas (Nueva página) */}
                             <a 
-                                href={infoLink} 
-                                class={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${currentPath === infoLink ? 'bg-green-600 text-white shadow-[0_0_15px_rgba(34,197,94,0.4)]' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
+                                href={tablesLink}
+                                class={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${isTablesActive ? 'bg-green-600 text-white shadow-[0_0_15px_rgba(34,197,94,0.4)]' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
                             >
-                                ℹ️ Información
+                                Tablas
                             </a>
                         </>
                     ) : (
@@ -47,7 +58,7 @@ const winLink = `/eventos/${eventSlug}/ganadores`;
                         <>
                             <a 
                                 href={rootLink}
-                                class={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${currentPath === rootLink || currentPath === rootLink + '/' ? 'bg-purple-600 text-white shadow-[0_0_15px_rgba(147,51,234,0.4)]' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
+                                class={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${isRootActive ? 'bg-purple-600 text-white shadow-[0_0_15px_rgba(147,51,234,0.4)]' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
                             >
                                 Votación
                             </a>
@@ -59,7 +70,7 @@ const winLink = `/eventos/${eventSlug}/ganadores`;
                             </a>
                             <a 
                                 href={infoLink} 
-                                class={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${currentPath === infoLink ? 'bg-purple-600 text-white shadow-[0_0_15px_rgba(147,51,234,0.4)]' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
+                                class={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${isInfoActive ? 'bg-purple-600 text-white shadow-[0_0_15px_rgba(147,51,234,0.4)]' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
                             >
                                 Información
                             </a>

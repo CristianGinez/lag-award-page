@@ -18,7 +18,7 @@ export const events: EventData[] = [
     slug: 'LagAwards2025',
     title: 'LAG AWARDS',
     year: '2025',
-    status: 'active',
+    status: 'finished',
     type: 'awards', // Es de premios
     banner: '/img/banner-actualizacion.jpg', 
     logo: 'https://res.cloudinary.com/dkjaq3i9p/image/upload/v1768411742/LOGO_LAGAWARDS_xen8va.png',

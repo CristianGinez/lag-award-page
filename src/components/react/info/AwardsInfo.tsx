@@ -43,7 +43,7 @@ export const AwardsInfo: React.FC<AwardsInfoProps> = ({ event, totalCategories, 
           Guía del Evento
         </span>
         <h1 className="text-5xl md:text-7xl font-bold font-orbitron mb-6">
-          Información <span className="bg-gradient-to-r from-red-500 to-orange-500 text-transparent bg-clip-text">General</span>
+          Información <span className="bg-linear-to-r from-red-500 to-orange-500 text-transparent bg-clip-text">General</span>
         </h1>
         <p className="text-xl text-gray-300 max-w-3xl mx-auto">
           Todo lo que necesitas saber sobre los {event.title}: fechas, reglas y cómo participar en la fiesta del año.

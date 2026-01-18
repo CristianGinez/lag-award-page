@@ -3,7 +3,6 @@ import Layout from "../Layout.astro";
 import Navbar from "../../shared/components/layouts/Navbar.astro";
 import Footer from "../../shared/components/layouts/Footer.astro";
 import EventNavbar from "../../shared/components/EventNavbar.astro";
-
 // Datos
 import { getEventBySlug } from "../../data/events";
 import { getCategoriesByEventId } from "../../data/categories";
@@ -12,7 +11,8 @@ import { getCategoriesByEventId } from "../../data/categories";
 import { MediaDisplay } from "../../components/react/MediaDisplay";
 import { NomineesGrid } from "../../components/react/NomineesGrid";
 import { VoteContainer } from "../../components/react/VoteContainer";
-import { LeagueRegistration } from "../../components/react/LeagueRegistration"; // <--- IMPORTAR
+// [ELIMINADO] import { LeagueRegistration } ...
+import { LeagueInfo } from "../../components/react/info/LeagueInfo"; // [NUEVO] Importamos LeagueInfo
 
 const { eventId } = Astro.params;
 const currentEvent = getEventBySlug(eventId);
@@ -30,64 +30,74 @@ const getOptimizedUrl = (url: string) => {
   if (url.includes("res.cloudinary.com")) return url.replace("/upload/", "/upload/w_600,f_auto,q_auto/");
   return url;
 };
+
+// --- PREPARACIÓN DE DATOS PARA SEO (OG TAGS) ---
+const pageTitle = `${currentEvent.title} - ${isLeague ? 'Oficial' : 'Votación'}`;
+
+// Función para convertir ruta de imagen relativa a absoluta (Req. para Discord/WhatsApp)
+const getAbsoluteImage = (imagePath: string) => {
+    if (!imagePath) return "";
+    if (imagePath.startsWith('http')) return imagePath; // Ya es absoluta (ej: cloudinary)
+    try {
+        // Usa el sitio configurado en astro.config o el origen de la petición
+        const base = Astro.site ? Astro.site.toString() : Astro.url.origin;
+        return new URL(imagePath, base).toString();
+    } catch (e) {
+        return imagePath;
+    }
+};
+
+const ogImage = getAbsoluteImage(currentEvent.banner);
+// ------------------------------------------------
 ---
 
-<Layout title={`${currentEvent.title} - ${isLeague ? 'Inscripción' : 'Votación'}`}>
+<Layout 
+  title={pageTitle}
+  description={currentEvent.description}
+  image={ogImage}
+>
   <Navbar />
   <EventNavbar eventSlug={currentEvent.slug} eventName={currentEvent.title} />
   
   <main id="main-content-container" class="pt-10 text-white min-h-screen relative">
     
-    {/* FONDO CONDICIONAL: Verde para fútbol, Morado para premios */}
+    {/* FONDO CONDICIONAL */}
     <div class="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
-        {isLeague ? (
+        {isLeague ?
+        (
             <>
                 <div class="absolute top-[10%] left-[20%] w-96 h-96 bg-green-600/10 rounded-full blur-[120px]"></div>
                 <div class="absolute bottom-[10%] right-[20%] w-96 h-96 bg-emerald-600/10 rounded-full blur-[120px]"></div>
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505]/80 to-[#050505]"></div>
             </>
         ) : (
-            // Fondo default (Premios)
-            <div class="hidden" id="awards-bg"></div> 
+             <div class="hidden" id="awards-bg"></div> 
         )}
     </div>
 
-    {/* --- CASO 1: LIGA DE FÚTBOL (INSCRIPCIÓN) --- */}
-    {isLeague ? (
-        <div class="container mx-auto px-6 py-16">
-            <div class="text-center mb-12 animate-fade-in-up">
-                <span class="inline-block px-3 py-1 bg-green-900/30 border border-green-500/30 text-green-400 rounded-full text-xs font-bold uppercase tracking-widest mb-4">
-                    Temporada {currentEvent.year}
-                </span>
-                <h1 class="text-5xl md:text-7xl font-black font-orbitron mb-6">
-                    INSCRIPCIÓN <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-600">OFICIAL</span>
-                </h1>
-                <p class="text-xl text-gray-400 max-w-2xl mx-auto">
-                    Completa el formulario para ser elegible en el Draft. Solo los mejores talentos serán seleccionados por los capitanes.
-                </p>
-            </div>
-
-            <LeagueRegistration client:load />
+    {/* --- CASO 1: LIGA DE FÚTBOL (INFORMACIÓN COMPLETA) --- */}
+    {isLeague ?
+    (
+        <div class="container mx-auto px-4 md:px-6 py-10">
+            {/* Mostramos directamente la información completa del PDF */}
+            <LeagueInfo client:load event={currentEvent} />
         </div>
     ) : (
     
     /* --- CASO 2: PREMIOS (CÓDIGO ORIGINAL DE VOTACIÓN) --- */
-    /* ... (Mantén aquí todo tu código anterior para categories, server-data, grid, etc.) ... */
-    
     <>
         <div id="server-data" data-categories={JSON.stringify(categories)} class="hidden" aria-hidden="true"></div>
-        {/* ... MANTÉN EL CONTENIDO ORIGINAL DE TU ARCHIVO [eventId].astro AQUÍ ... */}
-        {/* ... Grid de categorías, Streamer Mode, etc. ... */}
         
         <div class="container mx-auto px-6 py-16">
-             {/* (Pega aquí el bloque <div id="category-view">...</div> original) */}
              <div id="category-view" class="transition-opacity duration-300 block">
                 <div class="text-center mb-16">
                   <h1 class="text-5xl md:text-7xl font-bold font-orbitron">
-                    <span class="bg-gradient-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text">Categorías</span> {currentEvent.year}
+                    <span class="bg-linear-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text">Categorías</span> {currentEvent.year}
                   </h1>
                   <p class="text-xl text-gray-300 mt-4 max-w-3xl mx-auto">Selecciona una categoría para ver los nominados.</p>
                 </div>
-                {categories.length > 0 ? (
+                {categories.length > 0 ?
+                (
                   <div id="category-grid" class="flex flex-wrap gap-8 justify-center">
                     {categories.map((category, index) => (
                         <div class="relative h-40 md:h-48 lg:h-56 w-full md:w-1/2 lg:w-1/3 max-w-xl cursor-pointer group" data-category-id={category.id}>
@@ -105,13 +115,12 @@ const getOptimizedUrl = (url: string) => {
                   </div>
                 ) : (
                   <div class="text-center py-20 bg-white/5 rounded-xl">
-                     <p class="text-gray-400">No hay categorías configuradas para este evento.</p>
+                    <p class="text-gray-400">No hay categorías configuradas para este evento.</p>
                   </div>
                 )}
              </div>
 
-             {/* VISTA NOMINADOS Y DETALLE (Copiar del archivo anterior) */}
-             {/* Asegúrate de incluir nominee-view y detail-view aquí */}
+             {/* VISTA NOMINADOS Y DETALLE */}
              <div id="nominee-view" class="hidden relative transition-opacity duration-300 opacity-0">
                 <div class="relative mt-4 tv-frame">
                   <div class="absolute inset-0 rounded-[2.3rem] overflow-hidden pointer-events-none tv-screen-bg"></div>
@@ -148,7 +157,7 @@ const getOptimizedUrl = (url: string) => {
                             <h2 id="detail-name" class="text-4xl md:text-6xl font-bold font-orbitron text-white mb-2"></h2>
                             <p id="detail-creator" class="text-xl text-purple-300 font-semibold"></p>
                           </div>
-                          <div class="h-1 w-24 bg-gradient-to-r from-purple-500 to-transparent rounded-full"></div>
+                          <div class="h-1 w-24 bg-linear-to-r from-purple-500 to-transparent rounded-full"></div>
                           <p id="detail-desc" class="text-lg text-gray-300 leading-relaxed"></p>
                           <div id="vote-controls-container" class="pt-6">
                             <VoteContainer client:load />
@@ -168,10 +177,8 @@ const getOptimizedUrl = (url: string) => {
   <Footer />
 </Layout>
 
-{/* ESTILOS Y SCRIPTS IGUAL QUE ANTES, PERO SOLO SE EJECUTAN SI NO ES LIGA */}
 <style>
-  /* Copia aquí tus estilos CSS originales (card-glass, tv-frame, etc.) */
-  /* Son necesarios para la parte de Votación */
+  /* ESTILOS ORIGINALES SE MANTIENEN */
   .tv-frame { border-radius: 2.5rem; border: 4px solid rgba(250, 204, 21, 0.9); box-shadow: 0 0 25px rgba(250, 204, 21, 0.5), 0 0 60px rgba(88, 28, 135, 0.4); padding: 2.5rem 1.25rem 2rem; background: radial-gradient( circle at top center, rgba(255, 255, 255, 0.06), transparent 55% ), rgba(10, 10, 20, 0.95); overflow: hidden; }
   .tv-screen-bg { background-image: radial-gradient( circle at 20% 0%, rgba(250, 204, 21, 0.12), transparent 55% ), radial-gradient( circle at 80% 100%, rgba(147, 51, 234, 0.18), transparent 55% ), linear-gradient(to bottom, rgba(3, 7, 18, 0.95), rgba(15, 23, 42, 0.98)); background-size: cover; background-position: center; opacity: 0.6; }
   .tv-header-glass { background-color: rgba(15, 23, 42, 0.82); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-radius: 1.5rem; border: 1px solid rgba(148, 163, 184, 0.4); box-shadow: 0 18px 45px rgba(0, 0, 0, 0.75), 0 0 25px rgba(15, 23, 42, 0.9); }
@@ -191,35 +198,27 @@ const getOptimizedUrl = (url: string) => {
 </style>
 
 <script>
-  // ESTE SCRIPT MANEJA LA LÓGICA DE VOTACIÓN (Categories Grid)
-  // SOLO FUNCIONA SI EL EVENTO NO ES DE TIPO 'league'
+  // ESTE SCRIPT MANEJA LA LÓGICA DE VOTACIÓN (SOLO PREMIOS)
   import { getCategoryTotalVotes } from "../../lib/voting";
   import { playMedia, stopMedia } from "../../stores/playerStore";
   import { selectCategory, selectNominee, $selectedNominee, clearNomineeSelection } from "../../stores/uiStore";
-
+  
   const initPage = async () => {
-    // Si no hay datos de servidor, es porque estamos en la vista de Liga, salimos.
     const dataEl = document.getElementById("server-data");
-    if (!dataEl) return;
+    if (!dataEl) return; // Si es liga, esto no existe y el script no hace nada.
     
-    // ... AQUÍ PEGA TODO EL CÓDIGO DEL SCRIPT ORIGINAL PARA MANEJAR LAS CATEGORÍAS ...
-    // (Parseo de JSON, Listeners, etc.)
     const categories = JSON.parse(dataEl.dataset.categories || "[]");
-    // Referencias DOM...
     const categoryGrid = document.getElementById("category-grid");
     const categoryView = document.getElementById("category-view");
     const nomineeView = document.getElementById("nominee-view");
     const detailView = document.getElementById("detail-view");
     const nomineeContent = document.getElementById("nominee-content");
     const nomineeTitle = document.getElementById("nominee-title");
-    const backToCategoriesBtn = document.getElementById("back-to-categories");
-    const backToNomineesBtn = document.getElementById("back-to-nominees");
-    const prevBtn = document.getElementById("prev-category");
-    const nextBtn = document.getElementById("next-category");
+    const voteCountNumber = document.getElementById("vote-count-number");
     const detailName = document.getElementById("detail-name");
     const detailCreator = document.getElementById("detail-creator");
     const detailDesc = document.getElementById("detail-desc");
-    const voteCountNumber = document.getElementById("vote-count-number");
+    
     let currentCategoryIndex = 0;
     let categoryCounts = await getCategoryTotalVotes();
 
@@ -228,9 +227,10 @@ const getOptimizedUrl = (url: string) => {
       const category = categories[index];
       if (!category) return;
       selectCategory(category); 
+      
       const tvScreenBgEls = document.querySelectorAll(".tv-screen-bg");
       tvScreenBgEls.forEach((el) => {
-          const styleEl = el;
+          const styleEl = el as HTMLElement;
           if (category.tvBackground) {
             styleEl.style.backgroundImage = `url('${category.tvBackground}')`;
             styleEl.style.opacity = "0.9";
@@ -239,11 +239,13 @@ const getOptimizedUrl = (url: string) => {
             styleEl.style.opacity = "0.6";
           }
       });
+
       const ANIM_DURATION = 260;
       if(nomineeContent) {
           nomineeContent.classList.remove("slide-out-left", "slide-out-right", "slide-in-left", "slide-in-right");
           let outClass = direction === "next" ? "slide-out-left" : direction === "prev" ? "slide-out-right" : "slide-out-left";
           let inClass = direction === "next" ? "slide-in-right" : direction === "prev" ? "slide-in-left" : "slide-in-right";
+          
           nomineeContent.classList.add(outClass);
           setTimeout(() => {
             if (nomineeTitle) nomineeTitle.textContent = category.title;
@@ -257,23 +259,25 @@ const getOptimizedUrl = (url: string) => {
     };
 
     if (categoryGrid) {
-      const newGrid = categoryGrid.cloneNode(true);
-      categoryGrid.parentNode.replaceChild(newGrid, categoryGrid);
-      newGrid.addEventListener("click", (e) => {
-        const card = e.target.closest("[data-category-id]");
-        if (!card) return;
-        const categoryId = card.getAttribute("data-category-id");
-        const idx = categories.findIndex((c) => String(c.id) === String(categoryId));
-        if (idx !== -1) {
-          showCategoryDetails(idx);
-          categoryView?.classList.add("opacity-0");
-          setTimeout(() => {
-            categoryView?.classList.add("hidden");
-            nomineeView?.classList.remove("hidden");
-            setTimeout(() => nomineeView?.classList.remove("opacity-0"), 50);
-          }, 300);
-        }
-      });
+        // Lógica de grid click...
+        const newGrid = categoryGrid.cloneNode(true);
+        categoryGrid.parentNode.replaceChild(newGrid, categoryGrid);
+        newGrid.addEventListener("click", (e) => {
+            const target = e.target as HTMLElement;
+            const card = target.closest("[data-category-id]");
+            if (!card) return;
+            const categoryId = card.getAttribute("data-category-id");
+            const idx = categories.findIndex((c) => String(c.id) === String(categoryId));
+            if (idx !== -1) {
+                showCategoryDetails(idx);
+                categoryView?.classList.add("opacity-0");
+                setTimeout(() => {
+                    categoryView?.classList.add("hidden");
+                    nomineeView?.classList.remove("hidden");
+                    setTimeout(() => nomineeView?.classList.remove("opacity-0"), 50);
+                }, 300);
+            }
+        });
     }
 
     $selectedNominee.subscribe(nominee => {
@@ -287,6 +291,7 @@ const getOptimizedUrl = (url: string) => {
       if (detailName) detailName.textContent = nominee.name;
       if (detailCreator) detailCreator.textContent = nominee.creator ? `Creado por: ${nominee.creator}` : "";
       if (detailDesc) detailDesc.textContent = nominee.description || "Sin descripción disponible.";
+      
       if (nominee.youtubeId) {
          playMedia({ type: 'youtube', src: '', youtubeId: nominee.youtubeId, poster: nominee.image });
       } else if (nominee.audio) {
@@ -300,6 +305,7 @@ const getOptimizedUrl = (url: string) => {
          if (!hdSrc && nominee.video && nominee.video.includes("cloudinary")) hdSrc = nominee.video.replace(/\.[^/.]+$/, ".jpg");
          playMedia({ type: 'image', src: '', poster: hdSrc || "/img/lag_uconstr_placeholder.png" });
       }
+      
       nomineeView?.classList.add("opacity-0");
       setTimeout(() => {
         nomineeView?.classList.add("hidden");
@@ -343,7 +349,7 @@ const getOptimizedUrl = (url: string) => {
         const newIndex = (currentCategoryIndex - 1 + categories.length) % categories.length;
         showCategoryDetails(newIndex, "prev");
     });
-
+    
     attachListener("next-category", () => {
         const newIndex = (currentCategoryIndex + 1) % categories.length;
         showCategoryDetails(newIndex, "next");
