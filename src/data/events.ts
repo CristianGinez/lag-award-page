@@ -31,7 +31,7 @@ export const events: EventData[] = [
     year: '2026',
     status: 'upcoming',
     type: 'league', // Es de liga/fútbol
-    banner: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=2693&auto=format&fit=crop', // Banner de fútbol (Placeholder)
+    banner: 'https://res.cloudinary.com/dkjaq3i9p/image/upload/v1768785502/PORTADA_vzoqne.jpg', 
     logo: '/img/tl_logo.png', // Puedes cambiar esto por un balón o logo de la liga
     description: 'La liga de fútbol parsecqueada. Inscríbete, demuestra tu nivel y sé seleccionado para el mambo.',
   },
