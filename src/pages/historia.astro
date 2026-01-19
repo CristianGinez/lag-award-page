@@ -1,8 +1,8 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Navbar from '../layouts/Navbar.astro';
-import Footer from '../layouts/Footer.astro';
-import { historyEvents } from '../data/history'; // <--- Importamos los datos
+import Layout from './Layout.astro';
+import Navbar from '../shared/components/layouts/Navbar.astro';
+import Footer from '../shared/components/layouts/Footer.astro';
+import { historyEvents } from '../features/historia/data/history';
 ---
 
 <Layout title="Nuestra Historia - LAGAWARDS">
@@ -34,7 +34,7 @@ import { historyEvents } from '../data/history'; // <--- Importamos los datos
       <div class="relative max-w-6xl mx-auto">
         
         <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-1 md:-translate-x-1/2 bg-white/10 rounded-full overflow-hidden">
-            <div id="timeline-progress" class="w-full bg-gradient-to-b from-purple-500 via-blue-500 to-red-500 h-0 shadow-[0_0_20px_rgba(168,85,247,1)] transition-all duration-100 ease-out"></div>
+            <div id="timeline-progress" class="w-full bg-linear-to-b from-purple-500 via-blue-500 to-red-500 h-0 shadow-[0_0_20px_rgba(168,85,247,1)] transition-all duration-100 ease-out"></div>
         </div>
 
         <div class="space-y-24 md:space-y-32 pb-32">

@@ -1,0 +1,361 @@
+---
+import Layout from "../Layout.astro";
+import Navbar from "../../shared/components/layouts/Navbar.astro";
+import Footer from "../../shared/components/layouts/Footer.astro";
+import EventNavbar from "../../shared/components/EventNavbar.astro";
+// Datos
+import { getEventBySlug } from "../../data/events";
+import { getCategoriesByEventId } from "../../data/categories";
+
+// Componentes
+import { MediaDisplay } from "../../components/react/MediaDisplay";
+import { NomineesGrid } from "../../components/react/NomineesGrid";
+import { VoteContainer } from "../../components/react/VoteContainer";
+// [ELIMINADO] import { LeagueRegistration } ...
+import { LeagueInfo } from "../../components/react/info/LeagueInfo"; // [NUEVO] Importamos LeagueInfo
+
+const { eventId } = Astro.params;
+const currentEvent = getEventBySlug(eventId);
+
+if (!currentEvent) {
+  return Astro.redirect('/404');
+}
+
+// Lógica condicional
+const isLeague = currentEvent.type === 'league';
+const categories = !isLeague ? getCategoriesByEventId(currentEvent.id) : [];
+
+const getOptimizedUrl = (url: string) => {
+  if (!url) return "/img/lag_uconstr_placeholder.png";
+  if (url.includes("res.cloudinary.com")) return url.replace("/upload/", "/upload/w_600,f_auto,q_auto/");
+  return url;
+};
+
+// --- PREPARACIÓN DE DATOS PARA SEO (OG TAGS) ---
+const pageTitle = `${currentEvent.title} - ${isLeague ? 'Oficial' : 'Votación'}`;
+
+// Función para convertir ruta de imagen relativa a absoluta (Req. para Discord/WhatsApp)
+const getAbsoluteImage = (imagePath: string) => {
+    if (!imagePath) return "";
+    if (imagePath.startsWith('http')) return imagePath; // Ya es absoluta (ej: cloudinary)
+    try {
+        // Usa el sitio configurado en astro.config o el origen de la petición
+        const base = Astro.site ? Astro.site.toString() : Astro.url.origin;
+        return new URL(imagePath, base).toString();
+    } catch (e) {
+        return imagePath;
+    }
+};
+
+const ogImage = getAbsoluteImage(currentEvent.banner);
+// ------------------------------------------------
+---
+
+<Layout 
+  title={pageTitle}
+  description={currentEvent.description}
+  image={ogImage}
+>
+  <Navbar />
+  <EventNavbar eventSlug={currentEvent.slug} eventName={currentEvent.title} />
+  
+  <main id="main-content-container" class="pt-10 text-white min-h-screen relative">
+    
+    {/* FONDO CONDICIONAL */}
+    <div class="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
+        {isLeague ?
+        (
+            <>
+                <div class="absolute top-[10%] left-[20%] w-96 h-96 bg-green-600/10 rounded-full blur-[120px]"></div>
+                <div class="absolute bottom-[10%] right-[20%] w-96 h-96 bg-emerald-600/10 rounded-full blur-[120px]"></div>
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505]/80 to-[#050505]"></div>
+            </>
+        ) : (
+             <div class="hidden" id="awards-bg"></div> 
+        )}
+    </div>
+
+    {/* --- CASO 1: LIGA DE FÚTBOL (INFORMACIÓN COMPLETA) --- */}
+    {isLeague ?
+    (
+        <div class="container mx-auto px-4 md:px-6 py-10">
+            {/* Mostramos directamente la información completa del PDF */}
+            <LeagueInfo client:load event={currentEvent} />
+        </div>
+    ) : (
+    
+    /* --- CASO 2: PREMIOS (CÓDIGO ORIGINAL DE VOTACIÓN) --- */
+    <>
+        <div id="server-data" data-categories={JSON.stringify(categories)} class="hidden" aria-hidden="true"></div>
+        
+        <div class="container mx-auto px-6 py-16">
+             <div id="category-view" class="transition-opacity duration-300 block">
+                <div class="text-center mb-16">
+                  <h1 class="text-5xl md:text-7xl font-bold font-orbitron">
+                    <span class="bg-linear-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text">Categorías</span> {currentEvent.year}
+                  </h1>
+                  <p class="text-xl text-gray-300 mt-4 max-w-3xl mx-auto">Selecciona una categoría para ver los nominados.</p>
+                </div>
+                {categories.length > 0 ?
+                (
+                  <div id="category-grid" class="flex flex-wrap gap-8 justify-center">
+                    {categories.map((category, index) => (
+                        <div class="relative h-40 md:h-48 lg:h-56 w-full md:w-1/2 lg:w-1/3 max-w-xl cursor-pointer group" data-category-id={category.id}>
+                          <div class="absolute inset-0 rounded-2xl overflow-hidden category-card-bg">
+                            <img src={getOptimizedUrl(category.tvBackground || category.image)} alt={category.title} class="w-full h-full object-cover transform scale-105 opacity-70 group-hover:scale-110 group-hover:opacity-90 transition-transform duration-500 ease-out" loading={index < 2 ? "eager" : "lazy"} width="600" height="338" />
+                          </div>
+                          <div class="absolute inset-0 category-card-glass transition-all duration-300 hover:border-purple-500 hover:scale-105">
+                            <div class="h-full w-full p-8 text-center flex flex-col items-center justify-center">
+                              <h3 class="text-2xl font-bold font-orbitron mb-2">{category.title}</h3>
+                              <p class="text-gray-300 text-sm">{category.description}</p>
+                            </div>
+                          </div>
+                        </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div class="text-center py-20 bg-white/5 rounded-xl">
+                    <p class="text-gray-400">No hay categorías configuradas para este evento.</p>
+                  </div>
+                )}
+             </div>
+
+             {/* VISTA NOMINADOS Y DETALLE */}
+             <div id="nominee-view" class="hidden relative transition-opacity duration-300 opacity-0">
+                <div class="relative mt-4 tv-frame">
+                  <div class="absolute inset-0 rounded-[2.3rem] overflow-hidden pointer-events-none tv-screen-bg"></div>
+                  <div id="nominee-content" class="relative z-10 transition-opacity duration-300 nominee-anim-container">
+                    <div class="mb-10 px-4 sm:px-8 py-5 md:py-6 tv-header-glass flex flex-col gap-4 md:gap-6">
+                      <button id="back-to-categories" class="cursor-pointer flex items-center gap-2 text-purple-400 font-bold hover:text-purple-300 transition-colors z-30 relative">&larr; Volver a Categorías</button>
+                      <div class="text-center">
+                        <h1 id="nominee-title" class="text-3xl md:text-5xl lg:text-6xl font-bold font-orbitron text-center mb-4 px-4"></h1>
+                        <div class="flex items-center justify-center gap-4">
+                          <button id="prev-category" class="cursor-pointer nav-arrow"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                          <button id="next-category" class="cursor-pointer nav-arrow"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="nominee-list-container" class="flex flex-wrap gap-6 justify-center">
+                       <NomineesGrid client:load />
+                    </div>
+                  </div>
+                </div>
+             </div>
+
+             <div id="detail-view" class="hidden relative transition-opacity duration-300 opacity-0">
+                <div class="relative mt-4 tv-frame">
+                  <div class="absolute inset-0 rounded-[2.3rem] overflow-hidden pointer-events-none tv-screen-bg"></div>
+                  <div class="relative z-10">
+                    <div class="mb-10 px-4 sm:px-8 py-5 md:py-6 tv-header-glass flex flex-col gap-4 md:gap-6">
+                      <button id="back-to-nominees" class="cursor-pointer flex items-center gap-2 text-purple-400 font-bold mb-8 hover:text-purple-300 transition-colors">&larr; Volver a Nominados</button>
+                      <div class="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center lg:items-start">
+                        <div class="w-full lg:w-1/2">
+                           <div class="w-full max-w-xl mx-auto"><MediaDisplay client:load /></div>
+                        </div>
+                        <div class="w-full lg:w-1/2 flex flex-col justify-center text-left space-y-6">
+                          <div>
+                            <h2 id="detail-name" class="text-4xl md:text-6xl font-bold font-orbitron text-white mb-2"></h2>
+                            <p id="detail-creator" class="text-xl text-purple-300 font-semibold"></p>
+                          </div>
+                          <div class="h-1 w-24 bg-linear-to-r from-purple-500 to-transparent rounded-full"></div>
+                          <p id="detail-desc" class="text-lg text-gray-300 leading-relaxed"></p>
+                          <div id="vote-controls-container" class="pt-6">
+                            <VoteContainer client:load />
+                            <p id="detail-votes" class="text-lg text-yellow-400 font-bold mt-2 flex items-center gap-2"><span class="text-2xl">🔥</span><span id="vote-count-number">0</span> Votos en esta categoría</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+             </div>
+        </div>
+    </>
+    )}
+
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  /* ESTILOS ORIGINALES SE MANTIENEN */
+  .tv-frame { border-radius: 2.5rem; border: 4px solid rgba(250, 204, 21, 0.9); box-shadow: 0 0 25px rgba(250, 204, 21, 0.5), 0 0 60px rgba(88, 28, 135, 0.4); padding: 2.5rem 1.25rem 2rem; background: radial-gradient( circle at top center, rgba(255, 255, 255, 0.06), transparent 55% ), rgba(10, 10, 20, 0.95); overflow: hidden; }
+  .tv-screen-bg { background-image: radial-gradient( circle at 20% 0%, rgba(250, 204, 21, 0.12), transparent 55% ), radial-gradient( circle at 80% 100%, rgba(147, 51, 234, 0.18), transparent 55% ), linear-gradient(to bottom, rgba(3, 7, 18, 0.95), rgba(15, 23, 42, 0.98)); background-size: cover; background-position: center; opacity: 0.6; }
+  .tv-header-glass { background-color: rgba(15, 23, 42, 0.82); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-radius: 1.5rem; border: 1px solid rgba(148, 163, 184, 0.4); box-shadow: 0 18px 45px rgba(0, 0, 0, 0.75), 0 0 25px rgba(15, 23, 42, 0.9); }
+  .nominee-anim-container { position: relative; }
+  .slide-out-left { animation: slideOutLeft 260ms ease forwards; }
+  .slide-in-right { animation: slideInRight 260ms ease forwards; }
+  .slide-out-right { animation: slideOutRight 260ms ease forwards; }
+  .slide-in-left { animation: slideInLeft 260ms ease forwards; }
+  @keyframes slideOutLeft { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(-40px); } }
+  @keyframes slideInRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+  @keyframes slideOutRight { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(40px); } }
+  @keyframes slideInLeft { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
+  .category-card-bg { filter: blur(1px); }
+  .category-card-glass { background-color: rgba(15, 23, 42, 0.372); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(14px); border-radius: 1rem; border: 2px solid rgba(250, 204, 21, 0.9); box-shadow: 0 0 25px rgba(250, 204, 21, 0.45), 0 18px 45px rgba(0, 0, 0, 0.75), 0 0 30px rgba(15, 23, 42, 0.9); }
+  .nav-arrow { position: relative; flex-shrink: 0; width: 3.5rem; height: 3.5rem; display: flex; align-items: center; justify-content: center; background-color: rgba(88, 28, 135, 0.6); color: #ffffff; border-radius: 9999px; border: 1px solid rgba(168, 85, 247, 0.7); box-shadow: 0 0 20px rgba(168, 85, 247, 0.4); transition: transform 200ms ease, box-shadow 200ms ease, background-color 200ms ease; }
+  .nav-arrow:hover { background-color: rgba(126, 34, 206, 0.9); transform: scale(1.1); box-shadow: 0 0 30px rgba(168, 85, 247, 0.8); }
+</style>
+
+<script>
+  // ESTE SCRIPT MANEJA LA LÓGICA DE VOTACIÓN (SOLO PREMIOS)
+  import { getCategoryTotalVotes } from "../../lib/voting";
+  import { playMedia, stopMedia } from "../../stores/playerStore";
+  import { selectCategory, selectNominee, $selectedNominee, clearNomineeSelection } from "../../stores/uiStore";
+  
+  const initPage = async () => {
+    const dataEl = document.getElementById("server-data");
+    if (!dataEl) return; // Si es liga, esto no existe y el script no hace nada.
+    
+    const categories = JSON.parse(dataEl.dataset.categories || "[]");
+    const categoryGrid = document.getElementById("category-grid");
+    const categoryView = document.getElementById("category-view");
+    const nomineeView = document.getElementById("nominee-view");
+    const detailView = document.getElementById("detail-view");
+    const nomineeContent = document.getElementById("nominee-content");
+    const nomineeTitle = document.getElementById("nominee-title");
+    const voteCountNumber = document.getElementById("vote-count-number");
+    const detailName = document.getElementById("detail-name");
+    const detailCreator = document.getElementById("detail-creator");
+    const detailDesc = document.getElementById("detail-desc");
+    
+    let currentCategoryIndex = 0;
+    let categoryCounts = await getCategoryTotalVotes();
+
+    const showCategoryDetails = (index, direction = "none") => {
+      currentCategoryIndex = index;
+      const category = categories[index];
+      if (!category) return;
+      selectCategory(category); 
+      
+      const tvScreenBgEls = document.querySelectorAll(".tv-screen-bg");
+      tvScreenBgEls.forEach((el) => {
+          const styleEl = el as HTMLElement;
+          if (category.tvBackground) {
+            styleEl.style.backgroundImage = `url('${category.tvBackground}')`;
+            styleEl.style.opacity = "0.9";
+          } else {
+            styleEl.style.backgroundImage = "";
+            styleEl.style.opacity = "0.6";
+          }
+      });
+
+      const ANIM_DURATION = 260;
+      if(nomineeContent) {
+          nomineeContent.classList.remove("slide-out-left", "slide-out-right", "slide-in-left", "slide-in-right");
+          let outClass = direction === "next" ? "slide-out-left" : direction === "prev" ? "slide-out-right" : "slide-out-left";
+          let inClass = direction === "next" ? "slide-in-right" : direction === "prev" ? "slide-in-left" : "slide-in-right";
+          
+          nomineeContent.classList.add(outClass);
+          setTimeout(() => {
+            if (nomineeTitle) nomineeTitle.textContent = category.title;
+            nomineeContent.classList.remove(outClass);
+            nomineeContent.classList.add(inClass);
+            setTimeout(() => {
+              nomineeContent.classList.remove(inClass);
+            }, ANIM_DURATION);
+          }, ANIM_DURATION);
+      }
+    };
+
+    if (categoryGrid) {
+        // Lógica de grid click...
+        const newGrid = categoryGrid.cloneNode(true);
+        categoryGrid.parentNode.replaceChild(newGrid, categoryGrid);
+        newGrid.addEventListener("click", (e) => {
+            const target = e.target as HTMLElement;
+            const card = target.closest("[data-category-id]");
+            if (!card) return;
+            const categoryId = card.getAttribute("data-category-id");
+            const idx = categories.findIndex((c) => String(c.id) === String(categoryId));
+            if (idx !== -1) {
+                showCategoryDetails(idx);
+                categoryView?.classList.add("opacity-0");
+                setTimeout(() => {
+                    categoryView?.classList.add("hidden");
+                    nomineeView?.classList.remove("hidden");
+                    setTimeout(() => nomineeView?.classList.remove("opacity-0"), 50);
+                }, 300);
+            }
+        });
+    }
+
+    $selectedNominee.subscribe(nominee => {
+        if (nominee) showNomineeDetailView(nominee);
+    });
+
+    const showNomineeDetailView = (nominee) => {
+      stopMedia();
+      const currentCategory = categories[currentCategoryIndex];
+      if (voteCountNumber) voteCountNumber.textContent = (categoryCounts[currentCategory.id] || 0).toString();
+      if (detailName) detailName.textContent = nominee.name;
+      if (detailCreator) detailCreator.textContent = nominee.creator ? `Creado por: ${nominee.creator}` : "";
+      if (detailDesc) detailDesc.textContent = nominee.description || "Sin descripción disponible.";
+      
+      if (nominee.youtubeId) {
+         playMedia({ type: 'youtube', src: '', youtubeId: nominee.youtubeId, poster: nominee.image });
+      } else if (nominee.audio) {
+         let hdSrc = nominee.image || "/img/lag_uconstr_placeholder.png";
+         if (hdSrc.includes("imagekit")) hdSrc += "?tr=w-800,q-90,f-auto";
+         playMedia({ type: 'audio', src: nominee.audio, poster: hdSrc });
+      } else if (nominee.video) {
+         playMedia({ type: 'video', src: nominee.video, poster: nominee.image });
+      } else {
+         let hdSrc = nominee.image;
+         if (!hdSrc && nominee.video && nominee.video.includes("cloudinary")) hdSrc = nominee.video.replace(/\.[^/.]+$/, ".jpg");
+         playMedia({ type: 'image', src: '', poster: hdSrc || "/img/lag_uconstr_placeholder.png" });
+      }
+      
+      nomineeView?.classList.add("opacity-0");
+      setTimeout(() => {
+        nomineeView?.classList.add("hidden");
+        detailView?.classList.remove("hidden");
+        setTimeout(() => detailView?.classList.remove("opacity-0"), 50);
+      }, 300);
+    };
+
+    const attachListener = (id, cb) => {
+        const el = document.getElementById(id);
+        if(el) {
+            const newEl = el.cloneNode(true);
+            el.parentNode.replaceChild(newEl, el);
+            newEl.addEventListener('click', cb);
+        }
+    };
+
+    attachListener("back-to-categories", () => {
+        stopMedia();
+        clearNomineeSelection();
+        nomineeView?.classList.add("opacity-0");
+        setTimeout(() => {
+          nomineeView?.classList.add("hidden");
+          categoryView?.classList.remove("hidden");
+          setTimeout(() => categoryView?.classList.remove("opacity-0"), 50);
+        }, 300);
+    });
+
+    attachListener("back-to-nominees", () => {
+        stopMedia();
+        clearNomineeSelection();
+        detailView?.classList.add("opacity-0");
+        setTimeout(() => {
+          detailView?.classList.add("hidden");
+          nomineeView?.classList.remove("hidden");
+          setTimeout(() => nomineeView?.classList.remove("opacity-0"), 50);
+        }, 300);
+    });
+
+    attachListener("prev-category", () => {
+        const newIndex = (currentCategoryIndex - 1 + categories.length) % categories.length;
+        showCategoryDetails(newIndex, "prev");
+    });
+    
+    attachListener("next-category", () => {
+        const newIndex = (currentCategoryIndex + 1) % categories.length;
+        showCategoryDetails(newIndex, "next");
+    });
+  };
+
+  document.addEventListener("astro:page-load", initPage);
+  document.addEventListener("DOMContentLoaded", initPage);
+</script>

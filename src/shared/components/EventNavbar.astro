@@ -1,0 +1,70 @@
+---
+// src/shared/components/EventNavbar.astro
+import { getEventBySlug } from "../../data/events";
+
+const { eventSlug, eventName = "EVENTO" } = Astro.props;
+const currentPath = Astro.url.pathname;
+
+const currentEvent = getEventBySlug(eventSlug);
+// Validación segura del tipo
+const isLeague = currentEvent?.type === 'league';
+
+// --- DEFINICIÓN DE RUTAS ---
+const rootLink = `/eventos/${eventSlug}`; 
+const tablesLink = `/eventos/${eventSlug}/tablas`;
+const fixtureLink = `/eventos/${eventSlug}/partidos`;
+const scorersLink = `/eventos/${eventSlug}/goleadores`;
+// IMPORTANTE: Aquí definimos la variable que faltaba
+const editionsLink = `/eventos/${eventSlug}/ediciones`;
+
+// Rutas para eventos tipo Awards
+const infoLink = `/eventos/${eventSlug}/info`; 
+const winLink = `/eventos/${eventSlug}/ganadores`; 
+
+// --- LÓGICA DE ESTADO ACTIVO ---
+const isRootActive = currentPath === rootLink || currentPath === rootLink + '/';
+const isTablesActive = currentPath === tablesLink;
+const isFixtureActive = currentPath === fixtureLink;
+const isScorersActive = currentPath === scorersLink;
+const isEditionsActive = currentPath === editionsLink;
+
+const isInfoActive = currentPath === infoLink; 
+---
+
+<div class="w-full bg-black/40 backdrop-blur-md border-b border-white/5 sticky top-16 md:top-20 z-40 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-14">
+            
+            <div class="flex items-center gap-4">
+                <span class="text-purple-500 font-orbitron font-bold text-lg hidden sm:block uppercase">
+                    {eventName}
+                </span>
+                <div class="h-6 w-px bg-white/10 hidden sm:block"></div>
+                
+                <nav class="flex space-x-1 sm:space-x-4 overflow-x-auto no-scrollbar py-2 sm:py-0">
+                    
+                    {isLeague ? (
+                        /* --- MENÚ PARA PARSEC LEAGUE --- */
+                        <>
+                            <a href={rootLink} class={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${isRootActive ? 'bg-green-600 text-white shadow-[0_0_15px_rgba(34,197,94,0.4)]' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>Información</a>
+                            <a href={tablesLink} class={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${isTablesActive ? 'bg-green-600 text-white shadow-[0_0_15px_rgba(34,197,94,0.4)]' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>Tablas</a>
+                            <a href={fixtureLink} class={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${isFixtureActive ? 'bg-green-600 text-white shadow-[0_0_15px_rgba(34,197,94,0.4)]' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>Partidos</a>
+                            <a href={scorersLink} class={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${isScorersActive ? 'bg-green-600 text-white shadow-[0_0_15px_rgba(34,197,94,0.4)]' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>Goleadores</a>
+                            <a href={editionsLink} class={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${isEditionsActive ? 'bg-green-600 text-white shadow-[0_0_15px_rgba(34,197,94,0.4)]' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>Ediciones</a>
+                        </>
+                    ) : (
+                        /* --- MENÚ PARA LAG AWARDS --- */
+                        <>
+                            <a href={rootLink} class={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${isRootActive ? 'bg-purple-600 text-white shadow-[0_0_15px_rgba(147,51,234,0.4)]' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>Votación</a>
+                            <a href={winLink} class={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${currentPath === winLink ? 'bg-purple-600 text-white shadow-[0_0_15px_rgba(147,51,234,0.4)]' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>Ganadores</a>
+                            <a href={infoLink} class={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${isInfoActive ? 'bg-purple-600 text-white shadow-[0_0_15px_rgba(147,51,234,0.4)]' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>Información</a>
+                        </>
+                    )}
+                </nav>
+            </div>
+             <a href="/eventos" class="text-xs text-gray-500 hover:text-white transition-colors flex items-center gap-1">
+                &larr; <span class="hidden sm:inline">Eventos</span>
+            </a>
+        </div>
+    </div>
+</div>

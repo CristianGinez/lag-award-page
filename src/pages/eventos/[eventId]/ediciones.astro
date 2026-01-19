@@ -1,0 +1,47 @@
+---
+import Layout from "../../../pages/Layout.astro";
+import Navbar from "../../../shared/components/layouts/Navbar.astro";
+import Footer from "../../../shared/components/layouts/Footer.astro";
+import EventNavbar from "../../../shared/components/EventNavbar.astro";
+import { getEventBySlug } from "../../../data/events";
+import { parsecLeagueData } from "../../../data/parsecLeague";
+import { LeagueEditions } from "../../../components/react/info/LeagueEditions";
+
+const { eventId } = Astro.params;
+const currentEvent = getEventBySlug(eventId);
+
+if (!currentEvent || currentEvent.type !== 'league') {
+  return Astro.redirect('/404');
+}
+
+export function getStaticPaths() {
+  return [{ params: { eventId: 'ParsecLeague' } }];
+}
+---
+
+<Layout title={`Historial - ${currentEvent.title}`}>
+  <Navbar />
+  <EventNavbar eventSlug={currentEvent.slug} eventName={currentEvent.title} />
+  
+  <main class="pt-10 text-white min-h-screen relative">
+    {/* Fondo decorativo */}
+    <div class="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div class="absolute top-[30%] left-[50%] -translate-x-1/2 w-[800px] h-[600px] bg-purple-600/10 rounded-full blur-[120px]"></div>
+        <div class="absolute inset-0 bg-linear-to-b from-transparent via-[#050505]/80 to-[#050505]"></div>
+    </div>
+
+    <div class="container mx-auto px-4 md:px-6 py-10">
+      <div class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-black text-white tracking-tight mb-4">
+            Historial de <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">Torneos</span>
+        </h1>
+        <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+            Revive las emociones de ediciones anteriores y torneos especiales de la comunidad.
+        </p>
+      </div>
+
+      <LeagueEditions client:load editions={parsecLeagueData.previousEditions || []} />
+    </div>
+  </main>
+  <Footer />
+</Layout>

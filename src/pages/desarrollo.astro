@@ -1,7 +1,7 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Navbar from '../layouts/Navbar.astro';
-import Footer from '../layouts/Footer.astro';
+import Layout from './Layout.astro';
+import Navbar from '../shared/components/layouts/Navbar.astro';
+import Footer from '../shared/components/layouts/Footer.astro';
 
 // --- ARQUITECTURA & STACK ---
 
@@ -38,6 +38,23 @@ const techStack = [
 // --- RELEASE NOTES / CHANGELOG ---
 const versions = [
 
+  {
+    version: "v1.1",
+    date: "2026-01-18",
+    label: "owo release",
+    statusColor: "bg-green-500/10 text-green-400 border-green-500/20",
+    summary: "Actualización de los Eventos",
+    changes: [
+      { type: "ui", text: "Nueva seccion de \"EVENTOS\" para los antiguos, nuevos y proximos eventos" },
+      { type: "perf", text: "Dinamismo en la sección de eventos." },
+      { type: "fix", text: "Optimizacion de bugs estaticos." },
+      { type: "feat", text: "Tecnologías de componentes dinamicos y arquitectura actualizadas" },
+      { type: "feat", text: "Navegacion dentro del contenido del evento" },
+      { type: "feat", text: "Informacion de comunidad actualizada" },
+
+
+    ]
+  },
   {
     version: "v1.0.1",
     date: "2025-12-03",
