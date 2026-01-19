@@ -1,79 +1,55 @@
 ---
-import Layout from '../../Layout.astro';
-import Navbar from '../../../shared/components/layouts/Navbar.astro';
-import Footer from '../../../shared/components/layouts/Footer.astro';
-import EventNavbar from "../../../shared/components/EventNavbar.astro";
+// src/pages/eventos/[eventId]/info.astro
+import Layout from '../../../pages/Layout.astro';
+import EventNavbar from '../../../shared/components/EventNavbar.astro';
+import { events } from '../../../data/events';
 
-// Datos y utilidades
-import { getEventBySlug } from "../../../data/events";
-import { getCategoriesByEventId } from "../../../data/categories";
-import { getCategoryTotalVotes } from '../../../lib/voting';
+// Importamos la data específica y el componente nuevo
+import { parsecLeagueData } from '../../../data/parsecLeague';
+import { LeagueDashboard } from '../../../components/react/info/LeagueDashboard';
 
-// Importamos los componentes React separados
-import { AwardsInfo } from "../../../components/react/info/AwardsInfo";
-import { LeagueInfo } from "../../../components/react/info/LeagueInfo";
+export function getStaticPaths() {
+  return events.map(event => ({
+    params: { eventId: event.id },
+  }));
+}
 
-// --- VALIDACIÓN Y DATOS ---
 const { eventId } = Astro.params;
-const currentEvent = getEventBySlug(eventId);
+const event = events.find(e => e.id === eventId);
 
-if (!currentEvent) {
+if (!event) {
   return Astro.redirect('/404');
 }
 
-// Lógica condicional
-const isLeague = currentEvent.type === 'league';
-
-// Datos específicos para Premios
-let voteCount = 0;
-let totalCategories = 0;
-let totalNominees = 0;
-
-if (!isLeague) {
-    const categories = getCategoriesByEventId(currentEvent.id);
-    const votesMap = await getCategoryTotalVotes();
-    
-    voteCount = Object.values(votesMap).reduce((a: any, b: any) => a + b, 0) as number;
-    totalCategories = categories.length;
-    totalNominees = categories.reduce((acc, cat) => acc + cat.nominees.length, 0);
-}
+// Detectamos si es la Parsec League
+const isParsecLeague = event.id === 'parsec-league';
 ---
 
-<Layout title={`Información - ${currentEvent.title}`}>
-  <Navbar />
-  <EventNavbar eventSlug={currentEvent.slug} eventName={currentEvent.title} />
-  
-  <main class="pt-24 text-white overflow-hidden relative bg-[#050505] min-h-screen">
+<Layout title={`Información - ${event.name}`}>
+  <div className="min-h-screen bg-black text-white pb-20">
+    <EventNavbar event={event} />
     
-    {/* Fondos dinámicos según evento */}
-    <div class="absolute inset-0 -z-10 pointer-events-none">
-        {isLeague ? (
-             <div class="absolute inset-0 bg-gradient-to-br from-green-900/20 via-black to-black"></div>
-        ) : (
-             <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-purple-900/20 via-black to-black"></div>
-        )}
-    </div>
-    
-    <div class="container mx-auto px-6 py-16">
-      
-      {isLeague ? (
-        /* VISTA DE LIGA DE FÚTBOL */
-        <LeagueInfo 
-            client:load 
-            event={currentEvent} 
-        />
+    <main className="container mx-auto px-4 pt-8">
+      {/* Encabezado General */}
+      <div className="text-center mb-12">
+        <h1 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 mb-4 uppercase">
+          {event.name}
+        </h1>
+        <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          {event.description}
+        </p>
+      </div>
+
+      {/* Renderizado condicional */}
+      {isParsecLeague ? (
+        <LeagueDashboard data={parsecLeagueData} client:visible />
       ) : (
-        /* VISTA DE PREMIOS (LAG AWARDS) */
-        <AwardsInfo 
-            client:load 
-            event={currentEvent}
-            totalCategories={totalCategories}
-            totalNominees={totalNominees}
-            voteCount={voteCount}
-        />
+        <div className="text-center py-20 bg-gray-900/30 rounded-2xl border border-gray-800">
+          <p className="text-2xl text-gray-500 font-bold">Información general del evento</p>
+          <p className="text-gray-600 mt-2">Aquí irá el contenido para otros eventos como {event.name}</p>
+        </div>
       )}
 
-    </div>
-  </main>
-  <Footer />
+    </main>
+  </div>
 </Layout>

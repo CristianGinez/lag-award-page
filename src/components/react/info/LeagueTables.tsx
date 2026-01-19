@@ -74,13 +74,13 @@ export const LeagueTables: React.FC<LeagueTablesProps> = ({ event }) => {
                                 <td className="p-4 text-green-300">1 Carta Normal</td>
                             </tr>
                             <tr className="hover:bg-white/5">
-                                <td className="p-4 text-gray-400">6º Lugar</td>
-                                <td className="p-4 text-gray-500">Zona Baja</td>
-                                <td className="p-4 text-green-300">1 Carta Normal</td>
+                                <td className="p-4 text-yellow-400">6º Lugar</td>
+                                <td className="p-4 text-yellow-500">Zona Baja</td>
+                                <td className="p-4 text-yellow-300">1 Carta Normal</td>
                             </tr>
                             <tr className="hover:bg-white/5">
                                 <td className="p-4 text-red-400">7º Lugar</td>
-                                <td className="p-4 text-gray-500">Zona de Peligro</td>
+                                <td className="p-4 text-red-500">Zona de Peligro</td>
                                 <td className="p-4 text-red-300">1 Carta Fuerte</td>
                             </tr>
                             <tr className="bg-red-900/10 hover:bg-red-900/20 transition-colors">
