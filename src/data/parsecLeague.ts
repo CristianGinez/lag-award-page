@@ -47,13 +47,13 @@ export interface Edition {
 export const parsecLeagueData = {
   // --- TABLA DE POSICIONES (Inicializada en 0) ---
   standings: [
-    { position: 1, name: 'CristianTuVieja', played: 0, won: 0, drawn: 0, lost: 0, points: 0, gf: 0, ga: 0, gd: 0, form: [] },
-    { position: 2, name: 'Doge',            played: 0, won: 0, drawn: 0, lost: 0, points: 0, gf: 0, ga: 0, gd: 0, form: [] },
-    { position: 3, name: 'ElSanto',         played: 0, won: 0, drawn: 0, lost: 0, points: 0, gf: 0, ga: 0, gd: 0, form: [] },
-    { position: 4, name: 'GTALOCO',         played: 0, won: 0, drawn: 0, lost: 0, points: 0, gf: 0, ga: 0, gd: 0, form: [] },
-    { position: 5, name: 'KZ',              played: 0, won: 0, drawn: 0, lost: 0, points: 0, gf: 0, ga: 0, gd: 0, form: [] },
-    { position: 6, name: 'LAG',             played: 0, won: 0, drawn: 0, lost: 0, points: 0, gf: 0, ga: 0, gd: 0, form: [] },
-    { position: 7, name: 'Moonlight',       played: 0, won: 0, drawn: 0, lost: 0, points: 0, gf: 0, ga: 0, gd: 0, form: [] },
+    { position: 1, name: 'CristianTuVieja', played: 0, won: 0, drawn: 0, lost: 0, points: 3, gf: 2, ga: 0, gd: 0, form: [] },
+    { position: 2, name: 'Doge',            played: 0, won: 0, drawn: 0, lost: 0, points: 4, gf: 3, ga: 0, gd: 0, form: [] },
+    { position: 3, name: 'ElSanto',         played: 0, won: 0, drawn: 0, lost: 0, points: 3, gf: 3, ga: 0, gd: 0, form: [] },
+    { position: 4, name: 'GTALOCO',         played: 0, won: 0, drawn: 0, lost: 0, points: 4, gf: 4, ga: 0, gd: 0, form: [] },
+    { position: 5, name: 'KZ',              played: 0, won: 0, drawn: 0, lost: 0, points: 0, gf: 1, ga: 0, gd: 0, form: [] },
+    { position: 6, name: 'LAG',             played: 0, won: 0, drawn: 0, lost: 0, points: 6, gf: 8, ga: 0, gd: 0, form: [] },
+    { position: 7, name: 'Moonlight',       played: 0, won: 0, drawn: 0, lost: 0, points: 3, gf: 3, ga: 0, gd: 0, form: [] },
     { position: 8, name: 'NotaKboo',        played: 0, won: 0, drawn: 0, lost: 0, points: 0, gf: 0, ga: 0, gd: 0, form: [] },
   ] as LeagueTeam[],
 
@@ -78,10 +78,10 @@ export const parsecLeagueData = {
     {
       name: "Fecha 1",
       matches: [
-        { id: 'f1-m1', homeTeam: 'NotaKboo', awayTeam: 'GTALOCO', homeScore: null, awayScore: null, date: 'Por definir', time: '20:00', status: 'scheduled' },
-        { id: 'f1-m2', homeTeam: 'Moonlight', awayTeam: 'Doge', homeScore: null, awayScore: null, date: 'Por definir', time: '21:00', status: 'scheduled' },
-        { id: 'f1-m3', homeTeam: 'LAG', awayTeam: 'ElSanto', homeScore: null, awayScore: null, date: 'Por definir', time: '22:00', status: 'scheduled' },
-        { id: 'f1-m4', homeTeam: 'KZ', awayTeam: 'CristianTuVieja', homeScore: null, awayScore: null, date: 'Por definir', time: '23:00', status: 'scheduled' },
+        { id: 'f1-m1', homeTeam: 'NotaKboo', awayTeam: 'GTALOCO', homeScore: '0', awayScore: '3', date: 'Finalizado', time: '20:00', status: 'played' },
+        { id: 'f1-m2', homeTeam: 'Moonlight', awayTeam: 'Doge', homeScore: '0', awayScore: '2', date: 'Finalizado', time: '21:00', status: 'played' },
+        { id: 'f1-m3', homeTeam: 'LAG', awayTeam: 'ElSanto', homeScore: '3', awayScore: '1', date: 'Finalizado', time: '22:00', status: 'played' },
+        { id: 'f1-m4', homeTeam: 'KZ', awayTeam: 'CristianTuVieja', homeScore: '0', awayScore: '2', date: 'Finalizado', time: '23:00', status: 'played' },
       ]
     },
     {
