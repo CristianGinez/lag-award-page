@@ -25,14 +25,14 @@ if (!event) {
 const isParsecLeague = event.id === 'parsec-league';
 ---
 
-<Layout title={`Información - ${event.name}`}>
+<Layout title={`Información - ${event.title}`}>
   <div className="min-h-screen bg-black text-white pb-20">
     <EventNavbar event={event} />
     
     <main className="container mx-auto px-4 pt-8">
       {/* Encabezado General */}
       <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 mb-4 uppercase">
+        <h1 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-linear-to-r from-yellow-400 via-orange-500 to-red-500 mb-4 uppercase">
           {event.name}
         </h1>
         <p className="text-gray-400 text-lg max-w-2xl mx-auto">

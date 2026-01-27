@@ -14,7 +14,7 @@ const rootLink = `/eventos/${eventSlug}`;
 const tablesLink = `/eventos/${eventSlug}/tablas`;
 const fixtureLink = `/eventos/${eventSlug}/partidos`;
 const scorersLink = `/eventos/${eventSlug}/goleadores`;
-// IMPORTANTE: Aquí definimos la variable que faltaba
+const marcadorLink = `/eventos/${eventSlug}/marcador`;
 const editionsLink = `/eventos/${eventSlug}/ediciones`;
 
 // Rutas para eventos tipo Awards
@@ -27,6 +27,7 @@ const isTablesActive = currentPath === tablesLink;
 const isFixtureActive = currentPath === fixtureLink;
 const isScorersActive = currentPath === scorersLink;
 const isEditionsActive = currentPath === editionsLink;
+const isMarcadorActive = currentPath === marcadorLink;
 
 const isInfoActive = currentPath === infoLink; 
 ---
@@ -49,6 +50,7 @@ const isInfoActive = currentPath === infoLink;
                             <a href={rootLink} class={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${isRootActive ? 'bg-green-600 text-white shadow-[0_0_15px_rgba(34,197,94,0.4)]' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>Información</a>
                             <a href={tablesLink} class={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${isTablesActive ? 'bg-green-600 text-white shadow-[0_0_15px_rgba(34,197,94,0.4)]' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>Tablas</a>
                             <a href={fixtureLink} class={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${isFixtureActive ? 'bg-green-600 text-white shadow-[0_0_15px_rgba(34,197,94,0.4)]' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>Partidos</a>
+                            <a href={marcadorLink} class={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${isMarcadorActive ? 'bg-green-600 text-white shadow-[0_0_15px_rgba(34,197,94,0.4)]' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>Marcador</a>
                             <a href={scorersLink} class={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${isScorersActive ? 'bg-green-600 text-white shadow-[0_0_15px_rgba(34,197,94,0.4)]' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>Goleadores</a>
                             <a href={editionsLink} class={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${isEditionsActive ? 'bg-green-600 text-white shadow-[0_0_15px_rgba(34,197,94,0.4)]' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>Ediciones</a>
                         </>
