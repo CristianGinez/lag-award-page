@@ -59,11 +59,9 @@ const standings = parsecLeagueData.standings;
                     {team.position}
                   </span>
                 </td>
-                <td class="px-6 py-4">
+                <td class="px-6 py-2">
                   <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-full bg-zinc-800 border border-white/10 flex items-center justify-center text-[10px] font-bold">
-                      {team.name.substring(0, 2).toUpperCase()}
-                    </div>
+                    <img src={team.logo} alt={team.name} class="rounded-full w-8 h-8 object-contain" />
                     <span class="text-sm font-semibold text-zinc-200 group-hover:text-white transition-colors">
                       {team.name}
                     </span>

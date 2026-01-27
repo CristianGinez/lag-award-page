@@ -3,6 +3,7 @@
 export interface LeagueTeam {
   position: number;
   name: string;
+  logo?: string;
   played: number;
   won: number;
   drawn: number;
@@ -47,14 +48,14 @@ export interface Edition {
 export const parsecLeagueData = {
   // --- TABLA DE POSICIONES (Inicializada en 0) ---
   standings: [
-    { position: 1, name: 'LAG', played: 2, won: 2, drawn: 0, lost: 0, points: 6, gf: 8, ga: 1, gd: 7, form: ['W', 'W'] },
-    { position: 2, name: 'GTALOCO', played: 2, won: 1, drawn: 1, lost: 0, points: 4, gf: 4, ga: 1, gd: 3, form: ['D', 'W'] },
-    { position: 3, name: 'Doge', played: 2, won: 1, drawn: 1, lost: 0, points: 4, gf: 3, ga: 1, gd: 2, form: ['W', 'D'] },
-    { position: 4, name: 'ElSanto', played: 2, won: 1, drawn: 0, lost: 1, points: 3, gf: 3, ga: 3, gd: 0, form: ['W', 'L'] },
-    { position: 5, name: 'Moonlight', played: 2, won: 1, drawn: 0, lost: 1, points: 3, gf: 3, ga: 5, gd: -2, form: ['L', 'W'] },
-    { position: 6, name: 'CristianTuVieja', played: 2, won: 1, drawn: 0, lost: 1, points: 3, gf: 2, ga: 4, gd: -2, form: ['W', 'L'] },
-    { position: 7, name: 'KZ', played: 2, won: 0, drawn: 0, lost: 2, points: 0, gf: 1, ga: 5, gd: -4, form: ['L', 'L'] },
-    { position: 8, name: 'NotaKboo', played: 2, won: 0, drawn: 0, lost: 2, points: 0, gf: 0, ga: 4, gd: -4, form: ['L', 'L'] },
+    { position: 1, name: 'LAG', logo: 'https://yt3.googleusercontent.com/aDag2YmW8AmgtxcN_jdZMdsiP0q_t3vlKUi_o-0NHXraeIQ4MITmDBzyG2oNBJk_H27LY1MH=s900-c-k-c0x00ffffff-no-rj', played: 2, won: 2, drawn: 0, lost: 0, points: 6, gf: 8, ga: 1, gd: 7, form: ['W', 'W'] },
+    { position: 2, name: 'GTALOCO', logo: 'https://zgfpsqsbthjpejqyuhcx.supabase.co/storage/v1/object/public/tlag/nominados/img/felipe.webp', played: 2, won: 1, drawn: 1, lost: 0, points: 4, gf: 4, ga: 1, gd: 3, form: ['D', 'W'] },
+    { position: 3, name: 'Doge', logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrsl_jL8niccfssY5I1r3sb8eRepnqlgSODQ&s', played: 2, won: 1, drawn: 1, lost: 0, points: 4, gf: 3, ga: 1, gd: 2, form: ['W', 'D'] },
+    { position: 4, name: 'ElSanto', logo: 'https://cdn.discordapp.com/avatars/482337903343566849/9b27425ea603f3f28c143b5bb3ed7191.webp', played: 2, won: 1, drawn: 0, lost: 1, points: 3, gf: 3, ga: 3, gd: 0, form: ['W', 'L'] },
+    { position: 5, name: 'Moonlight', logo: 'https://zgfpsqsbthjpejqyuhcx.supabase.co/storage/v1/object/public/tlag/nominados/img/user_02.webp', played: 2, won: 1, drawn: 0, lost: 1, points: 3, gf: 3, ga: 5, gd: -2, form: ['L', 'W'] },
+    { position: 6, name: 'CristianTuVieja', logo: 'https://zgfpsqsbthjpejqyuhcx.supabase.co/storage/v1/object/public/tlag/nominados/img/ctv.webp', played: 2, won: 1, drawn: 0, lost: 1, points: 3, gf: 2, ga: 4, gd: -2, form: ['W', 'L'] },
+    { position: 7, name: 'KZ', logo: 'https://zgfpsqsbthjpejqyuhcx.supabase.co/storage/v1/object/public/tlag/nominados/img/kz.webp', played: 2, won: 0, drawn: 0, lost: 2, points: 0, gf: 1, ga: 5, gd: -4, form: ['L', 'L'] },
+    { position: 8, name: 'NotaKboo', logo: 'https://cdn.discordapp.com/avatars/414306483388547072/35faa7199c7cd1eefdba3239af8776b3.webp', played: 2, won: 0, drawn: 0, lost: 2, points: 0, gf: 0, ga: 4, gd: -4, form: ['L', 'L'] },
   ] as LeagueTeam[],
 
   previousEditions: [
