@@ -16,7 +16,7 @@ export const LeagueFixture: React.FC<{ fixture: Round[] }> = ({ fixture }) => {
                 
                 <div className="mx-4 flex flex-col items-center min-w-[60px]">
                   {match.status === 'played' ? (
-                     <span className="bg-gray-800 px-3 py-1 rounded text-white font-mono font-bold border border-white/10 shadow-lg">
+                     <span className="bg-gray-800 px-3 py-1 rounded text-white font-mono font-bold border border-white/10 shadow-lg text-4xl">
                        {match.homeScore} - {match.awayScore}
                      </span>
                   ) : (
