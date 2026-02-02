@@ -48,14 +48,14 @@ export interface Edition {
 export const parsecLeagueData = {
   // --- TABLA DE POSICIONES (Inicializada en 0) ---
   standings: [
-    { position: 1, name: 'LAG', logo: 'https://yt3.googleusercontent.com/aDag2YmW8AmgtxcN_jdZMdsiP0q_t3vlKUi_o-0NHXraeIQ4MITmDBzyG2oNBJk_H27LY1MH=s900-c-k-c0x00ffffff-no-rj', played: 2, won: 2, drawn: 0, lost: 0, points: 6, gf: 8, ga: 1, gd: 7, form: ['W', 'W'] },
-    { position: 2, name: 'CristianTuVieja', logo: 'https://zgfpsqsbthjpejqyuhcx.supabase.co/storage/v1/object/public/tlag/nominados/img/ctv.webp', played: 3, won: 2, drawn: 0, lost: 1, points: 6, gf: 6, ga: 3, gd: 3, form: ['W', 'L', 'W'] },
-    { position: 3, name: 'ElSanto', logo: 'https://cdn.discordapp.com/avatars/482337903343566849/9b27425ea603f3f28c143b5bb3ed7191.webp', played: 3, won: 2, drawn: 0, lost: 1, points: 6, gf: 6, ga: 4, gd: 2, form: ['W', 'L', 'W'] },
-    { position: 4, name: 'GTALOCO', logo: 'https://zgfpsqsbthjpejqyuhcx.supabase.co/storage/v1/object/public/tlag/nominados/img/felipe.webp', played: 2, won: 1, drawn: 1, lost: 0, points: 4, gf: 4, ga: 1, gd: 3, form: ['D', 'W'] },
-    { position: 5, name: 'Doge', logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrsl_jL8niccfssY5I1r3sb8eRepnqlgSODQ&s', played: 3, won: 1, drawn: 1, lost: 1, points: 4, gf: 3, ga: 5, gd: -2, form: ['W', 'D', 'L'] },
-    { position: 6, name: 'Moonlight', logo: 'https://zgfpsqsbthjpejqyuhcx.supabase.co/storage/v1/object/public/tlag/nominados/img/user_02.webp', played: 3, won: 1, drawn: 0, lost: 2, points: 3, gf: 3, ga: 5, gd: -2, form: ['L', 'W', 'L'] },
-    { position: 7, name: 'KZ', logo: 'https://zgfpsqsbthjpejqyuhcx.supabase.co/storage/v1/object/public/tlag/nominados/img/kz.webp', played: 2, won: 0, drawn: 0, lost: 2, points: 0, gf: 1, ga: 4, gd: -3, form: ['L', 'L'] },
-    { position: 8, name: 'NotaKboo', logo: 'https://cdn.discordapp.com/avatars/414306483388547072/35faa7199c7cd1eefdba3239af8776b3.webp', played: 2, won: 0, drawn: 0, lost: 2, points: 0, gf: 0, ga: 8, gd: -8, form: ['L', 'L'] },
+    { position: 1, name: 'LAG', logo: 'https://yt3.googleusercontent.com/aDag2YmW8AmgtxcN_jdZMdsiP0q_t3vlKUi_o-0NHXraeIQ4MITmDBzyG2oNBJk_H27LY1MH=s900-c-k-c0x00ffffff-no-rj', played: 4, won: 3, drawn: 0, lost: 1, points: 9, gf: 18, ga: 10, gd: 8, form: ['W', 'W', 'W', 'L'] },
+    { position: 2, name: 'ElSanto', logo: 'https://cdn.discordapp.com/avatars/482337903343566849/9b27425ea603f3f28c143b5bb3ed7191.webp', played: 4, won: 3, drawn: 0, lost: 1, points: 9, gf: 10, ga: 4, gd: 6, form: ['W', 'L', 'W', 'W'] },
+    { position: 3, name: 'CristianTuVieja', logo: 'https://zgfpsqsbthjpejqyuhcx.supabase.co/storage/v1/object/public/tlag/nominados/img/ctv.webp', played: 4, won: 3, drawn: 0, lost: 1, points: 9, gf: 8, ga: 3, gd: 5, form: ['W', 'L', 'W', 'W'] },
+    { position: 4, name: 'KZ', logo: 'https://zgfpsqsbthjpejqyuhcx.supabase.co/storage/v1/object/public/tlag/nominados/img/kz.webp', played: 4, won: 2, drawn: 0, lost: 2, points: 6, gf: 7, ga: 4, gd: 3, form: ['L', 'L', 'W', 'W'] },
+    { position: 5, name: 'GTALOCO', logo: 'https://zgfpsqsbthjpejqyuhcx.supabase.co/storage/v1/object/public/tlag/nominados/img/felipe.webp', played: 4, won: 1, drawn: 1, lost: 2, points: 4, gf: 11, ga: 13, gd: -2, form: ['D', 'W', 'L', 'L'] },
+    { position: 6, name: 'Doge', logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrsl_jL8niccfssY5I1r3sb8eRepnqlgSODQ&s', played: 4, won: 1, drawn: 1, lost: 2, points: 4, gf: 3, ga: 9, gd: -6, form: ['W', 'D', 'L', 'L'] },
+    { position: 7, name: 'Moonlight', logo: 'https://zgfpsqsbthjpejqyuhcx.supabase.co/storage/v1/object/public/tlag/nominados/img/user_02.webp', played: 4, won: 1, drawn: 0, lost: 3, points: 3, gf: 3, ga: 6, gd: -3, form: ['L', 'W', 'L', 'L'] },
+    { position: 8, name: 'NotaKboo', logo: 'https://cdn.discordapp.com/avatars/414306483388547072/35faa7199c7cd1eefdba3239af8776b3.webp', played: 4, won: 1, drawn: 0, lost: 3, points: 3, gf: 1, ga: 12, gd: -11, form: ['L', 'L', 'W', 'L'] },
   ] as LeagueTeam[],
 
   previousEditions: [
@@ -97,19 +97,19 @@ export const parsecLeagueData = {
     {
       name: "Fecha 3",
       matches: [
-        { id: 'f3-m1', homeTeam: 'LAG', awayTeam: 'GTALOCO', homeScore: null, awayScore: null, date: 'En Vivo', time: '20:00', status: 'live' },
+        { id: 'f3-m1', homeTeam: 'LAG', awayTeam: 'GTALOCO', homeScore: '16', awayScore: '7', date: 'Finalizado', time: '20:00', status: 'played' },
         { id: 'f3-m2', homeTeam: 'Doge', awayTeam: 'CristianTuVieja', homeScore: '0', awayScore: '4', date: 'Finalizado', time: '21:00', status: 'played' },
-        { id: 'f3-m3', homeTeam: 'KZ', awayTeam: 'NotaKboo', homeScore: null, awayScore: null, date: 'Por definir', time: '22:00', status: 'scheduled' },
+        { id: 'f3-m3', homeTeam: 'KZ', awayTeam: 'NotaKboo', homeScore: '4', awayScore: '0', date: 'Finalizado', time: '22:00', status: 'played' },
         { id: 'f3-m4', homeTeam: 'Moonlight', awayTeam: 'ElSanto', homeScore: '0', awayScore: '3', date: 'Finalizado', time: '23:00', status: 'played' },
       ]
     },
     {
       name: "Fecha 4",
       matches: [
-        { id: 'f4-m1', homeTeam: 'GTALOCO', awayTeam: 'CristianTuVieja', homeScore: null, awayScore: null, date: 'Por definir', time: '20:00', status: 'scheduled' },
-        { id: 'f4-m2', homeTeam: 'LAG', awayTeam: 'KZ', homeScore: null, awayScore: null, date: 'Por definir', time: '21:00', status: 'scheduled' },
-        { id: 'f4-m3', homeTeam: 'ElSanto', awayTeam: 'Doge', homeScore: null, awayScore: null, date: 'Por definir', time: '22:00', status: 'scheduled' },
-        { id: 'f4-m4', homeTeam: 'NotaKboo', awayTeam: 'Moonlight', homeScore: null, awayScore: null, date: 'Por definir', time: '23:00', status: 'scheduled' },
+        { id: 'f4-m1', homeTeam: 'GTALOCO', awayTeam: 'CristianTuVieja', homeScore: '0', awayScore: '2', date: 'Finalizado', time: '20:00', status: 'played' },
+        { id: 'f4-m2', homeTeam: 'LAG', awayTeam: 'KZ', homeScore: '0', awayScore: '2', date: 'Finalizado', time: '21:00', status: 'played' },
+        { id: 'f4-m3', homeTeam: 'ElSanto', awayTeam: 'Doge', homeScore: '4', awayScore: '0', date: 'Finalizado', time: '22:00', status: 'played' },
+        { id: 'f4-m4', homeTeam: 'NotaKboo', awayTeam: 'Moonlight', homeScore: '1', awayScore: '0', date: 'Finalizado', time: '23:00', status: 'played' },
       ]
     },
     {
@@ -143,13 +143,13 @@ export const parsecLeagueData = {
 
   // --- GOLEADORES (Vacío por ahora) ---
   goalscorers: [
-    { rank: 1, name: 'LAG', team: 'LAG', goals: 8 },
-    { rank: 2, name: 'GTALOCO', team: 'GTALOCO', goals: 4 },
-    { rank: 3, name: 'Doge', team: 'Doge', goals: 3 },
-    { rank: 4, name: 'ElSanto', team: 'ElSanto', goals: 3 },
-    { rank: 5, name: 'Moonlight', team: 'Moonlight', goals: 3 },
-    { rank: 6, name: 'CristianTuVieja', team: 'CristianTuVieja', goals: 2 },
-    { rank: 7, name: 'KZ', team: 'KZ', goals: 1 },
-    { rank: 8, name: 'NotaKboo', team: 'NotaKboo', goals: 0 },
+    { rank: 1, name: 'LAG', team: 'LAG', goals: 18 },
+    { rank: 2, name: 'GTALOCO', team: 'GTALOCO', goals: 11 },
+    { rank: 3, name: 'ElSanto', team: 'ElSanto', goals: 10 },
+    { rank: 4, name: 'CristianTuVieja', team: 'CristianTuVieja', goals: 8 },
+    { rank: 5, name: 'KZ', team: 'KZ', goals: 7 },
+    { rank: 6, name: 'Doge', team: 'Doge', goals: 3 },
+    { rank: 7, name: 'Moonlight', team: 'Moonlight', goals: 3 },
+    { rank: 8, name: 'NotaKboo', team: 'NotaKboo', goals: 1 },
   ] as GoalScorer[]
 };
