@@ -88,16 +88,16 @@ export const parsecLeagueData = {
     {
       name: "Fecha 2",
       matches: [
-        { id: 'f2-m1', homeTeam: 'GTALOCO', awayTeam: 'Doge', homeScore: null, awayScore: null, date: 'Por definir', time: '20:00', status: 'scheduled' },
-        { id: 'f2-m2', homeTeam: 'NotaKboo', awayTeam: 'LAG', homeScore: null, awayScore: null, date: 'Por definir', time: '21:00', status: 'scheduled' },
-        { id: 'f2-m3', homeTeam: 'CristianTuVieja', awayTeam: 'Moonlight', homeScore: null, awayScore: null, date: 'Por definir', time: '22:00', status: 'scheduled' },
-        { id: 'f2-m4', homeTeam: 'ElSanto', awayTeam: 'KZ', homeScore: null, awayScore: null, date: 'Por definir', time: '23:00', status: 'scheduled' },
+        { id: 'f2-m1', homeTeam: 'GTALOCO', awayTeam: 'Doge', homeScore: '1', awayScore: '1', date: 'Finalizado', time: '20:00', status: 'played' },
+        { id: 'f2-m2', homeTeam: 'NotaKboo', awayTeam: 'LAG', homeScore: '0', awayScore: '5', date: 'Finalizado', time: '21:00', status: 'played' },
+        { id: 'f2-m3', homeTeam: 'CristianTuVieja', awayTeam: 'Moonlight', homeScore: '0', awayScore: '3', date: 'Finalizado', time: '22:00', status: 'played' },
+        { id: 'f2-m4', homeTeam: 'ElSanto', awayTeam: 'KZ', homeScore: '2', awayScore: '1', date: 'Finalizado', time: '23:00', status: 'played' },
       ]
     },
     {
       name: "Fecha 3",
       matches: [
-        { id: 'f3-m1', homeTeam: 'LAG', awayTeam: 'GTALOCO', homeScore: null, awayScore: null, date: 'Por definir', time: '20:00', status: 'scheduled' },
+        { id: 'f3-m1', homeTeam: 'LAG', awayTeam: 'GTALOCO', homeScore: null, awayScore: null, date: 'Por definir', time: '20:00', status: 'live' },
         { id: 'f3-m2', homeTeam: 'Doge', awayTeam: 'CristianTuVieja', homeScore: null, awayScore: null, date: 'Por definir', time: '21:00', status: 'scheduled' },
         { id: 'f3-m3', homeTeam: 'KZ', awayTeam: 'NotaKboo', homeScore: null, awayScore: null, date: 'Por definir', time: '22:00', status: 'scheduled' },
         { id: 'f3-m4', homeTeam: 'Moonlight', awayTeam: 'ElSanto', homeScore: null, awayScore: null, date: 'Por definir', time: '23:00', status: 'scheduled' },
