@@ -97,7 +97,7 @@ export const parsecLeagueData = {
     {
       name: "Fecha 3",
       matches: [
-        { id: 'f3-m1', homeTeam: 'LAG', awayTeam: 'GTALOCO', homeScore: null, awayScore: null, date: 'Por definir', time: '20:00', status: 'live' },
+        { id: 'f3-m1', homeTeam: 'LAG', awayTeam: 'GTALOCO', homeScore: '2', awayScore: '0', date: 'En Vivo', time: '20:00', status: 'live' },
         { id: 'f3-m2', homeTeam: 'Doge', awayTeam: 'CristianTuVieja', homeScore: null, awayScore: null, date: 'Por definir', time: '21:00', status: 'scheduled' },
         { id: 'f3-m3', homeTeam: 'KZ', awayTeam: 'NotaKboo', homeScore: null, awayScore: null, date: 'Por definir', time: '22:00', status: 'scheduled' },
         { id: 'f3-m4', homeTeam: 'Moonlight', awayTeam: 'ElSanto', homeScore: null, awayScore: null, date: 'Por definir', time: '23:00', status: 'scheduled' },
