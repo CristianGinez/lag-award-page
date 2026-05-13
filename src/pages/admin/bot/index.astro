@@ -1,11 +1,9 @@
 ---
 import BotAdminLayout from '@/features/bot-admin/components/BotAdminLayout.astro';
 import { convex } from '@/features/bot-admin/lib/convexClient';
-import { getSupabase } from '@/features/auth/lib/supabase';
+import { isAdminPage } from '@/features/bot-admin/lib/pageAuth';
 
-const supabase = getSupabase(Astro);
-const { data: { user } } = await supabase.auth.getUser();
-if (!user?.app_metadata?.is_admin) return Astro.redirect('/');
+if (!await isAdminPage(Astro)) return Astro.redirect('/');
 
 let streamers: any[] = [];
 let channelConfigs: any[] = [];
