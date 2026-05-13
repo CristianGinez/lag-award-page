@@ -2,9 +2,9 @@
 import BotAdminLayout from '@/features/bot-admin/components/BotAdminLayout.astro';
 import MembersTable from '@/features/bot-admin/components/MembersTable.tsx';
 import { convex } from '@/features/bot-admin/lib/convexClient';
-import { isAdminPage } from '@/features/bot-admin/lib/pageAuth';
 
-if (!await isAdminPage(Astro)) return Astro.redirect('/');
+
+
 
 let initialMembers: any[] = [];
 try {

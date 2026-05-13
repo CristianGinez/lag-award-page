@@ -24,30 +24,88 @@ const tabs = [
 <Layout title={`${title} — Bot Admin`} description="Gestión del bot del TeamLag" image="/og/default.png">
   <Navbar />
   <main class="pt-24 min-h-screen bg-[#050505] text-white">
-    <div class="container mx-auto px-4 md:px-6 py-8">
-      <header class="mb-8">
-        <p class="text-red-500 font-mono text-xs uppercase tracking-[0.2em]">Bot Admin</p>
-        <h1 class="text-4xl md:text-5xl font-black font-orbitron tracking-tighter mt-1">{title}</h1>
-      </header>
 
-      <nav class="flex gap-2 overflow-x-auto mb-8 border-b border-white/10 pb-2">
-        {tabs.map(tab => (
-          <a
-            href={tab.href}
-            class:list={[
-              'px-4 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-all',
-              tab.id === active
-                ? 'bg-white text-black'
-                : 'text-gray-400 hover:text-white hover:bg-white/5',
-            ]}
-          >
-            {tab.label}
-          </a>
-        ))}
-      </nav>
-
-      <slot />
+    <!-- Loading / auth check -->
+    <div id="bot-admin-loading" class="flex flex-col items-center justify-center min-h-[60vh]">
+      <div class="relative">
+        <div class="w-16 h-16 border-4 border-white/5 border-t-red-500 rounded-full animate-spin"></div>
+        <div class="absolute inset-0 flex items-center justify-center text-xl animate-pulse">🤖</div>
+      </div>
+      <p class="mt-4 text-gray-500 font-mono text-xs tracking-widest uppercase">Verificando acceso...</p>
     </div>
+
+    <!-- Contenido (oculto hasta confirmar admin) -->
+    <div id="bot-admin-content" class="hidden opacity-0 transition-opacity duration-500">
+      <div class="container mx-auto px-4 md:px-6 py-8">
+        <header class="mb-8">
+          <p class="text-red-500 font-mono text-xs uppercase tracking-[0.2em]">Bot Admin</p>
+          <h1 class="text-4xl md:text-5xl font-black font-orbitron tracking-tighter mt-1">{title}</h1>
+        </header>
+
+        <nav class="flex gap-2 overflow-x-auto mb-8 border-b border-white/10 pb-2">
+          {tabs.map(tab => (
+            <a
+              href={tab.href}
+              class:list={[
+                'px-4 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-all',
+                tab.id === active
+                  ? 'bg-white text-black'
+                  : 'text-gray-400 hover:text-white hover:bg-white/5',
+              ]}
+            >
+              {tab.label}
+            </a>
+          ))}
+        </nav>
+
+        <slot />
+      </div>
+    </div>
+
   </main>
   <Footer />
 </Layout>
+
+<script>
+  import { supabase } from '@/features/auth/lib/supabase';
+
+  const loading = document.getElementById('bot-admin-loading');
+  const content = document.getElementById('bot-admin-content');
+
+  async function checkAdmin() {
+    const { data: { session } } = await supabase.auth.getSession();
+    const user = session?.user;
+
+    if (!user) {
+      window.location.href = '/';
+      return;
+    }
+
+    // Fast path: JWT claim
+    if (user.app_metadata?.is_admin === true) {
+      showContent();
+      return;
+    }
+
+    // Fallback: tabla admin_users
+    const { data } = await supabase
+      .from('admin_users')
+      .select('user_id')
+      .eq('user_id', user.id)
+      .maybeSingle();
+
+    if (data) {
+      showContent();
+    } else {
+      window.location.href = '/';
+    }
+  }
+
+  function showContent() {
+    loading?.classList.add('hidden');
+    content?.classList.remove('hidden');
+    setTimeout(() => content?.classList.remove('opacity-0'), 50);
+  }
+
+  document.addEventListener('astro:page-load', checkAdmin);
+</script>

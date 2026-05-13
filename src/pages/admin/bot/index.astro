@@ -1,9 +1,9 @@
 ---
 import BotAdminLayout from '@/features/bot-admin/components/BotAdminLayout.astro';
 import { convex } from '@/features/bot-admin/lib/convexClient';
-import { isAdminPage } from '@/features/bot-admin/lib/pageAuth';
 
-if (!await isAdminPage(Astro)) return Astro.redirect('/');
+
+
 
 let streamers: any[] = [];
 let channelConfigs: any[] = [];
