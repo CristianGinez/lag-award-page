@@ -69,45 +69,35 @@ const tabs = [
 <script>
   import { supabase } from '@/features/auth/lib/supabase';
 
-  const loading = document.getElementById('bot-admin-loading');
-  const content = document.getElementById('bot-admin-content');
-
-  async function checkAdmin() {
-    const { data: { session } } = await supabase.auth.getSession();
-    const user = session?.user;
-
-    if (!user) {
-      window.location.href = '/';
-      return;
-    }
-
-    // Fast path: JWT claim
-    if (user.app_metadata?.is_admin === true) {
-      showContent();
-      return;
-    }
-
-    // Fallback: tabla admin_users
-    const { data } = await supabase
-      .from('admin_users')
-      .select('user_id')
-      .eq('user_id', user.id)
-      .maybeSingle();
-
-    if (data) {
-      showContent();
-    } else {
-      window.location.href = '/';
-    }
-  }
-
   function showContent() {
-    loading?.classList.add('hidden');
+    // Buscar elementos en el DOM actual (cambia en cada navegación con View Transitions)
+    document.getElementById('bot-admin-loading')?.classList.add('hidden');
+    const content = document.getElementById('bot-admin-content');
     content?.classList.remove('hidden');
     setTimeout(() => content?.classList.remove('opacity-0'), 50);
   }
 
-  // Llamar directamente (por si astro:page-load ya disparó) + registrar para navegaciones
+  async function checkAdmin() {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const user = session?.user;
+
+      if (!user) { window.location.href = '/'; return; }
+
+      if (user.app_metadata?.is_admin === true) { showContent(); return; }
+
+      const { data } = await supabase
+        .from('admin_users')
+        .select('user_id')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (data) { showContent(); } else { window.location.href = '/'; }
+    } catch {
+      window.location.href = '/';
+    }
+  }
+
   checkAdmin();
   document.addEventListener('astro:page-load', checkAdmin);
 </script>
