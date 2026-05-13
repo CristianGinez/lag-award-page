@@ -1,0 +1,12 @@
+{
+  "year": "2019",
+  "order": 8,
+  "title": "Dios del Sol",
+  "subtitle": "Breve descripción",
+  "description": "No se q es esto",
+  "icon": "☀️",
+  "color": "from-yellow-500 to-yellow-600",
+  "side": "left",
+  "image": "https://img.youtube.com/vi/5fHqwrBb_L4/hqdefault.jpg",
+  "link": "https://youtu.be/5fHqwrBb_L4"
+}

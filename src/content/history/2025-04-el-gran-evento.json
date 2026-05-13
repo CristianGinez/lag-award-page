@@ -1,0 +1,12 @@
+{
+  "year": "2025",
+  "order": 4,
+  "title": "EL GRAN EVENTO",
+  "subtitle": "Next Level",
+  "description": "Web App propia, votaciones en tiempo real y una gala intergaláctica. Hacemos historia juntos.",
+  "icon": "🔥",
+  "color": "from-pink-500 to-purple-600",
+  "side": "right",
+  "image": "/img/ph-1.jpg",
+  "link": "/premiacion"
+}

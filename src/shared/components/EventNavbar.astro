@@ -1,6 +1,6 @@
 ---
 // src/shared/components/EventNavbar.astro
-import { getEventBySlug } from "../../data/events";
+import { getEventBySlug } from "../lib/events";
 
 const { eventSlug, eventName = "EVENTO" } = Astro.props;
 const currentPath = Astro.url.pathname;

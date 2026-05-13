@@ -1,7 +1,13 @@
 ---
-import Layout from './Layout.astro';
-import Navbar from '../shared/components/layouts/Navbar.astro';
-import Footer from '../shared/components/layouts/Footer.astro';
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../layouts/Navbar.astro';
+import Footer from '../layouts/Footer.astro';
+import { getCollection, render } from 'astro:content';
+
+const entries = await getCollection('legal', ({ data }) => data.docSlug === 'terminos');
+const entry = entries[0];
+if (!entry) return Astro.redirect('/404');
+const { Content } = await render(entry);
 ---
 
 <Layout title="Términos y Condiciones - LAG AWARDS">
@@ -14,24 +20,10 @@ import Footer from '../shared/components/layouts/Footer.astro';
         <span class="text-red-500">📜</span> Términos
       </h1>
 
-      <div class="space-y-6 text-gray-300">
-        <div class="p-6 border-l-4 border-red-600 bg-white/5">
-          <h3 class="text-xl font-bold text-white font-orbitron mb-2">1. Fair Play (Juego Limpio)</h3>
-          <p>El uso de bots, scripts automatizados o múltiples cuentas para inflar los votos está terminantemente prohibido. Nuestro sistema de auditoría eliminará cualquier voto sospechoso antes de la gala final.</p>
-        </div>
-
-        <div class="p-6 border-l-4 border-orange-600 bg-white/5">
-          <h3 class="text-xl font-bold text-white font-orbitron mb-2">2. Comportamiento</h3>
-          <p>Este evento es para celebrar a la comunidad. Cualquier discurso de odio, acoso hacia los nominados o toxicidad en los canales oficiales resultará en un ban permanente de los premios.</p>
-        </div>
-
-        <div class="p-6 border-l-4 border-yellow-600 bg-white/5">
-          <h3 class="text-xl font-bold text-white font-orbitron mb-2">3. Propiedad Intelectual</h3>
-          <p>Los clips y artworks mostrados pertenecen a sus respectivos creadores. Los LAG AWARDS solo actúan como plataforma de exhibición y reconocimiento.</p>
-        </div>
-
-        <p class="text-xs text-gray-600 mt-8 text-center">
-          Última actualización: Diciembre 2025. Nos reservamos el derecho de modificar estas reglas para asegurar la integridad del evento.
+      <div class="space-y-6 text-gray-300 prose prose-invert prose-headings:font-orbitron prose-h2:text-xl prose-h2:font-bold prose-h2:text-white max-w-none [&_h2]:border-l-4 [&_h2]:border-red-600 [&_h2]:pl-4 [&_h2]:bg-white/5 [&_h2]:p-4 [&_h2]:rounded-sm">
+        <Content />
+        <p class="text-xs text-gray-600 mt-8 text-center not-prose">
+          Última actualización: {entry.data.lastUpdated.toLocaleDateString('es-AR', { year: 'numeric', month: 'long' })}. Nos reservamos el derecho de modificar estas reglas para asegurar la integridad del evento.
         </p>
       </div>
     </div>

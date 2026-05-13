@@ -1,0 +1,39 @@
+---
+import { optimizeUrl, srcset } from '../lib/imageOptimizer';
+
+interface Props {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  responsive?: number[];
+  priority?: boolean;
+  class?: string;
+}
+
+const {
+  src,
+  alt,
+  width = 800,
+  height,
+  responsive,
+  priority = false,
+  class: className = '',
+} = Astro.props;
+
+const optimized = optimizeUrl(src, { width, height });
+const srcsetValue = responsive ? srcset(src, responsive) : undefined;
+---
+
+<img
+  src={optimized}
+  srcset={srcsetValue}
+  alt={alt}
+  width={width}
+  height={height}
+  loading={priority ? 'eager' : 'lazy'}
+  decoding={priority ? 'sync' : 'async'}
+  fetchpriority={priority ? 'high' : 'auto'}
+  class={className}
+  onerror="this.src='/img/lag_uconstr_placeholder.png'"
+/>

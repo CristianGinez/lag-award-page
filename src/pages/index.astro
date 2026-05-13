@@ -1,25 +1,20 @@
 ---
 // src/pages/index.astro
-import Layout from './Layout.astro';
-import Navbar from '../shared/components/layouts/Navbar.astro';
-import Hero from '../components/Hero.astro';
-import Footer from '../shared/components/layouts/Footer.astro';
-import categories from '../data/categories';
-import { getWinners } from '../lib/voting';
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../layouts/Navbar.astro';
+import Hero from '../shared/components/Hero.astro';
+import Footer from '../layouts/Footer.astro';
+import categories from '../features/awards/data/categories';
+import { getWinners } from '../features/awards/lib/voting';
+import { getCached } from '../shared/lib/cache';
+import { optimizeUrl } from '../shared/lib/imageOptimizer';
 
-// 1. OBTENER GANADORES (Lógica Server-Side)
+// 1. OBTENER GANADORES (Lógica Server-Side, cacheado 60s en KV)
 const EVENT_ID_2025 = '856a7c16-5436-4776-a844-04dcaafb4656'; // Tu UUID Real
-const winnersData = await getWinners(EVENT_ID_2025);
-
-// Helper para imágenes
-const getOptimizedUrl = (url: string) => {
-  if (!url) return "/img/lag_uconstr_placeholder.png";
-  if (url.includes("res.cloudinary.com")) {
-    // Pedimos una versión más pequeña (300px) para que cargue rápido en la home
-    return url.replace("/upload/", "/upload/w_300,f_auto,q_auto/");
-  }
-  return url;
-};
+const winnersData = await getCached(
+  { key: `winners:${EVENT_ID_2025}`, ttl: 60 },
+  () => getWinners(EVENT_ID_2025)
+);
 
 // Mapear ganadores
 const winnersCompact = categories.map(cat => {
@@ -30,9 +25,11 @@ const winnersCompact = categories.map(cat => {
     return {
         category: cat,
         winnerName: winnerInfo.nominee_name,
-        details: nomineeDetails || { image: '/img/tl_logo.png' }
+        details: nomineeDetails ? { ...nomineeDetails, image: optimizeUrl(nomineeDetails.image || '', { width: 300 }) } : { image: '/img/tl_logo.png' }
     };
 }).filter(item => item !== null);
+
+Astro.response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
 ---
 
 <Layout 

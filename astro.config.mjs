@@ -17,4 +17,16 @@ export default defineConfig({
   adapter: vercel(),
   output: 'server',
   integrations: [react()],
+  image: {
+    domains: [
+      'res.cloudinary.com',
+      'zgfpsqsbthjpejqyuhcx.supabase.co',
+      'cdn.discordapp.com',
+      'media.discordapp.net',
+      'img.youtube.com',
+      'i.ytimg.com',
+      'yt3.googleusercontent.com',
+      'ik.imagekit.io',
+    ],
+  },
 });

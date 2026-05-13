@@ -1,0 +1,12 @@
+{
+  "year": "2020",
+  "order": 3,
+  "title": "Torneo 1v1 CSGO",
+  "subtitle": "1v1 CON SUSCRIPTORES",
+  "description": "El primer gran evento. Caos total, bugs épicos y risas aseguradas. Nace una leyenda.",
+  "icon": "🔥",
+  "color": "from-red-500 to-yellow-500",
+  "side": "right",
+  "image": "https://img.youtube.com/vi/E5fBGTxIHj4/maxresdefault.jpg",
+  "link": "https://youtu.be/E5fBGTxIHj4"
+}

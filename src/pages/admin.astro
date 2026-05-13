@@ -1,8 +1,8 @@
 ---
-import Layout from './Layout.astro';
-import Navbar from '../shared/components/layouts/Navbar.astro';
-import Footer from '../shared/components/layouts/Footer.astro';
-import { sendChangelogToDiscord } from '../lib/discord';
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../layouts/Navbar.astro';
+import Footer from '../layouts/Footer.astro';
+import { sendChangelogToDiscord } from '../features/admin/lib/discord';
 
 // Si es un POST (click al botón), enviamos el mensaje
 if (Astro.request.method === 'POST') {
@@ -232,9 +232,9 @@ if (Astro.request.method === 'POST') {
 </style>
 
 <script>
-  import { supabase } from '../lib/supabase';
-  import { getDashboardStats, resetAllVotes } from '../lib/admin';
-  import categories from '../data/categories.ts'; 
+  import { supabase } from '../features/auth/lib/supabase';
+  import { getDashboardStats, resetAllVotes } from '../features/admin/lib/admin';
+  import categories from '../features/awards/data/categories';
   
   const ADMIN_EMAIL = import.meta.env.PUBLIC_ADMIN_EMAIL;
 

@@ -1,8 +1,17 @@
 ---
-import Layout from './Layout.astro';
-import Navbar from '../shared/components/layouts/Navbar.astro';
-import Footer from '../shared/components/layouts/Footer.astro';
-import { historyEvents } from '../features/historia/data/history';
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../layouts/Navbar.astro';
+import Footer from '../layouts/Footer.astro';
+import { getCollection } from 'astro:content';
+
+const historyEvents = (await getCollection('history'))
+  .map(entry => entry.data)
+  .sort((a, b) => {
+    if (a.year !== b.year) return a.year.localeCompare(b.year);
+    return a.order - b.order;
+  });
+
+Astro.response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
 ---
 
 <Layout title="Nuestra Historia - LAGAWARDS">

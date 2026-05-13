@@ -1,0 +1,12 @@
+{
+  "year": "2019",
+  "order": 1,
+  "title": "Primer LAGNight",
+  "subtitle": "DIRECTITO NOCTURNO",
+  "description": "El primer LAGNight se transmite en vivo, ofreciendo a los fans una experiencia nocturna llena de juegos, risas y sorpresas.",
+  "icon": "🌙",
+  "color": "from-purple-600 to-black-600",
+  "side": "right",
+  "image": "https://img.youtube.com/vi/wIe7NErsSBU/maxresdefault.jpg",
+  "link": "https://youtu.be/wIe7NErsSBU"
+}

@@ -1,0 +1,12 @@
+{
+  "year": "2021",
+  "order": 5,
+  "title": "Doki Doki",
+  "subtitle": "VENÍAMOS JUGANDO BIEN Y DESPUÉS DOKI DOKI",
+  "description": "Especial de Doki Doki Literature Club con el TeamLAG.",
+  "icon": "📚",
+  "color": "from-pink-500 to-purple-600",
+  "side": "left",
+  "image": "https://img.youtube.com/vi/6rtagFNkMJM/maxresdefault.jpg",
+  "link": "https://youtu.be/6rtagFNkMJM"
+}

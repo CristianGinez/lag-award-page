@@ -1,13 +1,13 @@
 ---
-import Layout from '../../Layout.astro';
-import Navbar from '../../../shared/components/layouts/Navbar.astro';
-import Footer from '../../../shared/components/layouts/Footer.astro';
+import Layout from '../../../layouts/Layout.astro';
+import Navbar from '../../../layouts/Navbar.astro';
+import Footer from '../../../layouts/Footer.astro';
 import EventNavbar from "../../../shared/components/EventNavbar.astro";
 
 // Funciones de datos
-import { getWinners } from '../../../lib/voting';
-import { getEventBySlug } from "../../../data/events";
-import { getCategoriesByEventId } from "../../../data/categories";
+import { getWinners } from '../../../features/awards/lib/voting';
+import { getEventBySlug } from "../../../shared/lib/events";
+import { getCategoriesByEventId } from "../../../features/awards/data/categories";
 
 // --- VALIDACIÓN DE RUTA DINÁMICA ---
 const { eventId } = Astro.params;

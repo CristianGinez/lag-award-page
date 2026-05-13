@@ -1,10 +1,10 @@
 ---
-import Layout from "../../Layout.astro";
-import Navbar from "../../../shared/components/layouts/Navbar.astro";
-import Footer from "../../../shared/components/layouts/Footer.astro";
+import Layout from "../../../layouts/Layout.astro";
+import Navbar from "../../../layouts/Navbar.astro";
+import Footer from "../../../layouts/Footer.astro";
 import EventNavbar from "../../../shared/components/EventNavbar.astro";
-import { getEventBySlug } from "../../../data/events";
-import { LeagueTables } from "../../../components/react/info/LeagueTables";
+import { getEventBySlug } from "../../../shared/lib/events";
+import { LeagueTables } from "../../../features/parsec-league/components/LeagueTables";
 
 const { eventId } = Astro.params;
 const currentEvent = getEventBySlug(eventId);
@@ -12,6 +12,8 @@ const currentEvent = getEventBySlug(eventId);
 if (!currentEvent || currentEvent.type !== 'league') {
   return Astro.redirect('/404');
 }
+
+Astro.response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
 ---
 
 <Layout title={`Tablas - ${currentEvent.title}`}>

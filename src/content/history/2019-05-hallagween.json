@@ -1,0 +1,12 @@
+{
+  "year": "2019",
+  "order": 5,
+  "title": "Hallagween",
+  "subtitle": "Anuncio oficial del Hallagween",
+  "description": "Se anuncia el primer Hallagween, un evento temático de Halloween lleno de sorpresas y diversión para la comunidad.",
+  "icon": "🎃",
+  "color": "from-orange-600 to-black-600",
+  "side": "right",
+  "image": "https://img.youtube.com/vi/iFEEytibyTk/maxresdefault.jpg",
+  "link": "https://youtu.be/iFEEytibyTk"
+}

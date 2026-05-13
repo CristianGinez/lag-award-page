@@ -1,0 +1,12 @@
+{
+  "year": "2019",
+  "order": 3,
+  "title": "Primer SAMP",
+  "subtitle": "SAMP CON SUSCRIPTORES",
+  "description": "El primer gran evento en SAMP con suscriptores.",
+  "icon": "🚓",
+  "color": "from-blue-600 to-black-600",
+  "side": "right",
+  "image": "https://img.youtube.com/vi/wPHesXw9cc8/maxresdefault.jpg",
+  "link": "https://youtu.be/wPHesXw9cc8"
+}

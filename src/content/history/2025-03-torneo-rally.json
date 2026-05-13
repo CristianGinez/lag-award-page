@@ -1,0 +1,12 @@
+{
+  "year": "2025",
+  "order": 3,
+  "title": "Torneo de Rally",
+  "subtitle": "TORNEO DE COLIN MCRAE 2.0 EN VIVO!!!",
+  "description": "Rally épico con el TeamLAG en Colin McRae 2.0.",
+  "icon": "🚗",
+  "color": "from-blue-500 to-indigo-600",
+  "side": "left",
+  "image": "https://img.youtube.com/vi/0ewErpRtCpc/maxresdefault.jpg",
+  "link": "https://youtu.be/0ewErpRtCpc"
+}

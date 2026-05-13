@@ -1,12 +1,12 @@
 ---
 // src/pages/eventos/[eventId]/info.astro
-import Layout from '../../../pages/Layout.astro';
+import Layout from '../../../layouts/Layout.astro';
 import EventNavbar from '../../../shared/components/EventNavbar.astro';
-import { events } from '../../../data/events';
+import { events } from '../../../shared/lib/events';
 
 // Importamos la data específica y el componente nuevo
-import { parsecLeagueData } from '../../../data/parsecLeague';
-import { LeagueDashboard } from '../../../components/react/info/LeagueDashboard';
+import { parsecLeagueData } from '../../../features/parsec-league/data/parsecLeague';
+import { LeagueDashboard } from '../../../features/parsec-league/components/LeagueDashboard';
 
 export function getStaticPaths() {
   return events.map(event => ({

@@ -1,18 +1,19 @@
 ---
-import Layout from "../Layout.astro";
-import Navbar from "../../shared/components/layouts/Navbar.astro";
-import Footer from "../../shared/components/layouts/Footer.astro";
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../layouts/Navbar.astro";
+import Footer from "../../layouts/Footer.astro";
 import EventNavbar from "../../shared/components/EventNavbar.astro";
 // Datos
-import { getEventBySlug } from "../../data/events";
-import { getCategoriesByEventId } from "../../data/categories";
+import { getEventBySlug } from "../../shared/lib/events";
+import { getCategoriesByEventId } from "../../features/awards/data/categories";
+import { ogEvento } from "../../shared/lib/og";
 
 // Componentes
-import { MediaDisplay } from "../../components/react/MediaDisplay";
-import { NomineesGrid } from "../../components/react/NomineesGrid";
-import { VoteContainer } from "../../components/react/VoteContainer";
+import { MediaDisplay } from "../../shared/ui/MediaDisplay";
+import { NomineesGrid } from "../../features/awards/components/NomineesGrid";
+import { VoteContainer } from "../../features/awards/components/VoteContainer";
 // [ELIMINADO] import { LeagueRegistration } ...
-import { LeagueInfo } from "../../components/react/info/LeagueInfo"; // [NUEVO] Importamos LeagueInfo
+import { LeagueInfo } from "../../features/parsec-league/components/LeagueInfo"; // [NUEVO] Importamos LeagueInfo
 
 const { eventId } = Astro.params;
 const currentEvent = getEventBySlug(eventId);
@@ -25,29 +26,9 @@ if (!currentEvent) {
 const isLeague = currentEvent.type === 'league';
 const categories = !isLeague ? getCategoriesByEventId(currentEvent.id) : [];
 
-const getOptimizedUrl = (url: string) => {
-  if (!url) return "/img/lag_uconstr_placeholder.png";
-  if (url.includes("res.cloudinary.com")) return url.replace("/upload/", "/upload/w_600,f_auto,q_auto/");
-  return url;
-};
-
 // --- PREPARACIÓN DE DATOS PARA SEO (OG TAGS) ---
 const pageTitle = `${currentEvent.title} - ${isLeague ? 'Oficial' : 'Votación'}`;
-
-// Función para convertir ruta de imagen relativa a absoluta (Req. para Discord/WhatsApp)
-const getAbsoluteImage = (imagePath: string) => {
-    if (!imagePath) return "";
-    if (imagePath.startsWith('http')) return imagePath; // Ya es absoluta (ej: cloudinary)
-    try {
-        // Usa el sitio configurado en astro.config o el origen de la petición
-        const base = Astro.site ? Astro.site.toString() : Astro.url.origin;
-        return new URL(imagePath, base).toString();
-    } catch (e) {
-        return imagePath;
-    }
-};
-
-const ogImage = getAbsoluteImage(currentEvent.banner);
+const ogImage = ogEvento(currentEvent.slug);
 // ------------------------------------------------
 ---
 
@@ -199,9 +180,9 @@ const ogImage = getAbsoluteImage(currentEvent.banner);
 
 <script>
   // ESTE SCRIPT MANEJA LA LÓGICA DE VOTACIÓN (SOLO PREMIOS)
-  import { getCategoryTotalVotes } from "../../lib/voting";
-  import { playMedia, stopMedia } from "../../stores/playerStore";
-  import { selectCategory, selectNominee, $selectedNominee, clearNomineeSelection } from "../../stores/uiStore";
+  import { getCategoryTotalVotes } from "../../features/awards/lib/voting";
+  import { playMedia, stopMedia } from "../../shared/stores/playerStore";
+  import { selectCategory, selectNominee, $selectedNominee, clearNomineeSelection } from "../../shared/stores/uiStore";
   
   const initPage = async () => {
     const dataEl = document.getElementById("server-data");

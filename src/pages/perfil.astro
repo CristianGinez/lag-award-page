@@ -1,10 +1,10 @@
 ---
-import Layout from './Layout.astro';
-import Navbar from '../shared/components/layouts/Navbar.astro';
-import Footer from '../shared/components/layouts/Footer.astro';
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../layouts/Navbar.astro';
+import Footer from '../layouts/Footer.astro';
 // 👇 Importamos el nuevo componente
-import UserInfo from '../components/profile/UserInfo.astro'; 
-import { $currentUser } from '../stores/authStore';
+import UserInfo from '../features/profile/components/UserInfo.astro';
+import { $currentUser } from '../features/auth/stores/authStore';
 
 const user = $currentUser.get();
 ---
@@ -62,10 +62,10 @@ const user = $currentUser.get();
     // ... (MANTÉN TU SCRIPT EXACTAMENTE IGUAL QUE ANTES) ...
     // ... (El script encontrará los IDs dentro de <UserInfo /> automáticamente) ...
     
-    import { $currentUser } from '../stores/authStore';
-    import { getUserVotes } from '../lib/voting';
-    import categories from '../data/categories';
-    import { supabase } from '../lib/supabase';
+    import { $currentUser } from '../features/auth/stores/authStore';
+    import { getUserVotes } from '../features/awards/lib/voting';
+    import categories from '../features/awards/data/categories';
+    import { supabase } from '../features/auth/lib/supabase';
 
     document.addEventListener('astro:page-load', async () => {
         // ... (Copia y pega tu script funcional aquí) ...
