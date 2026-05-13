@@ -15,6 +15,14 @@ import { VoteContainer } from "../../features/awards/components/VoteContainer";
 // [ELIMINADO] import { LeagueRegistration } ...
 import { LeagueInfo } from "../../features/parsec-league/components/LeagueInfo"; // [NUEVO] Importamos LeagueInfo
 
+const getOptimizedUrl = (url: string) => {
+  if (!url) return "/img/lag_uconstr_placeholder.png";
+  if (url.includes("res.cloudinary.com")) {
+    return url.replace("/upload/", "/upload/w_600,f_auto,q_auto/");
+  }
+  return url;
+};
+
 const { eventId } = Astro.params;
 const currentEvent = getEventBySlug(eventId);
 
