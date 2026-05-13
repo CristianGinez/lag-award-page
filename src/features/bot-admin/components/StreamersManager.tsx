@@ -18,6 +18,7 @@ export default function StreamersManager({ initialStreamers }: Props) {
   const [platform, setPlatform] = useState<Platform>('twitch');
   const [login, setLogin] = useState('');
   const [channelId, setChannelId] = useState('');
+  const [youtubeLogin, setYoutubeLogin] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [accentColor, setAccentColor] = useState('');
   const [loading, setLoading] = useState(false);
@@ -64,21 +65,27 @@ export default function StreamersManager({ initialStreamers }: Props) {
   async function handleAdd(e: React.FormEvent) {
     e.preventDefault();
     if (platform === 'twitch' && !login) return setError('Falta el login de Twitch');
-    if (platform === 'youtube' && !channelId) return setError('Falta el channelId de YouTube');
+    if (platform === 'youtube' && !youtubeLogin) return setError('Falta el handle de YouTube');
+    if (platform === 'youtube' && !channelId) return setError('Falta el Channel ID (UC...) de YouTube');
 
     const action = platform === 'twitch' ? 'addTwitch' : 'addYoutube';
     const args: Record<string, string | undefined> = {
       displayName: displayName || undefined,
       accentColor: accentColor || undefined,
     };
-    if (platform === 'twitch') args.login = login;
-    else args.channelId = channelId;
+    if (platform === 'twitch') {
+      args.login = login;
+    } else {
+      args.login = youtubeLogin;
+      args.channelId = channelId;
+    }
 
     try {
       await callApi(action, args);
       await refreshList();
       setLogin('');
       setChannelId('');
+      setYoutubeLogin('');
       setDisplayName('');
       setAccentColor('');
     } catch (_) {}
@@ -173,16 +180,28 @@ export default function StreamersManager({ initialStreamers }: Props) {
               />
             </div>
           ) : (
-            <div>
-              <label className="block text-xs uppercase tracking-widest text-gray-500 mb-1">Channel ID (UC...)</label>
-              <input
-                type="text"
-                value={channelId}
-                onChange={e => setChannelId(e.target.value)}
-                placeholder="UCabc123..."
-                className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2"
-              />
-            </div>
+            <>
+              <div>
+                <label className="block text-xs uppercase tracking-widest text-gray-500 mb-1">Handle (usuario)</label>
+                <input
+                  type="text"
+                  value={youtubeLogin}
+                  onChange={e => setYoutubeLogin(e.target.value)}
+                  placeholder="LAGartovich"
+                  className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2"
+                />
+              </div>
+              <div>
+                <label className="block text-xs uppercase tracking-widest text-gray-500 mb-1">Channel ID (UC...)</label>
+                <input
+                  type="text"
+                  value={channelId}
+                  onChange={e => setChannelId(e.target.value)}
+                  placeholder="UCabc123..."
+                  className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2"
+                />
+              </div>
+            </>
           )}
 
           <div>
