@@ -9,6 +9,7 @@ export interface TrackedStreamer {
   platformLogin: string;
   displayName?: string;
   accentColor?: string;
+  profileImageUrl?: string;
   discordUserId?: string;
   enabled: boolean;
   createdAt: number;

@@ -263,10 +263,25 @@ export default function StreamersManager({ initialStreamers }: Props) {
                 borderLeftWidth: 4,
               }}
             >
-              <div>
-                <p className="text-xs uppercase tracking-widest text-gray-500">{s.platform}</p>
-                <p className="font-bold">{s.displayName || s.platformLogin}</p>
-                <p className="text-xs text-gray-400">@{s.platformLogin}</p>
+              <div className="flex items-center gap-3 min-w-0">
+                <img
+                  src={
+                    s.profileImageUrl ||
+                    (s.platform === 'twitch'
+                      ? `https://unavatar.io/twitch/${s.platformLogin}`
+                      : `https://unavatar.io/youtube/${s.platformLogin}`)
+                  }
+                  alt={s.platformLogin}
+                  className="w-10 h-10 rounded-full shrink-0 object-cover bg-white/10"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).style.display = 'none';
+                  }}
+                />
+                <div className="min-w-0">
+                  <p className="text-xs uppercase tracking-widest text-gray-500">{s.platform}</p>
+                  <p className="font-bold truncate">{s.displayName || s.platformLogin}</p>
+                  <p className="text-xs text-gray-400">@{s.platformLogin}</p>
+                </div>
               </div>
               <div className="flex gap-2">
                 <button
