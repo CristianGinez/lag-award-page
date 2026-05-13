@@ -6,6 +6,12 @@ interface Props {
   initialStreamers: TrackedStreamer[];
 }
 
+interface EditState {
+  streamer: TrackedStreamer;
+  displayName: string;
+  accentColor: string;
+}
+
 export default function StreamersManager({ initialStreamers }: Props) {
   const [streamers, setStreamers] = useState(initialStreamers);
   const [platform, setPlatform] = useState<Platform>('twitch');
@@ -15,6 +21,9 @@ export default function StreamersManager({ initialStreamers }: Props) {
   const [accentColor, setAccentColor] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [editState, setEditState] = useState<EditState | null>(null);
+  const [editLoading, setEditLoading] = useState(false);
+  const [editError, setEditError] = useState<string | null>(null);
 
   async function callApi(action: string, args: Record<string, unknown>) {
     setLoading(true);
@@ -87,6 +96,50 @@ export default function StreamersManager({ initialStreamers }: Props) {
       await callApi('remove', { streamerId });
       setStreamers(prev => prev.filter(s => s._id !== streamerId));
     } catch (_) {}
+  }
+
+  function openEdit(s: TrackedStreamer) {
+    setEditState({ streamer: s, displayName: s.displayName || '', accentColor: s.accentColor || '' });
+    setEditError(null);
+  }
+
+  function closeEdit() {
+    setEditState(null);
+    setEditError(null);
+  }
+
+  async function handleEditSave() {
+    if (!editState) return;
+    setEditLoading(true);
+    setEditError(null);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const res = await fetch('/api/bot/streamers', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(session ? { Authorization: `Bearer ${session.access_token}` } : {}),
+        },
+        body: JSON.stringify({
+          action: 'update',
+          streamerId: editState.streamer._id,
+          displayName: editState.displayName || undefined,
+          accentColor: editState.accentColor || undefined,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Error');
+      setStreamers(prev => prev.map(s =>
+        s._id === editState.streamer._id
+          ? { ...s, displayName: editState.displayName || undefined, accentColor: editState.accentColor || undefined }
+          : s
+      ));
+      closeEdit();
+    } catch (err) {
+      setEditError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setEditLoading(false);
+    }
   }
 
   return (
@@ -207,6 +260,13 @@ export default function StreamersManager({ initialStreamers }: Props) {
                   {s.enabled ? 'Activo' : 'Pausado'}
                 </button>
                 <button
+                  onClick={() => openEdit(s)}
+                  disabled={loading}
+                  className="px-3 py-1 rounded text-xs font-bold bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 disabled:opacity-50"
+                >
+                  Editar
+                </button>
+                <button
                   onClick={() => handleDelete(s._id)}
                   disabled={loading}
                   className="px-3 py-1 rounded text-xs font-bold bg-red-500/20 text-red-400 hover:bg-red-500/30 disabled:opacity-50"
@@ -222,6 +282,80 @@ export default function StreamersManager({ initialStreamers }: Props) {
           )}
         </div>
       </section>
+
+      {/* Modal de edición */}
+      {editState && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+          onClick={e => { if (e.target === e.currentTarget) closeEdit(); }}
+        >
+          <div className="w-full max-w-md bg-[#0f0f0f] border border-white/10 rounded-2xl p-6 space-y-5 shadow-2xl">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-xs uppercase tracking-widest text-gray-500">{editState.streamer.platform}</p>
+                <h3 className="text-lg font-bold font-orbitron">Editar streamer</h3>
+                <p className="text-sm text-gray-400">@{editState.streamer.platformLogin}</p>
+              </div>
+              <button onClick={closeEdit} className="text-gray-500 hover:text-white text-xl leading-none mt-1">✕</button>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-xs uppercase tracking-widest text-gray-500 mb-1">Display name</label>
+                <input
+                  type="text"
+                  value={editState.displayName}
+                  onChange={e => setEditState(prev => prev ? { ...prev, displayName: e.target.value } : null)}
+                  placeholder={editState.streamer.platformLogin}
+                  className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs uppercase tracking-widest text-gray-500 mb-1">Color hex</label>
+                <div className="flex gap-2 items-center">
+                  <input
+                    type="color"
+                    value={editState.accentColor || '#dc2626'}
+                    onChange={e => setEditState(prev => prev ? { ...prev, accentColor: e.target.value } : null)}
+                    className="h-10 w-10 rounded-lg cursor-pointer border border-white/10 bg-transparent p-0.5 shrink-0"
+                  />
+                  <input
+                    type="text"
+                    value={editState.accentColor}
+                    onChange={e => setEditState(prev => prev ? { ...prev, accentColor: e.target.value } : null)}
+                    placeholder="#dc2626"
+                    className="flex-1 bg-black/40 border border-white/10 rounded-lg px-4 py-2 font-mono text-sm"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {editError && (
+              <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
+                {editError}
+              </div>
+            )}
+
+            <div className="flex gap-3 pt-1">
+              <button
+                onClick={closeEdit}
+                disabled={editLoading}
+                className="flex-1 px-4 py-2 rounded-lg border border-white/10 text-gray-400 hover:text-white hover:border-white/30 text-sm font-bold transition-colors disabled:opacity-50"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleEditSave}
+                disabled={editLoading}
+                className="flex-1 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-sm font-bold transition-colors disabled:opacity-50"
+              >
+                {editLoading ? 'Guardando…' : 'Confirmar cambios'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

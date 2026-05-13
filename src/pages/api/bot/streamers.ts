@@ -50,6 +50,9 @@ export const POST: APIRoute = async (context) => {
       case 'setEnabled':
         result = await convex.mutation('streamers:setEnabled' as any, args);
         break;
+      case 'update':
+        result = await convex.mutation('streamers:update' as any, args);
+        break;
       default:
         return json({ error: 'Unknown action' }, 400);
     }
