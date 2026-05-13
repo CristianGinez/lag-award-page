@@ -5,6 +5,7 @@ import { requireBotAdmin, json } from '@/features/bot-admin/lib/botApiAuth';
 export const prerender = false;
 
 const CONVEX_URL = import.meta.env.PUBLIC_CONVEX_URL as string;
+const CONVEX_DEPLOY_KEY = import.meta.env.CONVEX_DEPLOY_KEY as string;
 
 export const GET: APIRoute = async (context) => {
   const auth = await requireBotAdmin(context);
@@ -13,7 +14,7 @@ export const GET: APIRoute = async (context) => {
   const convex = new ConvexHttpClient(CONVEX_URL);
   // Las queries no requieren admin server-side, pero igual pasamos el JWT
   // por consistencia (Convex puede pedirlo para queries en el futuro).
-  convex.setAuth(auth.token);
+  (convex as any).setAdminAuth(CONVEX_DEPLOY_KEY);
 
   try {
     const result = await convex.query('streamers:list' as any, {});
@@ -32,7 +33,7 @@ export const POST: APIRoute = async (context) => {
   const { action: actionName, ...args } = body;
 
   const convex = new ConvexHttpClient(CONVEX_URL);
-  convex.setAuth(auth.token); // JWT del admin — Convex valida y aplica requireAdmin
+  (convex as any).setAdminAuth(CONVEX_DEPLOY_KEY); // JWT del admin — Convex valida y aplica requireAdmin
 
   try {
     let result;

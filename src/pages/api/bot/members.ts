@@ -5,6 +5,7 @@ import { requireBotAdmin, json } from '@/features/bot-admin/lib/botApiAuth';
 export const prerender = false;
 
 const CONVEX_URL = import.meta.env.PUBLIC_CONVEX_URL as string;
+const CONVEX_DEPLOY_KEY = import.meta.env.CONVEX_DEPLOY_KEY as string;
 
 // Solo lectura — el opt-out se gestiona desde Discord con /olvidame
 export const GET: APIRoute = async (context) => {
@@ -12,7 +13,7 @@ export const GET: APIRoute = async (context) => {
   if (!auth.ok) return auth.response;
 
   const convex = new ConvexHttpClient(CONVEX_URL);
-  convex.setAuth(auth.token);
+  (convex as any).setAdminAuth(CONVEX_DEPLOY_KEY);
   try {
     const result = await convex.query('members:listMembers' as any, {});
     return json({ ok: true, result });
