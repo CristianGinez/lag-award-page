@@ -107,5 +107,7 @@ const tabs = [
     setTimeout(() => content?.classList.remove('opacity-0'), 50);
   }
 
+  // Llamar directamente (por si astro:page-load ya disparó) + registrar para navegaciones
+  checkAdmin();
   document.addEventListener('astro:page-load', checkAdmin);
 </script>
