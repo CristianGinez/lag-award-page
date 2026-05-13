@@ -19,7 +19,8 @@ export const GET: APIRoute = async (context) => {
     const result = await convex.query('streamers:list' as any, {});
     return json({ ok: true, result });
   } catch (err: any) {
-    return json({ error: err.message }, 500);
+    console.error('[api/bot/streamers GET]', err?.message ?? err);
+    return json({ error: err.message ?? String(err) }, 500);
   }
 };
 
@@ -53,6 +54,7 @@ export const POST: APIRoute = async (context) => {
     }
     return json({ ok: true, result });
   } catch (err: any) {
-    return json({ error: err.message }, 500);
+    console.error('[api/bot/streamers POST]', err?.message ?? err);
+    return json({ error: err.message ?? String(err) }, 500);
   }
 };
