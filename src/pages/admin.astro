@@ -313,6 +313,8 @@ if (Astro.request.method === 'POST') {
   import { getDashboardStats, resetAllVotes } from '../features/admin/lib/admin';
   import categories from '../features/awards/data/categories';
   
+  let intervalId: ReturnType<typeof setInterval>;
+
   // Refs DOM
   const loadingState = document.getElementById('loading-state');
   const dashboard = document.getElementById('admin-dashboard');
@@ -367,7 +369,7 @@ if (Astro.request.method === 'POST') {
         if(emailDisplay) emailDisplay.textContent = user.email;
 
         loadStats();
-        setInterval(loadStats, 15000);
+        intervalId = setInterval(loadStats, 15000);
 
     } else {
         loadingState.classList.add('hidden');
