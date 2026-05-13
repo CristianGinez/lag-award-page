@@ -17,6 +17,8 @@ export interface TrackedStreamer {
 export interface ChannelConfig {
   _id: string;
   channelId: string;
+  channelName?: string;
+  guildId?: string;
   mode: ConversationalMode;
   cooldownMin: number;
   lastBotMsgTs?: number;

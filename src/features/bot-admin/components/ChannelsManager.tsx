@@ -88,8 +88,10 @@ export default function ChannelsManager({ initialChannels }: Props) {
         <article key={ch._id} className="p-6 rounded-2xl bg-white/5 border border-white/10 space-y-4">
           <div className="flex items-center justify-between">
             <div>
+              <p className="font-bold font-orbitron text-sm">
+                {ch.channelName ? `#${ch.channelName}` : 'Canal Discord'}
+              </p>
               <p className="text-xs text-gray-500 font-mono">{ch.channelId}</p>
-              <p className="font-bold font-orbitron text-sm">Canal Discord</p>
             </div>
             <span className={`px-2 py-1 rounded text-xs font-bold ${
               ch.mode === 'off'     ? 'bg-gray-500/20 text-gray-400' :
