@@ -10,6 +10,7 @@ interface EditState {
   streamer: TrackedStreamer;
   displayName: string;
   accentColor: string;
+  platformLogin: string;
 }
 
 export default function StreamersManager({ initialStreamers }: Props) {
@@ -99,7 +100,7 @@ export default function StreamersManager({ initialStreamers }: Props) {
   }
 
   function openEdit(s: TrackedStreamer) {
-    setEditState({ streamer: s, displayName: s.displayName || '', accentColor: s.accentColor || '' });
+    setEditState({ streamer: s, displayName: s.displayName || '', accentColor: s.accentColor || '', platformLogin: s.platformLogin || '' });
     setEditError(null);
   }
 
@@ -125,13 +126,14 @@ export default function StreamersManager({ initialStreamers }: Props) {
           streamerId: editState.streamer._id,
           displayName: editState.displayName || undefined,
           accentColor: editState.accentColor || undefined,
+          platformLogin: editState.platformLogin || undefined,
         }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Error');
       setStreamers(prev => prev.map(s =>
         s._id === editState.streamer._id
-          ? { ...s, displayName: editState.displayName || undefined, accentColor: editState.accentColor || undefined }
+          ? { ...s, displayName: editState.displayName || undefined, accentColor: editState.accentColor || undefined, platformLogin: editState.platformLogin || s.platformLogin }
           : s
       ));
       closeEdit();
@@ -300,6 +302,19 @@ export default function StreamersManager({ initialStreamers }: Props) {
             </div>
 
             <div className="space-y-4">
+              <div>
+                <label className="block text-xs uppercase tracking-widest text-gray-500 mb-1">
+                  {editState.streamer.platform === 'twitch' ? 'Login (usuario Twitch)' : 'Channel ID (UC...)'}
+                </label>
+                <input
+                  type="text"
+                  value={editState.platformLogin}
+                  onChange={e => setEditState(prev => prev ? { ...prev, platformLogin: e.target.value } : null)}
+                  placeholder={editState.streamer.platformLogin}
+                  className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2 font-mono text-sm"
+                />
+              </div>
+
               <div>
                 <label className="block text-xs uppercase tracking-widest text-gray-500 mb-1">Display name</label>
                 <input
