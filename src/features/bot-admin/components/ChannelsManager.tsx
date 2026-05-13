@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { ChannelConfig, ConversationalMode } from '../types';
+import { supabase } from '@/features/auth/lib/supabase';
 
 const MODES: { value: ConversationalMode; label: string; desc: string }[] = [
   { value: 'off',      label: 'Off',      desc: 'Bot silenciado' },
@@ -19,9 +20,13 @@ export default function ChannelsManager({ initialChannels }: Props) {
   const [personalityEdits, setPersonalityEdits] = useState<Record<string, string>>({});
 
   async function callApi(action: string, args: Record<string, unknown>) {
+    const { data: { session } } = await supabase.auth.getSession();
     const res = await fetch('/api/bot/channels', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        ...(session ? { Authorization: `Bearer ${session.access_token}` } : {}),
+      },
       body: JSON.stringify({ action, ...args }),
     });
     const data = await res.json();

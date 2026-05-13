@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { ServerPersonality } from '../types';
+import { supabase } from '@/features/auth/lib/supabase';
 
 interface Props {
   initialPersonality: ServerPersonality | null;
@@ -17,7 +18,11 @@ export default function PersonalityView({ initialPersonality }: Props) {
     setError(null);
     setSuccess(false);
     try {
-      const res = await fetch('/api/bot/personality', { method: 'POST' });
+      const { data: { session } } = await supabase.auth.getSession();
+      const res = await fetch('/api/bot/personality', {
+        method: 'POST',
+        headers: session ? { Authorization: `Bearer ${session.access_token}` } : {},
+      });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Error');
       setSuccess(true);

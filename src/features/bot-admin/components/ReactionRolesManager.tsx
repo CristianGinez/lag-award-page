@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { ReactionRole } from '../types';
+import { supabase } from '@/features/auth/lib/supabase';
 
 interface Props {
   initialRoles: ReactionRole[];
@@ -25,9 +26,13 @@ export default function ReactionRolesManager({ initialRoles }: Props) {
     setLoading(true);
     setError(null);
     try {
+      const { data: { session } } = await supabase.auth.getSession();
       const res = await fetch('/api/bot/reaction-roles', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(session ? { Authorization: `Bearer ${session.access_token}` } : {}),
+        },
         body: JSON.stringify({ action, ...args }),
       });
       const data = await res.json();
@@ -55,9 +60,12 @@ export default function ReactionRolesManager({ initialRoles }: Props) {
         description: form.description || undefined,
       });
       // Refresh list
-      const res = await fetch('/api/bot/reaction-roles');
-      const data = await res.json();
-      if (data.ok) setRoles(data.result || []);
+      const { data: { session: s2 } } = await supabase.auth.getSession();
+      const refreshRes = await fetch('/api/bot/reaction-roles', {
+        headers: s2 ? { Authorization: `Bearer ${s2.access_token}` } : {},
+      });
+      const refreshData = await refreshRes.json();
+      if (refreshData.ok) setRoles(refreshData.result || []);
       setForm({ messageId: '', channelId: '', emoji: '', roleId: '', description: '' });
     } catch (_) {}
   }

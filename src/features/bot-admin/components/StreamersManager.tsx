@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { TrackedStreamer, Platform } from '../types';
+import { supabase } from '@/features/auth/lib/supabase';
 
 interface Props {
   initialStreamers: TrackedStreamer[];
@@ -19,9 +20,13 @@ export default function StreamersManager({ initialStreamers }: Props) {
     setLoading(true);
     setError(null);
     try {
+      const { data: { session } } = await supabase.auth.getSession();
       const res = await fetch('/api/bot/streamers', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(session ? { Authorization: `Bearer ${session.access_token}` } : {}),
+        },
         body: JSON.stringify({ action, ...args }),
       });
       const data = await res.json();
@@ -37,7 +42,10 @@ export default function StreamersManager({ initialStreamers }: Props) {
 
   async function refreshList() {
     try {
-      const res = await fetch('/api/bot/streamers');
+      const { data: { session } } = await supabase.auth.getSession();
+      const res = await fetch('/api/bot/streamers', {
+        headers: session ? { Authorization: `Bearer ${session.access_token}` } : {},
+      });
       const data = await res.json();
       if (data.ok) setStreamers(data.result || []);
     } catch (_) {}

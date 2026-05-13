@@ -16,7 +16,10 @@
  */
 
 import type { APIRoute } from 'astro';
-import { getSupabase } from '@/features/auth/lib/supabase';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL as string;
+const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY as string;
 
 type AuthResult =
   | { ok: true; token: string; userId: string }
@@ -25,10 +28,29 @@ type AuthResult =
 export async function requireBotAdmin(
   context: Parameters<APIRoute>[0],
 ): Promise<AuthResult> {
-  const supabase = getSupabase(context);
-  const { data: { session } } = await supabase.auth.getSession();
+  // Read token from Authorization: Bearer <token> header (sent by client-side components).
+  // Supabase uses localStorage (not cookies), so cookie-based SSR auth never works here.
+  const authHeader = context.request.headers.get('Authorization') || '';
+  const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
 
-  if (!session) {
+  if (!token) {
+    return {
+      ok: false,
+      response: new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    };
+  }
+
+  const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+    auth: { persistSession: false },
+    global: { headers: { Authorization: `Bearer ${token}` } },
+  });
+
+  const { data: { user }, error } = await supabase.auth.getUser(token);
+
+  if (error || !user) {
     return {
       ok: false,
       response: new Response(JSON.stringify({ error: 'Unauthorized' }), {
@@ -42,11 +64,11 @@ export async function requireBotAdmin(
   const { data: adminRow } = await supabase
     .from('admin_users')
     .select('user_id')
-    .eq('user_id', session.user.id)
+    .eq('user_id', user.id)
     .maybeSingle();
 
   // Fallback al claim si el hook está habilitado y la DB falla.
-  const isAdmin = Boolean(adminRow) || session.user.app_metadata?.is_admin === true;
+  const isAdmin = Boolean(adminRow) || user.app_metadata?.is_admin === true;
 
   if (!isAdmin) {
     return {
@@ -58,7 +80,7 @@ export async function requireBotAdmin(
     };
   }
 
-  return { ok: true, token: session.access_token, userId: session.user.id };
+  return { ok: true, token, userId: user.id };
 }
 
 /**
