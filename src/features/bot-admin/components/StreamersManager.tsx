@@ -135,13 +135,22 @@ export default function StreamersManager({ initialStreamers }: Props) {
 
           <div>
             <label className="block text-xs uppercase tracking-widest text-gray-500 mb-1">Color hex (opcional)</label>
-            <input
-              type="text"
-              value={accentColor}
-              onChange={e => setAccentColor(e.target.value)}
-              placeholder="#dc2626"
-              className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2"
-            />
+            <div className="flex gap-2 items-center">
+              <input
+                type="color"
+                value={accentColor || '#dc2626'}
+                onChange={e => setAccentColor(e.target.value)}
+                className="h-10 w-10 rounded-lg cursor-pointer border border-white/10 bg-transparent p-0.5 shrink-0"
+                title="Seleccionar color"
+              />
+              <input
+                type="text"
+                value={accentColor}
+                onChange={e => setAccentColor(e.target.value)}
+                placeholder="#dc2626"
+                className="flex-1 bg-black/40 border border-white/10 rounded-lg px-4 py-2 font-mono text-sm"
+              />
+            </div>
           </div>
 
           <button
