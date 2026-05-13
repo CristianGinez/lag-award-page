@@ -1,0 +1,67 @@
+---
+import BotAdminLayout from '@/features/bot-admin/components/BotAdminLayout.astro';
+import { convex } from '@/features/bot-admin/lib/convexClient';
+import { getSupabase } from '@/features/auth/lib/supabase';
+import type { BotInterventionLog } from '@/features/bot-admin/types';
+
+const supabase = getSupabase(Astro);
+const { data: { user } } = await supabase.auth.getUser();
+if (!user?.app_metadata?.is_admin) return Astro.redirect('/');
+
+let logs: BotInterventionLog[] = [];
+try {
+  logs = await convex.query('botInterventionsLog:list' as any, { limit: 50 });
+} catch (_) {}
+---
+
+<BotAdminLayout title="Auditoría" active="auditoria">
+  <p class="text-gray-500 text-sm mb-6">Últimas 50 intervenciones del bot.</p>
+
+  {logs.length === 0 ? (
+    <p class="text-gray-500 italic">No hay logs disponibles todavía.</p>
+  ) : (
+    <div class="overflow-x-auto rounded-xl border border-white/10">
+      <table class="w-full text-sm">
+        <thead class="bg-white/5 text-xs uppercase text-gray-500 font-mono">
+          <tr>
+            <th class="p-4 text-left">Timestamp</th>
+            <th class="p-4 text-left">Canal</th>
+            <th class="p-4 text-left">Decisión</th>
+            <th class="p-4 text-left">Confidence</th>
+            <th class="p-4 text-left">Razón</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-white/5">
+          {logs.map(log => {
+            const ts = new Date(log._creationTime).toLocaleString('es-AR', {
+              day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit',
+            });
+            const isResponded = log.decision === 'responded';
+            return (
+              <tr class="hover:bg-white/3 transition-colors">
+                <td class="p-4 font-mono text-xs text-gray-400">{ts}</td>
+                <td class="p-4 font-mono text-xs text-gray-400">{log.channelId.slice(-6)}</td>
+                <td class="p-4">
+                  <span class:list={[
+                    'px-2 py-0.5 rounded text-xs font-bold',
+                    isResponded
+                      ? 'bg-green-500/20 text-green-400'
+                      : 'bg-gray-500/10 text-gray-500',
+                  ]}>
+                    {log.decision}
+                  </span>
+                </td>
+                <td class="p-4 text-gray-400 text-xs font-mono">
+                  {log.confidence != null ? `${Math.round(log.confidence * 100)}%` : '—'}
+                </td>
+                <td class="p-4 text-gray-400 text-xs max-w-[300px] truncate" title={log.reason}>
+                  {log.reason || '—'}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  )}
+</BotAdminLayout>

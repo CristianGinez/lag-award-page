@@ -1,0 +1,53 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Navbar from '@/layouts/Navbar.astro';
+import Footer from '@/layouts/Footer.astro';
+
+interface Props {
+  title: string;
+  active: 'overview' | 'streamers' | 'canales' | 'miembros' | 'reaction-roles' | 'personalidad' | 'auditoria';
+}
+
+const { title, active } = Astro.props;
+
+const tabs = [
+  { id: 'overview',       label: 'Overview',        href: '/admin/bot' },
+  { id: 'streamers',      label: 'Streamers',        href: '/admin/bot/streamers' },
+  { id: 'canales',        label: 'Canales',          href: '/admin/bot/canales' },
+  { id: 'miembros',       label: 'Miembros',         href: '/admin/bot/miembros' },
+  { id: 'reaction-roles', label: 'Reaction Roles',   href: '/admin/bot/reaction-roles' },
+  { id: 'personalidad',   label: 'Personalidad',     href: '/admin/bot/personalidad' },
+  { id: 'auditoria',      label: 'Auditoría',        href: '/admin/bot/auditoria' },
+] as const;
+---
+
+<Layout title={`${title} — Bot Admin`} description="Gestión del bot del TeamLag" image="/og/default.png">
+  <Navbar />
+  <main class="pt-24 min-h-screen bg-[#050505] text-white">
+    <div class="container mx-auto px-4 md:px-6 py-8">
+      <header class="mb-8">
+        <p class="text-red-500 font-mono text-xs uppercase tracking-[0.2em]">Bot Admin</p>
+        <h1 class="text-4xl md:text-5xl font-black font-orbitron tracking-tighter mt-1">{title}</h1>
+      </header>
+
+      <nav class="flex gap-2 overflow-x-auto mb-8 border-b border-white/10 pb-2">
+        {tabs.map(tab => (
+          <a
+            href={tab.href}
+            class:list={[
+              'px-4 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-all',
+              tab.id === active
+                ? 'bg-white text-black'
+                : 'text-gray-400 hover:text-white hover:bg-white/5',
+            ]}
+          >
+            {tab.label}
+          </a>
+        ))}
+      </nav>
+
+      <slot />
+    </div>
+  </main>
+  <Footer />
+</Layout>

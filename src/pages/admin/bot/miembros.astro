@@ -1,0 +1,22 @@
+---
+import BotAdminLayout from '@/features/bot-admin/components/BotAdminLayout.astro';
+import MembersTable from '@/features/bot-admin/components/MembersTable.tsx';
+import { convex } from '@/features/bot-admin/lib/convexClient';
+import { getSupabase } from '@/features/auth/lib/supabase';
+
+const supabase = getSupabase(Astro);
+const { data: { user } } = await supabase.auth.getUser();
+if (!user?.app_metadata?.is_admin) return Astro.redirect('/');
+
+let initialMembers: any[] = [];
+try {
+  initialMembers = await convex.query('members:listMembers' as any, {});
+} catch (_) {}
+---
+
+<BotAdminLayout title="Miembros" active="miembros">
+  <p class="text-gray-500 text-sm mb-6">
+    Vista de solo lectura. El opt-out se gestiona desde Discord con <code class="bg-white/10 px-1 rounded">/olvidame</code>.
+  </p>
+  <MembersTable client:load initialMembers={initialMembers} />
+</BotAdminLayout>

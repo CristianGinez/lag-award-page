@@ -1,0 +1,19 @@
+---
+import BotAdminLayout from '@/features/bot-admin/components/BotAdminLayout.astro';
+import PersonalityView from '@/features/bot-admin/components/PersonalityView.tsx';
+import { convex } from '@/features/bot-admin/lib/convexClient';
+import { getSupabase } from '@/features/auth/lib/supabase';
+
+const supabase = getSupabase(Astro);
+const { data: { user } } = await supabase.auth.getUser();
+if (!user?.app_metadata?.is_admin) return Astro.redirect('/');
+
+let personality: any = null;
+try {
+  personality = await convex.query('personality:getPersonality' as any, { scope: 'global' });
+} catch (_) {}
+---
+
+<BotAdminLayout title="Personalidad del Bot" active="personalidad">
+  <PersonalityView client:load initialPersonality={personality} />
+</BotAdminLayout>

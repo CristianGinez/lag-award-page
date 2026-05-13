@@ -159,6 +159,11 @@ if (Astro.request.method === 'POST') {
                     <div id="recent-activity-list" class="divide-y divide-white/5 max-h-[350px] overflow-y-auto custom-scrollbar"></div>
                 </div>
 
+                <a href="/admin/bot" class="block p-5 rounded-2xl border border-purple-900/30 bg-purple-950/10 hover:bg-purple-950/20 transition-colors backdrop-blur-sm group">
+                    <p class="text-purple-400/60 font-bold text-[10px] uppercase tracking-widest mb-3 text-center group-hover:text-purple-400 transition-colors">Bot del Discord</p>
+                    <p class="text-center text-xs text-gray-500 group-hover:text-gray-300 transition-colors">Streamers · Canales · Reaction Roles →</p>
+                </a>
+
                 <div class="p-5 rounded-2xl border border-red-900/30 bg-red-950/10 backdrop-blur-sm">
                     <p class="text-red-500/50 font-bold text-[10px] uppercase tracking-widest mb-3 text-center">Zona Administrativa</p>
                     <button id="btn-reset-votes" class="w-full py-3 bg-transparent hover:bg-red-900/20 text-red-500/70 hover:text-red-400 border border-red-800/30 rounded-lg transition-all font-bold text-xs flex items-center justify-center gap-2 group">
@@ -236,8 +241,6 @@ if (Astro.request.method === 'POST') {
   import { getDashboardStats, resetAllVotes } from '../features/admin/lib/admin';
   import categories from '../features/awards/data/categories';
   
-  const ADMIN_EMAIL = import.meta.env.PUBLIC_ADMIN_EMAIL;
-
   // Refs DOM
   const loadingState = document.getElementById('loading-state');
   const dashboard = document.getElementById('admin-dashboard');
@@ -259,18 +262,40 @@ if (Astro.request.method === 'POST') {
   const resetBtn = document.getElementById('btn-reset-votes');
 
   // --- 1. VALIDACIÓN ---
+  // Source of truth: tabla admin_users (con RLS solo ve su propia fila).
+  // Si el hook custom_access_token está habilitado, también lo confirma vía
+  // claim app_metadata.is_admin sin round-trip a DB. Cualquiera de los dos
+  // métodos basta — la verdad importa server-side (la RLS de la DB).
+  const isAdmin = async (user) => {
+    if (!user) return false;
+    // Vía rápida: claim del JWT (si el hook está habilitado en Auth).
+    if (user.app_metadata?.is_admin === true) return true;
+    // Fallback: consultar la tabla directamente. RLS asegura que solo
+    // devuelve fila si auth.uid() coincide con user_id.
+    const { data, error } = await supabase
+      .from('admin_users')
+      .select('user_id')
+      .eq('user_id', user.id)
+      .maybeSingle();
+    if (error) {
+      console.error('[admin] error chequeando admin_users:', error);
+      return false;
+    }
+    return Boolean(data);
+  };
+
   const checkAdminAccess = async () => {
     const { data: { session } } = await supabase.auth.getSession();
     const user = session?.user;
 
-    if (user && user.email === ADMIN_EMAIL) {
+    if (await isAdmin(user)) {
         loadingState.classList.add('hidden');
         dashboard.classList.remove('hidden');
         setTimeout(() => dashboard.classList.remove('opacity-0'), 100);
         if(emailDisplay) emailDisplay.textContent = user.email;
-        
+
         loadStats();
-        setInterval(loadStats, 15000); 
+        setInterval(loadStats, 15000);
 
     } else {
         loadingState.classList.add('hidden');

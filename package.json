@@ -25,6 +25,7 @@
     "@upstash/redis": "^1.38.0",
     "@vercel/og": "^0.11.1",
     "canvas-confetti": "^1.9.4",
+    "convex": "^1.38.0",
     "nanostores": "^1.1.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",

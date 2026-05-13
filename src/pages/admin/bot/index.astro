@@ -1,0 +1,84 @@
+---
+import BotAdminLayout from '@/features/bot-admin/components/BotAdminLayout.astro';
+import { convex } from '@/features/bot-admin/lib/convexClient';
+import { getSupabase } from '@/features/auth/lib/supabase';
+
+const supabase = getSupabase(Astro);
+const { data: { user } } = await supabase.auth.getUser();
+if (!user?.app_metadata?.is_admin) return Astro.redirect('/');
+
+let streamers: any[] = [];
+let channelConfigs: any[] = [];
+let personality: any = null;
+
+try {
+  [streamers, channelConfigs, personality] = await Promise.all([
+    convex.query('streamers:list' as any, {}),
+    convex.query('channelConfig:listAll' as any, {}),
+    convex.query('personality:getPersonality' as any, { scope: 'global' }),
+  ]);
+} catch (_) {
+  // Convex puede no estar disponible en build/preview sin env vars
+}
+
+const activeStreamers = streamers.filter((s: any) => s.enabled).length;
+const channelsActive = channelConfigs.filter((c: any) => c.mode !== 'off').length;
+const lastLearned = personality?.lastLearnedAt
+  ? new Date(personality.lastLearnedAt).toLocaleString('es-AR')
+  : 'Nunca';
+---
+
+<BotAdminLayout title="Estado del Bot" active="overview">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+    <article class="p-6 rounded-2xl bg-white/5 border border-white/10">
+      <p class="text-gray-500 text-xs uppercase tracking-widest">Streamers trackeados</p>
+      <p class="text-5xl font-black font-orbitron mt-2">
+        {activeStreamers}<span class="text-gray-500 text-2xl">/{streamers.length}</span>
+      </p>
+      <p class="text-gray-400 text-sm mt-2">activos / totales</p>
+      <a href="/admin/bot/streamers" class="text-red-500 text-xs mt-4 inline-block hover:underline">Gestionar →</a>
+    </article>
+
+    <article class="p-6 rounded-2xl bg-white/5 border border-white/10">
+      <p class="text-gray-500 text-xs uppercase tracking-widest">Canales configurados</p>
+      <p class="text-5xl font-black font-orbitron mt-2">{channelsActive}</p>
+      <p class="text-gray-400 text-sm mt-2">activos (no off)</p>
+      <a href="/admin/bot/canales" class="text-red-500 text-xs mt-4 inline-block hover:underline">Gestionar →</a>
+    </article>
+
+    <article class="p-6 rounded-2xl bg-white/5 border border-white/10">
+      <p class="text-gray-500 text-xs uppercase tracking-widest">Personalidad aprendida</p>
+      <p class="text-base font-mono mt-2 truncate">{lastLearned}</p>
+      <p class="text-gray-400 text-sm mt-2">{personality?.sampleSize ?? 0} mensajes muestreados</p>
+      <a href="/admin/bot/personalidad" class="text-red-500 text-xs mt-4 inline-block hover:underline">Ver →</a>
+    </article>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <article class="p-6 rounded-2xl bg-white/5 border border-white/10">
+      <p class="text-gray-500 text-xs uppercase tracking-widest mb-3">Accesos rápidos</p>
+      <div class="flex flex-wrap gap-2">
+        {[
+          { label: 'Reaction Roles', href: '/admin/bot/reaction-roles' },
+          { label: 'Miembros', href: '/admin/bot/miembros' },
+          { label: 'Auditoría', href: '/admin/bot/auditoria' },
+          { label: 'Admin general', href: '/admin' },
+        ].map(link => (
+          <a
+            href={link.href}
+            class="px-3 py-1.5 text-xs font-bold rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
+    </article>
+
+    <article class="p-6 rounded-2xl bg-white/5 border border-white/10">
+      <p class="text-gray-500 text-xs uppercase tracking-widest mb-3">Info del deployment</p>
+      <p class="text-xs font-mono text-gray-400">
+        Convex: {import.meta.env.PUBLIC_CONVEX_URL || '(no configurado)'}
+      </p>
+    </article>
+  </div>
+</BotAdminLayout>

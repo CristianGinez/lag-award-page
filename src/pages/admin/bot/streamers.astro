@@ -1,0 +1,19 @@
+---
+import BotAdminLayout from '@/features/bot-admin/components/BotAdminLayout.astro';
+import StreamersManager from '@/features/bot-admin/components/StreamersManager.tsx';
+import { convex } from '@/features/bot-admin/lib/convexClient';
+import { getSupabase } from '@/features/auth/lib/supabase';
+
+const supabase = getSupabase(Astro);
+const { data: { user } } = await supabase.auth.getUser();
+if (!user?.app_metadata?.is_admin) return Astro.redirect('/');
+
+let initialStreamers: any[] = [];
+try {
+  initialStreamers = await convex.query('streamers:list' as any, {});
+} catch (_) {}
+---
+
+<BotAdminLayout title="Streamers Tracking" active="streamers">
+  <StreamersManager client:load initialStreamers={initialStreamers} />
+</BotAdminLayout>
