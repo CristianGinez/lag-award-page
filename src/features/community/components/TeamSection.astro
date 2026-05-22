@@ -1,0 +1,61 @@
+---
+// src/features/community/components/TeamSection.astro
+import { getVips } from '../lib/vipsData';
+import VipCard from './VipCard.astro';
+
+const vips = await getVips();
+---
+
+<section id="el-team" class="py-16 md:py-24 scroll-mt-24 reveal-on-scroll">
+  <div class="container mx-auto px-4 md:px-6">
+
+    <!-- Header -->
+    <div class="text-center mb-16 relative">
+      <!-- Background glow -->
+      <div class="absolute inset-0 -z-10 flex justify-center pointer-events-none" aria-hidden="true">
+        <div class="w-[600px] h-[300px] bg-purple-600/10 blur-[120px] rounded-full -translate-y-1/4"></div>
+      </div>
+
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-white/10 bg-white/3">
+        <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
+        <span class="text-[10px] font-bold uppercase tracking-[0.4em] text-gray-500 font-mono">El círculo íntimo</span>
+      </div>
+
+      <!-- Main title -->
+      <h2 class="text-6xl md:text-8xl font-black font-orbitron text-white uppercase tracking-tight leading-none mb-6">
+        <span class="block">🦎 El</span>
+        <span class="bg-gradient-to-r from-red-500 via-purple-400 to-blue-500 text-transparent bg-clip-text">Team</span>
+      </h2>
+
+      <!-- Subtitle -->
+      <p class="text-gray-400 max-w-md mx-auto text-sm md:text-base leading-relaxed">
+        Los personajes que construyen la leyenda del TeamLag.
+      </p>
+      <p class="text-gray-600 text-xs font-mono mt-1 tracking-widest uppercase">Streamers · Gamers · Iconos</p>
+
+      <!-- Divider -->
+      <div class="flex items-center justify-center gap-3 mt-8">
+        <div class="h-px w-20 bg-gradient-to-r from-transparent to-purple-500/40"></div>
+        <div class="flex gap-1.5">
+          <span class="w-1 h-1 rounded-full bg-purple-500/60"></span>
+          <span class="w-1 h-1 rounded-full bg-purple-500/40"></span>
+          <span class="w-1 h-1 rounded-full bg-purple-500/20"></span>
+        </div>
+        <div class="h-px w-20 bg-gradient-to-l from-transparent to-purple-500/40"></div>
+      </div>
+    </div>
+
+    <!-- VIP cards -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 max-w-4xl mx-auto">
+      {vips.map((vip) => <VipCard vip={vip} />)}
+    </div>
+
+    <div class="text-center mt-8">
+      <a href="/vips" class="text-xs text-gray-600 hover:text-gray-400 transition-colors font-mono">
+        Ver perfiles completos →
+      </a>
+    </div>
+
+  </div>
+</section>
