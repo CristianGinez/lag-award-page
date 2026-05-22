@@ -11,7 +11,7 @@ export const GET: APIRoute = async (context) => {
   if (!auth.ok) return auth.response;
 
   const convex = new ConvexHttpClient(CONVEX_URL);
-  convex.setAuth(auth.token);
+  (convex as any).setAdminAuth(import.meta.env.CONVEX_DEPLOY_KEY);
 
   try {
     const result = await convex.query('streamers:list' as any, {});
@@ -30,7 +30,7 @@ export const POST: APIRoute = async (context) => {
   const { action: actionName, ...args } = body;
 
   const convex = new ConvexHttpClient(CONVEX_URL);
-  convex.setAuth(auth.token);
+  (convex as any).setAdminAuth(import.meta.env.CONVEX_DEPLOY_KEY);
 
   try {
     let result;

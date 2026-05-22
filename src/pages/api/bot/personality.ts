@@ -11,7 +11,7 @@ export const POST: APIRoute = async (context) => {
   if (!auth.ok) return auth.response;
 
   const convex = new ConvexHttpClient(CONVEX_URL);
-  convex.setAuth(auth.token);
+  (convex as any).setAdminAuth(import.meta.env.CONVEX_DEPLOY_KEY);
 
   try {
     // learnNow puede tardar 30-60s (corre LLM)
