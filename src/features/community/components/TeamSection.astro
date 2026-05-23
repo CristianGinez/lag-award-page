@@ -38,16 +38,16 @@ const vips = await getVips();
       <div class="flex items-center justify-center gap-3 mt-8">
         <div class="h-px w-20 bg-gradient-to-r from-transparent to-purple-500/40"></div>
         <div class="flex gap-1.5">
-          <span class="w-1 h-1 rounded-full bg-purple-500/60"></span>
-          <span class="w-1 h-1 rounded-full bg-purple-500/40"></span>
-          <span class="w-1 h-1 rounded-full bg-purple-500/20"></span>
+          <span class="divider-dot w-1 h-1 rounded-full bg-purple-500/60"></span>
+          <span class="divider-dot w-1 h-1 rounded-full bg-purple-500/40"></span>
+          <span class="divider-dot w-1 h-1 rounded-full bg-purple-500/20"></span>
         </div>
         <div class="h-px w-20 bg-gradient-to-l from-transparent to-purple-500/40"></div>
       </div>
     </div>
 
     <!-- VIP cards -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 max-w-5xl mx-auto">
+    <div id="vip-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 max-w-5xl mx-auto">
       {vips.map((vip) => <VipCard vip={vip} />)}
     </div>
 
@@ -59,3 +59,41 @@ const vips = await getVips();
 
   </div>
 </section>
+
+<style>
+  /* Previene FOUC hasta que ScrollTrigger dispare */
+  #vip-grid > * {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+</style>
+
+<script>
+  import { gsap, ScrollTrigger } from '@/shared/lib/gsap';
+
+  document.addEventListener('astro:page-load', () => {
+    // Stagger de VIP cards al entrar en viewport
+    gsap.to('#vip-grid > *', {
+      opacity: 1,
+      y: 0,
+      stagger: 0.08,
+      duration: 0.6,
+      ease: 'power2.out',
+      clearProps: 'transform',
+      scrollTrigger: {
+        trigger: '#vip-grid',
+        start: 'top 88%',
+        once: true,
+      },
+    });
+
+    // Dots del divider — pulso escalonado continuo
+    gsap.to('.divider-dot', {
+      scale: 1.8,
+      opacity: 0.9,
+      stagger: { each: 0.2, repeat: -1, yoyo: true },
+      duration: 0.7,
+      ease: 'sine.inOut',
+    });
+  });
+</script>

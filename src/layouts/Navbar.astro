@@ -1,8 +1,8 @@
 ---
 const links = [
-  { name: 'Parsec League', href: '/' },           
-  { name: 'Información', href: '/info' },   
-  { name: 'Eventos', href: '/eventos' },   
+  { name: 'Parsec League', href: '/' },
+  { name: 'Información', href: '/info' },
+  { name: 'Eventos', href: '/eventos' },
   { name: 'Historia', href: '/historia' },
 ];
 ---
@@ -57,12 +57,13 @@ const links = [
                         </a>
 
                         <div id="user-profile" class="hidden items-center gap-3">
+                            <a id="vip-badge" href="/vips" class="hidden items-center gap-1 px-2 py-0.5 rounded-full border text-[10px] font-bold font-mono uppercase tracking-wider transition-all hover:scale-105"></a>
                             <a href="/perfil" class="block">
-                                <img 
-                                    id="user-avatar" 
-                                    src="" 
-                                    alt="Perfil" 
-                                    class="w-9 h-9 rounded-full border-2 border-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.5)] object-cover cursor-pointer hover:scale-110 transition-transform" 
+                                <img
+                                    id="user-avatar"
+                                    src=""
+                                    alt="Perfil"
+                                    class="w-9 h-9 rounded-full border-2 border-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.5)] object-cover cursor-pointer hover:scale-110 transition-transform"
                                     title="Ir a mi perfil"
                                 />
                             </a>
@@ -102,6 +103,7 @@ const links = [
 </style>
 
 <script>
+  import { gsap } from 'gsap';
   import { supabase } from '../features/auth/lib/supabase';
   import { $currentUser } from '../features/auth/stores/authStore';
 
@@ -115,6 +117,8 @@ const links = [
       const menuToggle = document.getElementById('menu-toggle');
       const mobileMenu = document.getElementById('mobile-menu');
 
+      const vipBadge = document.getElementById('vip-badge') as HTMLAnchorElement | null;
+
       const updateUI = (user: any) => {
           if (!btnLoginLink || !userProfile || !userAvatar) return;
 
@@ -122,7 +126,7 @@ const links = [
               // --- LOGUEADO ---
               btnLoginLink.classList.add('hidden');
               userProfile.classList.remove('hidden');
-              userProfile.classList.add('flex'); 
+              userProfile.classList.add('flex');
 
               const avatarUrl = user.user_metadata?.avatar_url || user.user_metadata?.picture;
               const userName = user.user_metadata?.full_name || user.email || 'User';
@@ -130,6 +134,17 @@ const links = [
 
               userAvatar.src = avatarUrl || fallbackUrl;
               userAvatar.onerror = () => { userAvatar.src = fallbackUrl; };
+
+              // VIP badge
+              if (vipBadge && user.app_metadata?.is_vip === true) {
+                vipBadge.textContent = '★ VIP';
+                vipBadge.style.cssText = 'border-color: rgba(250,204,21,0.5); color: #facc15; background: rgba(250,204,21,0.08);';
+                vipBadge.classList.remove('hidden');
+                vipBadge.classList.add('flex');
+              } else if (vipBadge) {
+                vipBadge.classList.add('hidden');
+                vipBadge.classList.remove('flex');
+              }
 
               if (mobileLoginBtn) {
                   mobileLoginBtn.textContent = 'Mi Cuenta';
@@ -187,8 +202,33 @@ const links = [
       if (menuToggle && mobileMenu) {
           const newToggle = menuToggle.cloneNode(true);
           menuToggle.parentNode?.replaceChild(newToggle, menuToggle);
+
+          let menuOpen = false;
+          let menuTl: ReturnType<typeof gsap.timeline> | null = null;
+
           newToggle.addEventListener('click', () => {
-              mobileMenu.classList.toggle('hidden');
+              if (!menuTl) {
+                  mobileMenu.classList.remove('hidden');
+                  const items = mobileMenu.querySelectorAll('a, hr');
+                  menuTl = gsap.timeline({ paused: true })
+                    .fromTo(mobileMenu,
+                      { opacity: 0, y: -8 },
+                      { opacity: 1, y: 0, duration: 0.25, ease: 'power2.out' }
+                    )
+                    .fromTo(items,
+                      { opacity: 0, y: -6 },
+                      { opacity: 1, y: 0, stagger: 0.06, duration: 0.25, ease: 'power2.out' },
+                      '-=0.1'
+                    );
+              }
+
+              if (menuOpen) {
+                  menuTl.reverse().then(() => mobileMenu.classList.add('hidden'));
+              } else {
+                  mobileMenu.classList.remove('hidden');
+                  menuTl.play();
+              }
+              menuOpen = !menuOpen;
           });
       }
   });

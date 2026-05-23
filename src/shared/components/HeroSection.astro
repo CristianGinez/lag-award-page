@@ -1,0 +1,122 @@
+---
+// src/shared/components/HeroSection.astro
+---
+
+<section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+
+  <!-- Fondo: video + gradiente -->
+  <div class="absolute inset-0 z-0">
+    <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-[#050505] z-10"></div>
+    <video
+      autoplay loop muted playsinline
+      class="w-full h-full object-cover opacity-50"
+      aria-hidden="true"
+    >
+      <source src="https://res.cloudinary.com/dkjaq3i9p/video/upload/v1768803239/Intro_F%C3%BAtbol_Peruano_Turbo_-_Reset_mhdzao.webm" type="video/webm" />
+    </video>
+  </div>
+
+  <!-- Blobs de glow (flotan con GSAP) -->
+  <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
+    <div class="hero-blob hero-blob-red absolute top-1/4 left-1/4 w-96 h-96 bg-red-600/10 rounded-full blur-[100px]"></div>
+    <div class="hero-blob hero-blob-purple absolute top-1/3 right-1/4 w-80 h-80 bg-purple-600/10 rounded-full blur-[100px]"></div>
+    <div class="hero-blob hero-blob-blue absolute bottom-1/4 left-1/3 w-64 h-64 bg-blue-600/10 rounded-full blur-[80px]"></div>
+  </div>
+
+  <!-- Línea decorativa superior -->
+  <div class="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 shadow-[0_0_15px_rgba(168,85,247,0.5)] z-20" aria-hidden="true"></div>
+
+  <!-- Contenido -->
+  <div class="relative z-20 text-center px-4 max-w-5xl mx-auto py-24">
+
+    <!-- Logo -->
+    <div id="hero-logo" class="flex justify-center mb-8">
+      <img
+        src="/img/tl_logo.png"
+        alt="TeamLag"
+        class="w-24 h-24 md:w-32 md:h-32 object-contain drop-shadow-[0_0_30px_rgba(220,38,38,0.4)]"
+        loading="eager"
+      />
+    </div>
+
+    <!-- Badge dinámico -->
+    <div id="hero-badge" class="flex justify-center mb-8">
+      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 text-[11px] font-bold uppercase tracking-[0.2em] backdrop-blur-sm">
+        🏆 Parsec League 2026 — Temporada finalizada
+      </span>
+    </div>
+
+    <!-- Título -->
+    <h1 id="hero-title" class="text-5xl md:text-7xl lg:text-8xl font-black font-orbitron text-transparent bg-clip-text bg-gradient-to-b from-white via-gray-200 to-gray-500 mb-4 leading-none tracking-tighter drop-shadow-[0_0_35px_rgba(255,255,255,0.2)]">
+      TEAM<span class="bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 text-transparent bg-clip-text">LAG</span>
+    </h1>
+
+    <!-- Tagline -->
+    <p id="hero-tagline" class="text-lg md:text-xl text-gray-400 font-light mb-10 max-w-2xl mx-auto tracking-wide">
+      La comunidad de LAGartovich — Awards, Parsec League y mucho más.
+    </p>
+
+    <!-- CTAs -->
+    <div id="hero-ctas" class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+      <a
+        href="https://discord.gg/teamlag"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group w-full sm:w-auto px-8 py-4 bg-[#5865F2] hover:bg-[#4752C4] text-white font-black font-orbitron uppercase tracking-widest rounded-xl transition-all hover:scale-105 hover:shadow-[0_0_25px_rgba(88,101,242,0.5)] flex items-center justify-center gap-2 text-sm"
+      >
+        <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037 13.46 13.46 0 0 0-2.314 4.249 13.473 13.473 0 0 0-2.315-4.249.073.073 0 0 0-.079-.037 19.793 19.793 0 0 0-4.885 1.515.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.896 19.896 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+        </svg>
+        Unite al Discord
+      </a>
+
+      <a
+        href="#el-team"
+        class="group w-full sm:w-auto px-8 py-4 bg-white/5 hover:bg-white/10 text-white font-bold font-orbitron uppercase tracking-widest rounded-xl border border-white/10 hover:border-white/30 transition-all hover:scale-105 text-sm scroll-mt-24"
+      >
+        Conocé al Team →
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 animate-bounce opacity-40" aria-hidden="true">
+    <div class="w-0.5 h-8 bg-gradient-to-b from-white/0 to-white/60 rounded-full"></div>
+  </div>
+
+</section>
+
+<style>
+  /* Previene FOUC — GSAP anima desde estos estados */
+  #hero-logo,
+  #hero-badge,
+  #hero-title,
+  #hero-tagline,
+  #hero-ctas {
+    opacity: 0;
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+
+  const FROM = { opacity: 0, y: 28 } as const;
+  const TO   = { opacity: 1, y: 0, ease: 'power3.out', clearProps: 'transform' } as const;
+
+  document.addEventListener('astro:page-load', () => {
+    // Timeline secuencial de entrada
+    const tl = gsap.timeline();
+
+    tl.fromTo('#hero-logo',    FROM, { ...TO, duration: 0.7 })
+      .fromTo('#hero-badge',   FROM, { ...TO, duration: 0.5 }, '-=0.4')
+      .fromTo('#hero-title',   FROM, { ...TO, duration: 0.7 }, '-=0.35')
+      .fromTo('#hero-tagline', FROM, { ...TO, duration: 0.5 }, '-=0.35')
+      .fromTo('#hero-ctas',    FROM, { ...TO, duration: 0.5 }, '-=0.25');
+
+    // Blobs flotantes — movimiento continuo suave
+    gsap.to('.hero-blob-red',    { x: 22, y: -18, duration: 6,   repeat: -1, yoyo: true, ease: 'sine.inOut' });
+    gsap.to('.hero-blob-purple', { x: -18, y: 22, duration: 7.5, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 1.2 });
+    gsap.to('.hero-blob-blue',   { x: 12,  y: 16, duration: 5.5, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 2.5 });
+  });
+</script>

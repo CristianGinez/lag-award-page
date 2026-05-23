@@ -1,5 +1,6 @@
 ---
-import categories from '../data/categories.ts';
+import { getCategories } from '../lib/awardsData';
+const categories = await getCategories();
 import { optimizeUrl } from '../../../shared/lib/imageOptimizer';
 ---
 
@@ -18,7 +19,7 @@ import { optimizeUrl } from '../../../shared/lib/imageOptimizer';
       </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div id="awards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {categories.map((award, index) => {
         // Lógica para centrar el último elemento si queda solo en la grilla
         const isLonelyLast = index === categories.length - 1 && categories.length % 3 === 1;
@@ -69,3 +70,22 @@ import { optimizeUrl } from '../../../shared/lib/imageOptimizer';
     </div>
   </div>
 </section>
+
+<style>
+  #awards-grid > * { opacity: 0; transform: translateY(28px); }
+</style>
+
+<script>
+  import { gsap, ScrollTrigger } from '@/shared/lib/gsap';
+
+  document.addEventListener('astro:page-load', () => {
+    gsap.to('#awards-grid > *', {
+      opacity: 1, y: 0,
+      stagger: 0.1,
+      duration: 0.65,
+      ease: 'power2.out',
+      clearProps: 'transform',
+      scrollTrigger: { trigger: '#awards-grid', start: 'top 88%', once: true },
+    });
+  });
+</script>

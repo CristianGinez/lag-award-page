@@ -1,0 +1,110 @@
+---
+// src/features/awards/components/AwardsHighlight.astro
+import { getCategories, EVENT_ID_2025 } from '../lib/awardsData';
+import { getWinners } from '../lib/voting';
+import { getCached } from '@/shared/lib/cache';
+import { optimizeUrl } from '@/shared/lib/imageOptimizer';
+
+const [categories, winnersData] = await Promise.all([
+  getCategories(EVENT_ID_2025),
+  getCached(
+    { key: `winners:${EVENT_ID_2025}`, ttl: 60 },
+    () => getWinners(EVENT_ID_2025)
+  ),
+]);
+
+const winnersCompact = categories.map(cat => {
+  const winnerInfo = (winnersData as any[]).find((w) => w.category_id === cat.id);
+  if (!winnerInfo) return null;
+  const nomineeDetails = cat.nominees.find(n => n.name === winnerInfo.nominee_name);
+  return {
+    category: cat,
+    winnerName: winnerInfo.nominee_name,
+    image: optimizeUrl(nomineeDetails?.image || '', { width: 300 }),
+  };
+}).filter(Boolean) as { category: typeof categories[0]; winnerName: string; image: string }[];
+---
+
+<section id="awards" class="py-16 md:py-24 scroll-mt-24">
+  <div class="container mx-auto px-4 md:px-6">
+
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-yellow-500/70 font-mono mb-3">Resultados Oficiales</p>
+      <h2 class="text-4xl md:text-5xl font-black font-orbitron text-white uppercase tracking-tight mb-3">
+        🏆 LAG Awards <span class="text-yellow-400">2025</span>
+      </h2>
+      <p class="text-gray-500 max-w-xl mx-auto text-sm">Los ganadores elegidos por la comunidad del TeamLag.</p>
+      <div class="mt-4 h-0.5 w-24 mx-auto bg-gradient-to-r from-transparent via-yellow-500/50 to-transparent"></div>
+    </div>
+
+    <!-- Winners grid -->
+    {winnersCompact.length > 0 ? (
+      <div id="winners-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-4 mb-12">
+        {winnersCompact.map(({ category, winnerName, image }) => (
+          <div
+            class="group relative rounded-xl overflow-hidden border border-white/5 hover:border-white/20 bg-white/3 hover:bg-white/5 transition-all hover:scale-[1.03] cursor-default"
+            style={category.color ? `--cat-color: ${category.color}` : ''}
+          >
+            <!-- Image -->
+            <div class="aspect-square overflow-hidden">
+              <img
+                src={image || '/img/lag_uconstr_placeholder.png'}
+                alt={winnerName}
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                loading="lazy"
+                width="300"
+                height="300"
+              />
+            </div>
+
+            <!-- Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
+
+            <!-- Content -->
+            <div class="absolute bottom-0 left-0 right-0 p-2.5">
+              <p class="text-[9px] uppercase tracking-widest font-bold font-mono truncate" style={category.color ? `color: ${category.color}` : 'color: #9ca3af'}>
+                {category.icon} {category.title}
+              </p>
+              <p class="text-white text-xs font-bold truncate mt-0.5 leading-tight">{winnerName}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-16 text-gray-600 text-sm mb-12">
+        Los resultados se anunciarán pronto.
+      </div>
+    )}
+
+    <!-- CTA -->
+    <div class="text-center">
+      <a
+        href="/categorias"
+        class="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-yellow-500/30 bg-yellow-500/5 hover:bg-yellow-500/10 text-yellow-400 font-bold text-sm uppercase tracking-widest transition-all hover:scale-105"
+      >
+        Ver todas las categorías →
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  #winners-grid > * { opacity: 0; transform: translateY(24px); }
+</style>
+
+<script>
+  import { gsap, ScrollTrigger } from '@/shared/lib/gsap';
+
+  document.addEventListener('astro:page-load', () => {
+    gsap.to('#winners-grid > *', {
+      opacity: 1, y: 0,
+      stagger: 0.07,
+      duration: 0.55,
+      ease: 'power2.out',
+      clearProps: 'transform',
+      scrollTrigger: { trigger: '#winners-grid', start: 'top 88%', once: true },
+    });
+  });
+</script>
