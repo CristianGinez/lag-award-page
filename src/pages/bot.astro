@@ -1,0 +1,753 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Navbar from '@/layouts/Navbar.astro';
+import Footer from '@/layouts/Footer.astro';
+
+const DISCORD_INVITE = 'https://discord.gg/YWJZBAUqQK';
+---
+
+<Layout
+  title="LAG BOT — El Bot Oficial del TeamLag"
+  description="El bot de Discord más personalizado de la comunidad LAG. IA conversacional con personalidad propia, alertas de streamers, reaction roles y más."
+  image="/og/default.png"
+>
+  <Navbar />
+  <main class="min-h-screen bg-[#050505] overflow-x-hidden">
+
+    <!-- ═══════════════════════════════════════ HERO ═══════════════════════════════════════ -->
+    <section class="bot-hero relative min-h-screen flex flex-col items-center justify-center px-4 pt-28 pb-20">
+      <div class="blob b1" aria-hidden="true"></div>
+      <div class="blob b2" aria-hidden="true"></div>
+      <div class="blob b3" aria-hidden="true"></div>
+      <div class="scanlines" aria-hidden="true"></div>
+
+      <div class="relative z-10 text-center max-w-4xl mx-auto">
+
+        <!-- Status badge -->
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#5865F2]/30 bg-[#5865F2]/10 text-[#818CF8] text-[11px] font-mono font-bold tracking-[0.25em] uppercase mb-8">
+          <span class="w-2 h-2 rounded-full bg-green-400 shadow-[0_0_6px_#4ade80] animate-pulse"></span>
+          Online · Servidor TeamLag
+        </div>
+
+        <!-- Bot glyph -->
+        <div class="discord-glyph mx-auto mb-8">
+          <img
+            src="https://cdn.discordapp.com/app-icons/1503802588510818496/841251b24d5db8e9ba3a19c87e894442.png?size=128"
+            alt="LAG BOT"
+            width="72"
+            height="72"
+            decoding="async"
+            class="w-18 h-18 rounded-2xl object-cover"
+          />
+        </div>
+
+        <!-- Heading -->
+        <h1 class="font-orbitron font-black text-6xl sm:text-8xl md:text-9xl text-white uppercase leading-none tracking-tight mb-4">
+          LAG<span class="hero-gradient"> BOT</span>
+        </h1>
+        <p class="text-[10px] font-mono uppercase tracking-[0.45em] text-gray-500 mb-6">
+          El bot oficial del TeamLag · Potenciado con IA
+        </p>
+        <p class="text-gray-300 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed mb-12">
+          No es un bot genérico. Aprende cómo habla la comunidad, reconoce los chistes internos
+          y responde como si fuera uno más del TeamLag. Disponible <strong class="text-white">24/7</strong>.
+        </p>
+
+        <!-- CTAs -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20">
+          <a href={DISCORD_INVITE} target="_blank" rel="noopener noreferrer" class="cta-primary group">
+            <svg class="w-5 h-5" viewBox="0 0 71 55" fill="currentColor"><path d="M60.1 4.9A58.5 58.5 0 0 0 45.5.6a40.6 40.6 0 0 0-1.8 3.7 54.2 54.2 0 0 0-16.4 0A39 39 0 0 0 25.4.6 58.5 58.5 0 0 0 10.8 5C1.6 18.9-1 32.5.3 45.9c6.2 4.6 12.2 7.4 18.1 9.2a45.5 45.5 0 0 0 3.9-6.4 38.4 38.4 0 0 1-6.1-3c.5-.4 1-.7 1.5-1.1 11.8 5.5 24.6 5.5 36.2 0 .5.4 1 .7 1.5 1.1a38.6 38.6 0 0 1-6.1 3 45.6 45.6 0 0 0 3.9 6.4c5.9-1.8 11.9-4.6 18.1-9.2 1.5-15.7-2.6-29.2-10.2-41zM23.7 37.8c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2 6.5 3.2 6.4 7.2c0 3.9-2.8 7.2-6.4 7.2zm23.6 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2 6.5 3.2 6.4 7.2c0 3.9-2.8 7.2-6.4 7.2z"/></svg>
+            Unirse al Servidor
+          </a>
+          <a href="#features" class="cta-secondary group">
+            Ver Funcionalidades
+            <svg class="w-4 h-4 group-hover:translate-y-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </a>
+        </div>
+
+        <!-- Stats bar -->
+        <div class="stats-bar">
+          <div class="stat">
+            <span class="stat-val">IA</span>
+            <span class="stat-lbl">Personalidad adaptativa</span>
+          </div>
+          <div class="stat-sep"></div>
+          <div class="stat">
+            <span class="stat-val">24/7</span>
+            <span class="stat-lbl">Siempre online</span>
+          </div>
+          <div class="stat-sep"></div>
+          <div class="stat">
+            <span class="stat-val">4</span>
+            <span class="stat-lbl">Modos de conversación</span>
+          </div>
+          <div class="stat-sep"></div>
+          <div class="stat">
+            <span class="stat-val">∞</span>
+            <span class="stat-lbl">Reaction roles</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scroll hint -->
+      <div class="scroll-hint" aria-hidden="true">
+        <span>scroll</span>
+        <div class="scroll-line-anim"></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ FEATURES ═══════════════════════════════════════ -->
+    <section id="features" class="relative py-28 px-4">
+      <div class="max-w-6xl mx-auto">
+
+        <div class="text-center mb-20">
+          <span class="section-eyebrow">Funcionalidades</span>
+          <h2 class="font-orbitron font-black text-4xl md:text-5xl text-white uppercase tracking-tight mt-3">
+            Todo lo que puede<br /><span class="hero-gradient">hacer por vos</span>
+          </h2>
+        </div>
+
+        <div class="features-grid">
+
+          <!-- 1. IA Conversacional — FEATURED -->
+          <div class="feat-card feat-featured" data-bot-feature>
+            <div class="feat-icon" style="--c:#5865F2">
+              <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z"/></svg>
+            </div>
+            <div class="feat-badge">ESTRELLA</div>
+            <h3 class="feat-title">IA Conversacional</h3>
+            <p class="feat-desc">El bot responde con inteligencia artificial en los canales configurados. No es un comando — es una conversación real. Habla, pregunta, chatea.</p>
+            <div class="modes-row">
+              <span class="mode m-off">Off</span>
+              <span class="mode m-passive">Pasivo</span>
+              <span class="mode m-helpful">Útil</span>
+              <span class="mode m-chatty">Charlatán</span>
+            </div>
+          </div>
+
+          <!-- 2. Personalidad adaptativa — FEATURED -->
+          <div class="feat-card feat-featured" data-bot-feature>
+            <div class="feat-icon" style="--c:#9333EA">
+              <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456Z"/></svg>
+            </div>
+            <div class="feat-badge" style="--bc:#9333EA;--bc2:#7C3AED">ÚNICO</div>
+            <h3 class="feat-title">Personalidad Adaptativa</h3>
+            <p class="feat-desc">Analiza miles de mensajes del servidor y aprende la jerga, el humor y los chistes internos del TeamLag. No es un bot cualquiera — <em>es nuestro</em> bot.</p>
+            <blockquote class="feat-quote">
+              "Aprende cómo hablamos y se convierte en uno más"
+            </blockquote>
+          </div>
+
+          <!-- 3. Streamers -->
+          <div class="feat-card" data-bot-feature>
+            <div class="feat-icon" style="--c:#9146FF">
+              <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg>
+            </div>
+            <h3 class="feat-title">Alertas de Streamers</h3>
+            <p class="feat-desc">Cuando alguien del servidor va en vivo en Twitch o YouTube, el bot notifica automáticamente en el canal configurado con un embed personalizado y colorido.</p>
+            <div class="platform-row">
+              <span class="plat twitch">
+                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg>
+                Twitch
+              </span>
+              <span class="plat youtube">
+                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                YouTube
+              </span>
+            </div>
+          </div>
+
+          <!-- 4. Reaction Roles -->
+          <div class="feat-card" data-bot-feature>
+            <div class="feat-icon" style="--c:#F59E0B">
+              <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"/></svg>
+            </div>
+            <h3 class="feat-title">Reaction Roles</h3>
+            <p class="feat-desc">Configura mensajes donde los miembros reaccionan con un emoji para obtener roles automáticamente. Sin comandos, sin fricción — solo click y listo.</p>
+            <div class="emoji-pills">
+              <span>🎮 Gamer</span>
+              <span>🎬 Streamer</span>
+              <span>🏆 Competitivo</span>
+            </div>
+          </div>
+
+          <!-- 5. Config por canal -->
+          <div class="feat-card" data-bot-feature>
+            <div class="feat-icon" style="--c:#22C55E">
+              <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>
+            </div>
+            <h3 class="feat-title">Config por Canal</h3>
+            <p class="feat-desc">Cada canal tiene su propio modo de actividad, cooldown entre respuestas y personalidad diferenciada. Control total sin saturar el servidor.</p>
+            <div class="config-preview">
+              <div><span class="ch">#general</span><span class="cv">charlatán · 5min</span></div>
+              <div><span class="ch">#clips</span><span class="cv">útil · 10min</span></div>
+              <div><span class="ch">#off-topic</span><span class="cv">pasivo · 15min</span></div>
+            </div>
+          </div>
+
+          <!-- 6. Auditoría -->
+          <div class="feat-card" data-bot-feature>
+            <div class="feat-icon" style="--c:#EF4444">
+              <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 0 1 0 3.75H5.625a1.875 1.875 0 0 1 0-3.75Z"/></svg>
+            </div>
+            <h3 class="feat-title">Auditoría Completa</h3>
+            <p class="feat-desc">Cada intervención queda registrada con decisión, nivel de confianza y razonamiento detallado. Transparencia total sobre qué hace el bot y por qué lo hace.</p>
+            <div class="audit-rows">
+              <div class="audit-row"><span class="ad respond">RESPOND</span><span class="ac">97%</span><span class="ar">Contexto relevante detectado</span></div>
+              <div class="audit-row"><span class="ad ignore">IGNORE</span><span class="ac">82%</span><span class="ar">Conversación fuera de scope</span></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ DEMO CHAT ═══════════════════════════════════════ -->
+    <section class="py-24 px-4">
+      <div class="max-w-3xl mx-auto">
+        <div class="text-center mb-14">
+          <span class="section-eyebrow">Demo en vivo</span>
+          <h2 class="font-orbitron font-black text-3xl md:text-4xl text-white uppercase mt-3">Así habla el bot</h2>
+          <p class="text-gray-500 text-sm mt-2">Conversaciones reales del servidor del TeamLag</p>
+        </div>
+
+        <div class="discord-win">
+          <!-- Header -->
+          <div class="dw-header">
+            <div class="dw-channel">
+              <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 8.25h15m-16.5 7.5h15m-1.8-13.5-3.9 19.5m-2.1-19.5-3.9 19.5"/></svg>
+              general
+            </div>
+            <div class="dw-online">
+              <span class="dw-dot"></span>
+              LAG BOT online
+            </div>
+          </div>
+
+          <!-- Messages -->
+          <div class="dw-msgs">
+
+            <div class="dm">
+              <div class="dm-av av-u1">
+                <img src="https://res.cloudinary.com/dmml18kkb/image/upload/v1779493451/tlag/vips/tlag/vips/lag.webp" alt="GordoLag" width="38" height="38" decoding="async" />
+              </div>
+              <div class="dm-body">
+                <div class="dm-meta"><span class="dm-name" style="color:#F59E0B">GordoLag</span><span class="dm-time">hoy a las 21:34</span></div>
+                <div class="dm-text">che, alguien jugó left 4 dead hoy? parece que volvió el hype jajaj</div>
+              </div>
+            </div>
+
+            <div class="dm">
+              <div class="dm-av av-u2">CR</div>
+              <div class="dm-body">
+                <div class="dm-meta"><span class="dm-name" style="color:#22C55E">CristianG</span><span class="dm-time">hoy a las 21:35</span></div>
+                <div class="dm-text">sip yo jugué un rato, ese juego nunca muere</div>
+              </div>
+            </div>
+
+            <div class="dm dm-bot">
+              <div class="dm-av av-bot">
+                <img src="https://cdn.discordapp.com/app-icons/1503802588510818496/841251b24d5db8e9ba3a19c87e894442.png?size=64" alt="LAG BOT" width="38" height="38" decoding="async" class="w-full h-full rounded-full object-cover" />
+              </div>
+              <div class="dm-body">
+                <div class="dm-meta">
+                  <span class="dm-name" style="color:#5865F2">LAG BOT</span>
+                  <span class="bot-tag">BOT</span>
+                  <span class="dm-time">hoy a las 21:35</span>
+                </div>
+                <div class="dm-text">jajaja che el L4D2 Lima Infection fue hace poquito nomás y ya quieren más... típico del lag 😂 yo banco re, quién arma partida?</div>
+              </div>
+            </div>
+
+            <div class="dm">
+              <div class="dm-av av-u3">
+                <img src="https://res.cloudinary.com/dmml18kkb/image/upload/v1779493457/tlag/vips/tlag/vips/kz.webp" alt="Tincho" width="38" height="38" decoding="async" />
+              </div>
+              <div class="dm-body">
+                <div class="dm-meta"><span class="dm-name" style="color:#EF4444">Tincho</span><span class="dm-time">hoy a las 21:37</span></div>
+                <div class="dm-text">yo me sumo, que alguien hostee</div>
+              </div>
+            </div>
+
+            <!-- Streamer notification -->
+            <div class="dm dm-bot">
+              <div class="dm-av av-bot">
+                <img src="https://cdn.discordapp.com/app-icons/1503802588510818496/841251b24d5db8e9ba3a19c87e894442.png?size=64" alt="LAG BOT" width="38" height="38" decoding="async" class="w-full h-full rounded-full object-cover" />
+              </div>
+              <div class="dm-body">
+                <div class="dm-meta">
+                  <span class="dm-name" style="color:#5865F2">LAG BOT</span>
+                  <span class="bot-tag">BOT</span>
+                  <span class="dm-time">hoy a las 22:01</span>
+                </div>
+                <div class="stream-embed">
+                  <div class="se-accent"></div>
+                  <div class="se-body">
+                    <div class="se-live"><span class="live-dot"></span> En vivo ahora</div>
+                    <div class="se-title">🎮 GordoLag está en vivo en Twitch</div>
+                    <div class="se-game">Left 4 Dead 2 · Campaña cooperativa</div>
+                    <a href={DISCORD_INVITE} class="se-link" target="_blank" rel="noopener noreferrer">Ir al stream →</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ HOW IT WORKS ═══════════════════════════════════════ -->
+    <section class="py-24 px-4 border-t border-white/5">
+      <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-16">
+          <span class="section-eyebrow">Simple y rápido</span>
+          <h2 class="font-orbitron font-black text-4xl text-white uppercase mt-3">Cómo empezar</h2>
+        </div>
+
+        <div class="steps">
+          <div class="step" data-bot-step>
+            <div class="step-num">01</div>
+            <div class="step-body">
+              <h3 class="step-title">Entrate al servidor</h3>
+              <p class="step-desc">Unite al servidor oficial del TeamLag con el botón de abajo. Es gratuito y abierto a todos los que quieran ser parte de la comunidad.</p>
+            </div>
+          </div>
+          <div class="step-connector" aria-hidden="true"></div>
+          <div class="step" data-bot-step>
+            <div class="step-num">02</div>
+            <div class="step-body">
+              <h3 class="step-title">Elegí tus roles</h3>
+              <p class="step-desc">Reaccioná con emojis en el canal de bienvenida para obtener los roles que te representan y desbloquear los canales que más te interesan.</p>
+            </div>
+          </div>
+          <div class="step-connector" aria-hidden="true"></div>
+          <div class="step" data-bot-step>
+            <div class="step-num">03</div>
+            <div class="step-body">
+              <h3 class="step-title">Chateá con el bot</h3>
+              <p class="step-desc">Interactuá con el LAG BOT en cualquier canal donde esté activo. Conoce el server, los chistes internos y hasta cómo hablamos nosotros.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ CTA FINAL ═══════════════════════════════════════ -->
+    <section class="py-36 px-4 relative overflow-hidden">
+      <div class="cta-blob ca" aria-hidden="true"></div>
+      <div class="cta-blob cb" aria-hidden="true"></div>
+
+      <div class="max-w-3xl mx-auto text-center relative z-10">
+        <div class="cta-icon mx-auto mb-8">
+          <img
+            src="https://cdn.discordapp.com/app-icons/1503802588510818496/841251b24d5db8e9ba3a19c87e894442.png?size=128"
+            alt="LAG BOT"
+            width="80"
+            height="80"
+            decoding="async"
+            class="w-full h-full rounded-xl object-cover"
+          />
+        </div>
+
+        <h2 class="font-orbitron font-black text-5xl md:text-7xl text-white uppercase tracking-tight leading-none mb-4">
+          Sumate a la<br /><span class="hero-gradient">comunidad</span>
+        </h2>
+        <p class="text-gray-400 text-lg mb-12 max-w-lg mx-auto leading-relaxed">
+          El LAG BOT te espera. Somos una comunidad activa, con humor y muchas ganas de jugar.
+        </p>
+
+        <a href={DISCORD_INVITE} target="_blank" rel="noopener noreferrer" class="cta-final group">
+          <svg class="w-6 h-6" viewBox="0 0 71 55" fill="currentColor"><path d="M60.1 4.9A58.5 58.5 0 0 0 45.5.6a40.6 40.6 0 0 0-1.8 3.7 54.2 54.2 0 0 0-16.4 0A39 39 0 0 0 25.4.6 58.5 58.5 0 0 0 10.8 5C1.6 18.9-1 32.5.3 45.9c6.2 4.6 12.2 7.4 18.1 9.2a45.5 45.5 0 0 0 3.9-6.4 38.4 38.4 0 0 1-6.1-3c.5-.4 1-.7 1.5-1.1 11.8 5.5 24.6 5.5 36.2 0 .5.4 1 .7 1.5 1.1a38.6 38.6 0 0 1-6.1 3 45.6 45.6 0 0 0 3.9 6.4c5.9-1.8 11.9-4.6 18.1-9.2 1.5-15.7-2.6-29.2-10.2-41zM23.7 37.8c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2 6.5 3.2 6.4 7.2c0 3.9-2.8 7.2-6.4 7.2zm23.6 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2 6.5 3.2 6.4 7.2c0 3.9-2.8 7.2-6.4 7.2z"/></svg>
+          Unirse Ahora — Es Gratis
+        </a>
+
+        <p class="text-gray-700 text-xs mt-6 font-mono">discord.gg/YWJZBAUqQK · tlag.online</p>
+      </div>
+    </section>
+
+  </main>
+  <Footer />
+</Layout>
+
+<!-- ═══════════════════════════════════════ STYLES ═══════════════════════════════════════ -->
+<style>
+  /* ── Tokens ─────────────────────────────────── */
+  :root {
+    --disc: #5865F2;
+    --disc-g: rgba(88,101,242,.25);
+    --purple: #9333EA;
+    --purple-g: rgba(147,51,234,.2);
+  }
+
+  /* ── Gradient text ──────────────────────────── */
+  .hero-gradient {
+    background: linear-gradient(135deg, #5865F2 0%, #9333EA 50%, #C026D3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ── Hero ───────────────────────────────────── */
+  .bot-hero {
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(88,101,242,.08) 0%, transparent 70%);
+  }
+
+  .blob {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(100px);
+    pointer-events: none;
+  }
+  .b1 { width: 500px; height: 400px; top: -100px; left: -100px; background: rgba(88,101,242,.15); animation: float1 12s ease-in-out infinite; }
+  .b2 { width: 400px; height: 350px; top: 20%; right: -80px; background: rgba(147,51,234,.12); animation: float2 15s ease-in-out infinite; }
+  .b3 { width: 350px; height: 300px; bottom: 5%; left: 30%; background: rgba(239,68,68,.08); animation: float3 18s ease-in-out infinite; }
+
+  @keyframes float1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(40px,-30px)} }
+  @keyframes float2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-30px,40px)} }
+  @keyframes float3 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(20px,-20px)} }
+
+  .scanlines {
+    position: absolute; inset: 0; pointer-events: none;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.04) 2px, rgba(0,0,0,.04) 4px);
+  }
+
+  /* ── Discord glyph ──────────────────────────── */
+  .discord-glyph {
+    width: 96px; height: 96px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(88,101,242,.15);
+    border: 1px solid rgba(88,101,242,.3);
+    border-radius: 28px;
+    color: #5865F2;
+    box-shadow: 0 0 60px rgba(88,101,242,.2), 0 0 120px rgba(88,101,242,.08);
+    animation: glyph-pulse 3s ease-in-out infinite;
+  }
+  .discord-glyph svg { width: 52px; height: 40px; }
+
+  @keyframes glyph-pulse {
+    0%,100%{box-shadow:0 0 60px rgba(88,101,242,.2),0 0 120px rgba(88,101,242,.08)}
+    50%{box-shadow:0 0 80px rgba(88,101,242,.35),0 0 160px rgba(88,101,242,.15)}
+  }
+
+  /* ── CTAs ───────────────────────────────────── */
+  .cta-primary {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 16px 32px; border-radius: 16px;
+    background: #5865F2;
+    color: white; font-family: 'Orbitron', sans-serif; font-weight: 700;
+    font-size: 13px; letter-spacing: .12em; text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: 0 0 40px rgba(88,101,242,.35);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .cta-primary:hover { transform: scale(1.04); box-shadow: 0 0 60px rgba(88,101,242,.55); }
+
+  .cta-secondary {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 16px 32px; border-radius: 16px;
+    border: 1px solid rgba(255,255,255,.15);
+    color: rgba(255,255,255,.7); font-family: 'Orbitron', sans-serif; font-weight: 700;
+    font-size: 13px; letter-spacing: .12em; text-transform: uppercase;
+    text-decoration: none; background: rgba(255,255,255,.04);
+    transition: transform .2s, background .2s, color .2s, border-color .2s;
+  }
+  .cta-secondary:hover { transform: scale(1.04); background: rgba(255,255,255,.08); color: white; border-color: rgba(255,255,255,.3); }
+
+  /* ── Stats bar ──────────────────────────────── */
+  .stats-bar {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+    gap: 24px 40px;
+    padding: 24px 32px; border-radius: 20px;
+    border: 1px solid rgba(255,255,255,.06);
+    background: rgba(255,255,255,.02);
+    backdrop-filter: blur(12px);
+  }
+  .stat { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .stat-val { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 28px; color: white; line-height: 1; background: linear-gradient(135deg,#5865F2,#9333EA); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+  .stat-lbl { font-size: 11px; color: rgba(255,255,255,.4); font-family: monospace; text-transform: uppercase; letter-spacing: .1em; }
+  .stat-sep { width: 1px; height: 36px; background: rgba(255,255,255,.08); }
+
+  /* ── Scroll hint ────────────────────────────── */
+  .scroll-hint {
+    position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    opacity: .3;
+  }
+  .scroll-hint span { font-size: 9px; font-family: monospace; text-transform: uppercase; letter-spacing: .3em; color: #6b7280; }
+  .scroll-line-anim {
+    width: 1px; height: 32px;
+    background: linear-gradient(to bottom, #6b7280, transparent);
+    animation: scroll-drop 1.5s ease-in-out infinite;
+  }
+  @keyframes scroll-drop { 0%{opacity:0;transform:scaleY(0);transform-origin:top} 50%{opacity:1;transform:scaleY(1)} 100%{opacity:0;transform:scaleY(0);transform-origin:bottom} }
+
+  /* ── Section eyebrow ────────────────────────── */
+  .section-eyebrow {
+    display: block; font-family: monospace; font-weight: 700;
+    font-size: 10px; letter-spacing: .4em; text-transform: uppercase; color: #5865F2;
+  }
+
+  /* ── Features grid ──────────────────────────── */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  @media (min-width: 1024px) {
+    .features-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .feat-featured {
+      grid-column: span 1;
+    }
+  }
+
+  /* First two cards are featured (bigger) on wider screens */
+  @media (min-width: 1100px) {
+    .features-grid {
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+    }
+    .feat-featured:nth-child(1) { grid-column: 1; }
+    .feat-featured:nth-child(2) { grid-column: 2; }
+  }
+
+  .feat-card {
+    position: relative; overflow: hidden;
+    padding: 28px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,.07);
+    background: rgba(255,255,255,.025);
+    backdrop-filter: blur(8px);
+    transition: transform .25s, border-color .25s, background .25s;
+  }
+  .feat-card::before {
+    content: '';
+    position: absolute; inset: 0; border-radius: 20px; opacity: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(88,101,242,.08) 0%, transparent 60%);
+    transition: opacity .3s;
+  }
+  .feat-card:hover { transform: translateY(-3px); border-color: rgba(88,101,242,.2); background: rgba(88,101,242,.04); }
+  .feat-card:hover::before { opacity: 1; }
+
+  .feat-featured {
+    border-color: rgba(88,101,242,.2);
+    background: rgba(88,101,242,.05);
+  }
+
+  .feat-icon {
+    width: 52px; height: 52px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+    background: color-mix(in srgb, var(--c) 15%, transparent);
+    border: 1px solid color-mix(in srgb, var(--c) 30%, transparent);
+    color: var(--c);
+  }
+
+  .feat-badge {
+    display: inline-block; margin-bottom: 8px;
+    font-size: 9px; font-family: monospace; font-weight: 700;
+    letter-spacing: .2em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 6px;
+    background: rgba(88,101,242,.15); color: #818CF8;
+    border: 1px solid rgba(88,101,242,.25);
+  }
+  .feat-badge[style*="--bc"] {
+    background: color-mix(in srgb, var(--bc, #5865F2) 15%, transparent);
+    color: color-mix(in srgb, var(--bc, #5865F2) 80%, white);
+    border-color: color-mix(in srgb, var(--bc, #5865F2) 30%, transparent);
+  }
+
+  .feat-title { font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 16px; color: white; margin-bottom: 10px; text-transform: uppercase; letter-spacing: .04em; }
+  .feat-desc { font-size: 13.5px; color: rgba(255,255,255,.55); line-height: 1.65; margin-bottom: 16px; }
+  .feat-desc em { color: rgba(255,255,255,.75); font-style: normal; font-weight: 600; }
+
+  .feat-quote { font-size: 12px; color: rgba(88,101,242,.8); border-left: 2px solid rgba(88,101,242,.4); padding-left: 12px; font-style: italic; line-height: 1.5; }
+
+  /* Modes */
+  .modes-row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .mode { font-size: 10px; font-family: monospace; font-weight: 700; padding: 3px 8px; border-radius: 6px; text-transform: uppercase; letter-spacing: .08em; }
+  .m-off    { background: rgba(107,114,128,.15); color: #6b7280; border: 1px solid rgba(107,114,128,.2); }
+  .m-passive{ background: rgba(59,130,246,.12); color: #60a5fa; border: 1px solid rgba(59,130,246,.2); }
+  .m-helpful{ background: rgba(34,197,94,.12); color: #4ade80; border: 1px solid rgba(34,197,94,.2); }
+  .m-chatty { background: rgba(239,68,68,.12); color: #f87171; border: 1px solid rgba(239,68,68,.2); }
+
+  /* Platforms */
+  .platform-row { display: flex; gap: 8px; }
+  .plat { display: inline-flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 700; font-family: monospace; padding: 4px 10px; border-radius: 8px; }
+  .twitch { background: rgba(145,70,255,.12); color: #9146FF; border: 1px solid rgba(145,70,255,.25); }
+  .youtube { background: rgba(255,0,0,.1); color: #FF4444; border: 1px solid rgba(255,0,0,.2); }
+
+  /* Emoji pills */
+  .emoji-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+  .emoji-pills span { font-size: 11px; padding: 4px 10px; border-radius: 8px; background: rgba(245,158,11,.08); color: rgba(245,158,11,.9); border: 1px solid rgba(245,158,11,.2); font-weight: 600; }
+
+  /* Config preview */
+  .config-preview { display: flex; flex-direction: column; gap: 6px; font-family: monospace; font-size: 11px; }
+  .config-preview div { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; border-radius: 8px; background: rgba(255,255,255,.04); }
+  .ch { color: #818CF8; }
+  .cv { color: rgba(34,197,94,.8); }
+
+  /* Audit rows */
+  .audit-rows { display: flex; flex-direction: column; gap: 6px; }
+  .audit-row { display: flex; align-items: center; gap: 8px; font-family: monospace; font-size: 10px; padding: 6px 10px; border-radius: 8px; background: rgba(255,255,255,.04); }
+  .ad { padding: 2px 8px; border-radius: 5px; font-weight: 700; font-size: 9px; letter-spacing: .1em; }
+  .respond { background: rgba(34,197,94,.15); color: #4ade80; border: 1px solid rgba(34,197,94,.25); }
+  .ignore { background: rgba(107,114,128,.12); color: #6b7280; border: 1px solid rgba(107,114,128,.2); }
+  .ac { color: rgba(255,255,255,.6); font-weight: 700; }
+  .ar { color: rgba(255,255,255,.35); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* ── Discord window ─────────────────────────── */
+  .discord-win {
+    border-radius: 16px; overflow: hidden;
+    border: 1px solid rgba(255,255,255,.08);
+    background: #1e1f22;
+    box-shadow: 0 40px 120px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.03);
+  }
+
+  .dw-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 20px;
+    background: #2b2d31;
+    border-bottom: 1px solid rgba(0,0,0,.3);
+  }
+  .dw-channel { display: flex; align-items: center; gap: 6px; color: rgba(255,255,255,.85); font-weight: 600; font-size: 14px; }
+  .dw-online { display: flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(255,255,255,.4); }
+  .dw-dot { width: 8px; height: 8px; border-radius: 50%; background: #23a55a; box-shadow: 0 0 8px #23a55a; }
+
+  .dw-msgs { padding: 16px 0; display: flex; flex-direction: column; gap: 2px; }
+
+  .dm {
+    display: flex; gap: 14px; padding: 6px 20px;
+    transition: background .15s;
+  }
+  .dm:hover { background: rgba(255,255,255,.025); }
+  .dm-bot { background: rgba(88,101,242,.04); }
+  .dm-bot:hover { background: rgba(88,101,242,.07); }
+
+  .dm-av {
+    width: 38px; height: 38px; border-radius: 50%;
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; color: white; margin-top: 2px;
+  }
+  .av-u1 { background: linear-gradient(135deg, #F59E0B, #D97706); overflow: hidden; }
+  .av-u2 { background: linear-gradient(135deg, #22C55E, #16A34A); }
+  .av-u3 { background: linear-gradient(135deg, #EF4444, #B91C1C); overflow: hidden; }
+  .av-bot { background: #5865F2; box-shadow: 0 0 12px rgba(88,101,242,.5); overflow: hidden; }
+  .av-u1 img, .av-u3 img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+
+  .dm-body { flex: 1; }
+  .dm-meta { display: flex; align-items: baseline; gap: 8px; margin-bottom: 3px; }
+  .dm-name { font-weight: 700; font-size: 14px; }
+  .dm-time { font-size: 10px; color: rgba(255,255,255,.25); }
+  .bot-tag { font-size: 9px; background: #5865F2; color: white; padding: 1px 5px; border-radius: 4px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+  .dm-text { font-size: 14px; color: rgba(255,255,255,.85); line-height: 1.5; }
+
+  /* Stream embed */
+  .stream-embed {
+    margin-top: 8px; display: flex;
+    border-radius: 8px; overflow: hidden;
+    background: #2b2d31; border: 1px solid rgba(255,255,255,.06);
+    max-width: 380px;
+  }
+  .se-accent { width: 4px; background: #9146FF; flex-shrink: 0; }
+  .se-body { padding: 12px 14px; flex: 1; }
+  .se-live { display: flex; align-items: center; gap: 6px; font-size: 11px; color: rgba(255,255,255,.5); margin-bottom: 6px; }
+  .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #EF4444; box-shadow: 0 0 8px #EF4444; animation: pulse-live 1s ease-in-out infinite; }
+  @keyframes pulse-live { 0%,100%{opacity:1} 50%{opacity:.4} }
+  .se-title { font-weight: 700; font-size: 14px; color: white; margin-bottom: 4px; }
+  .se-game { font-size: 12px; color: rgba(255,255,255,.45); margin-bottom: 10px; }
+  .se-link { font-size: 11px; color: #5865F2; font-weight: 600; text-decoration: none; }
+  .se-link:hover { text-decoration: underline; }
+
+  /* ── How it works ───────────────────────────── */
+  .steps { display: flex; flex-direction: column; gap: 0; }
+
+  @media(min-width:768px) {
+    .steps { flex-direction: row; align-items: flex-start; }
+  }
+
+  .step {
+    flex: 1; display: flex; gap: 20px; align-items: flex-start;
+    padding: 28px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,.07);
+    background: rgba(255,255,255,.025);
+  }
+
+  .step-num {
+    font-family: 'Orbitron', sans-serif; font-weight: 900;
+    font-size: 36px; line-height: 1;
+    background: linear-gradient(135deg, #5865F2, #9333EA);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    flex-shrink: 0;
+  }
+
+  .step-title { font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 14px; color: white; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
+  .step-desc { font-size: 13px; color: rgba(255,255,255,.5); line-height: 1.65; }
+
+  .step-connector {
+    flex-shrink: 0;
+    display: none;
+  }
+  @media(min-width:768px) {
+    .step-connector {
+      display: block;
+      width: 40px; height: 2px; margin-top: 44px;
+      background: linear-gradient(90deg, rgba(88,101,242,.4), rgba(147,51,234,.4));
+    }
+  }
+
+  /* ── CTA final ──────────────────────────────── */
+  .cta-blob { position: absolute; border-radius: 9999px; filter: blur(120px); pointer-events: none; }
+  .ca { width: 600px; height: 400px; top: -100px; left: 50%; transform: translateX(-70%); background: rgba(88,101,242,.12); }
+  .cb { width: 400px; height: 350px; bottom: -80px; right: 10%; background: rgba(147,51,234,.1); }
+
+  .cta-icon {
+    width: 80px; height: 80px; border-radius: 22px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(88,101,242,.15); border: 1px solid rgba(88,101,242,.3);
+    color: #5865F2; box-shadow: 0 0 60px rgba(88,101,242,.25);
+  }
+
+  .cta-final {
+    display: inline-flex; align-items: center; gap: 14px;
+    padding: 20px 48px; border-radius: 18px;
+    background: #5865F2; color: white;
+    font-family: 'Orbitron', sans-serif; font-weight: 700;
+    font-size: 15px; letter-spacing: .1em; text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: 0 0 60px rgba(88,101,242,.4), 0 20px 60px rgba(88,101,242,.2);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .cta-final:hover { transform: scale(1.04) translateY(-2px); box-shadow: 0 0 80px rgba(88,101,242,.6), 0 30px 80px rgba(88,101,242,.3); }
+</style>
+
+<!-- ═══════════════════════════════════════ SCRIPT ═══════════════════════════════════════ -->
+<script>
+  import { gsap, ScrollTrigger } from '@/shared/lib/gsap';
+
+  document.addEventListener('astro:page-load', () => {
+    if (!document.querySelector('[data-bot-feature]')) return;
+
+    // Feature cards stagger
+    gsap.from('[data-bot-feature]', {
+      opacity: 0, y: 32, stagger: 0.1, duration: 0.6, ease: 'power3.out',
+      scrollTrigger: { trigger: '#features', start: 'top 82%', once: true },
+    });
+
+    // Steps stagger
+    gsap.from('[data-bot-step]', {
+      opacity: 0, y: 24, stagger: 0.15, duration: 0.55, ease: 'power2.out',
+      scrollTrigger: { trigger: '[data-bot-step]', start: 'top 85%', once: true },
+    });
+
+    // Discord window reveal
+    gsap.from('.discord-win', {
+      opacity: 0, y: 40, duration: 0.7, ease: 'power3.out',
+      scrollTrigger: { trigger: '.discord-win', start: 'top 85%', once: true },
+    });
+  });
+</script>

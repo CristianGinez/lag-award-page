@@ -1,0 +1,112 @@
+---
+// src/features/news/components/NewsFeedSection.astro
+import { getNewsFeed, getLiveStreams } from '../lib/newsFeed';
+
+const [feed, liveStreams] = await Promise.all([getNewsFeed(), getLiveStreams()]);
+const liveCount = liveStreams.length;
+
+function timeAgo(timestamp: number): string {
+  const diff = Date.now() - timestamp;
+  const min = Math.floor(diff / 60_000);
+  const hrs = Math.floor(diff / 3_600_000);
+  const days = Math.floor(diff / 86_400_000);
+  if (min < 1) return 'ahora';
+  if (min < 60) return `hace ${min}m`;
+  if (hrs < 24) return `hace ${hrs}h`;
+  return `hace ${days}d`;
+}
+---
+
+{feed.length > 0 && (
+<section id="novedades" class="py-16 md:py-20 scroll-mt-24 reveal-on-scroll">
+  <div class="container mx-auto px-4 md:px-6">
+
+    <!-- Header -->
+    <div class="flex items-center gap-3 mb-8">
+      <span class="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-500 font-mono">Novedades</span>
+      <div class="flex-grow border-t border-white/5"></div>
+      {liveCount > 0 && (
+        <span class="flex items-center gap-2 text-red-400 text-xs font-bold uppercase tracking-wider">
+          <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse shadow-[0_0_6px_rgba(239,68,68,0.8)]"></span>
+          {liveCount} EN VIVO
+        </span>
+      )}
+    </div>
+
+    <!-- Feed grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {feed.map((item) => {
+        const isLive = item.kind === 'live_stream';
+        const accentColor = isLive ? (item.meta?.accentColor as string | undefined) : undefined;
+        return (
+          <a
+            href={item.url ?? '#'}
+            target={isLive ? '_blank' : '_self'}
+            rel={isLive ? 'noopener noreferrer' : undefined}
+            class="group relative rounded-2xl overflow-hidden border border-white/8 bg-white/3 hover:bg-white/5 hover:border-white/20 transition-all"
+            style={accentColor ? `--accent: ${accentColor}` : ''}
+          >
+            {/* Live indicator */}
+            {isLive && (
+              <div class="absolute top-3 right-3 z-10 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-red-500/20 border border-red-500/40">
+                <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
+                <span class="text-red-400 text-[10px] font-bold uppercase tracking-wider">Live</span>
+              </div>
+            )}
+
+            {/* Accent line */}
+            {accentColor && (
+              <div class="absolute top-0 left-0 right-0 h-0.5" style={`background: ${accentColor}`}></div>
+            )}
+            {!accentColor && !isLive && (
+              <div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+            )}
+
+            {/* Thumbnail */}
+            {item.image && (
+              <div class="w-full h-36 overflow-hidden bg-black/30">
+                <img
+                  src={item.image}
+                  alt=""
+                  loading="lazy"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-100"
+                />
+              </div>
+            )}
+
+            <div class="p-4">
+              {/* Kind label + time */}
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[10px] uppercase tracking-widest font-mono font-bold text-gray-500">
+                  {isLive
+                    ? (item.meta?.platform as string ?? 'stream')
+                    : `Changelog${item.meta?.version ? ' v' + item.meta.version : ''}`}
+                </span>
+                <span class="text-[10px] text-gray-600 font-mono">{timeAgo(item.timestamp)}</span>
+              </div>
+
+              {/* Title */}
+              <h3 class="font-bold font-orbitron text-white text-sm leading-tight mb-1.5 group-hover:text-white/90">
+                {item.title}
+              </h3>
+
+              {/* Body */}
+              {item.body && (
+                <p class="text-gray-500 text-xs leading-relaxed line-clamp-2">{item.body}</p>
+              )}
+
+              {/* Category badge */}
+              {isLive && item.meta?.category && (
+                <span class="inline-block mt-2 px-2 py-0.5 rounded bg-white/5 border border-white/10 text-gray-400 text-[10px] font-mono">
+                  {item.meta.category as string}
+                </span>
+              )}
+            </div>
+          </a>
+        );
+      })}
+    </div>
+
+  </div>
+</section>
+)}

@@ -44,21 +44,19 @@ const { title, description = 'La comunidad oficial de LAGartovich', image = ogDe
 		<slot />
 		<Chatbot />
 		<script>
-			
-			// Efectos interactivos
+			// Cache the star particle NodeList per page — invalidate after navigation
+			let cachedStars: NodeListOf<Element> | null = null;
+			document.addEventListener('astro:page-load', () => { cachedStars = null; });
+
 			document.addEventListener('mousemove', (e) => {
-				const stars = document.querySelectorAll('.star-particle');
-				stars.forEach((star) => {
-					// ensure proper typing for TypeScript checks inside Astro
-					const el = /** @type {HTMLElement} */ (star);
+				if (cachedStars === null) cachedStars = document.querySelectorAll('.star-particle');
+				if (!cachedStars.length) return;
+				cachedStars.forEach((star) => {
+					const el = star as HTMLElement;
 					const rect = el.getBoundingClientRect();
-					const x = e.clientX - rect.left;
-					const y = e.clientY - rect.top;
-					const distance = Math.sqrt(x * x + y * y);
-					if (distance < 100) {
-						// set style via attribute to avoid type errors during Astro's type checking
-						el.setAttribute('style', 'opacity: 1;');
-					}
+					const dx = e.clientX - rect.left;
+					const dy = e.clientY - rect.top;
+					if (dx * dx + dy * dy < 10000) el.setAttribute('style', 'opacity: 1;');
 				});
 			});
 		</script>

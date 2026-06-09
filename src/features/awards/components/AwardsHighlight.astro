@@ -17,10 +17,13 @@ const winnersCompact = categories.map(cat => {
   const winnerInfo = (winnersData as any[]).find((w) => w.category_id === cat.id);
   if (!winnerInfo) return null;
   const nomineeDetails = cat.nominees.find(n => n.name === winnerInfo.nominee_name);
+  const rawImage = nomineeDetails?.image
+    || (nomineeDetails?.youtubeId ? `https://img.youtube.com/vi/${nomineeDetails.youtubeId}/hqdefault.jpg` : '')
+    || (nomineeDetails?.video ? nomineeDetails.video.replace(/\.[^/.]+$/, '.jpg') : '');
   return {
     category: cat,
     winnerName: winnerInfo.nominee_name,
-    image: optimizeUrl(nomineeDetails?.image || '', { width: 300 }),
+    image: optimizeUrl(rawImage, { width: 300 }),
   };
 }).filter(Boolean) as { category: typeof categories[0]; winnerName: string; image: string }[];
 ---
@@ -80,7 +83,7 @@ const winnersCompact = categories.map(cat => {
     <!-- CTA -->
     <div class="text-center">
       <a
-        href="/categorias"
+        href="/eventos"
         class="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-yellow-500/30 bg-yellow-500/5 hover:bg-yellow-500/10 text-yellow-400 font-bold text-sm uppercase tracking-widest transition-all hover:scale-105"
       >
         Ver todas las categorías →
@@ -98,6 +101,8 @@ const winnersCompact = categories.map(cat => {
   import { gsap, ScrollTrigger } from '@/shared/lib/gsap';
 
   document.addEventListener('astro:page-load', () => {
+    if (!document.getElementById('winners-grid')) return;
+
     gsap.to('#winners-grid > *', {
       opacity: 1, y: 0,
       stagger: 0.07,

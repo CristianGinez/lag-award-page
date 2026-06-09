@@ -5,7 +5,7 @@ import EventNavbar from '../../../shared/components/EventNavbar.astro';
 import { events } from '../../../shared/lib/events';
 
 // Importamos la data específica y el componente nuevo
-import { parsecLeagueData } from '../../../features/parsec-league/data/parsecLeague';
+import { getLeagueData } from '../../../features/parsec-league/lib/leagueData';
 import { LeagueDashboard } from '../../../features/parsec-league/components/LeagueDashboard';
 
 export function getStaticPaths() {
@@ -42,7 +42,7 @@ const isParsecLeague = event.id === 'parsec-league';
 
       {/* Renderizado condicional */}
       {isParsecLeague ? (
-        <LeagueDashboard data={parsecLeagueData} client:visible />
+        <LeagueDashboard data={await getLeagueData()} client:visible />
       ) : (
         <div className="text-center py-20 bg-gray-900/30 rounded-2xl border border-gray-800">
           <p className="text-2xl text-gray-500 font-bold">Información general del evento</p>

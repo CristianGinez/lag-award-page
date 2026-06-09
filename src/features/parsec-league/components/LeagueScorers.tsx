@@ -1,5 +1,5 @@
 import React from 'react';
-import type { GoalScorer } from '../data/parsecLeague';
+import type { GoalScorer } from '../types';
 
 export const LeagueScorers: React.FC<{ goalscorers: GoalScorer[] }> = ({ goalscorers }) => {
   return (

@@ -5,7 +5,8 @@ import Footer from "../../layouts/Footer.astro";
 import EventNavbar from "../../shared/components/EventNavbar.astro";
 // Datos
 import { getEventBySlug } from "../../shared/lib/events";
-import { getCategoriesByEventId } from "../../features/awards/data/categories";
+import { getCategories, EVENT_ID_2025 } from "../../features/awards/lib/awardsData";
+import { getSeason } from "../../features/parsec-league/lib/leagueData";
 import { ogEvento } from "../../shared/lib/og";
 
 // Componentes
@@ -32,7 +33,11 @@ if (!currentEvent) {
 
 // Lógica condicional
 const isLeague = currentEvent.type === 'league';
-const categories = !isLeague ? getCategoriesByEventId(currentEvent.id) : [];
+const [categories, season] = await Promise.all([
+  !isLeague ? getCategories(EVENT_ID_2025) : Promise.resolve([]),
+  isLeague ? getSeason() : Promise.resolve(null),
+]);
+const isFinished = season?.status === 'finished';
 
 // --- PREPARACIÓN DE DATOS PARA SEO (OG TAGS) ---
 const pageTitle = `${currentEvent.title} - ${isLeague ? 'Oficial' : 'Votación'}`;
@@ -68,6 +73,13 @@ const ogImage = ogEvento(currentEvent.slug);
     {isLeague ?
     (
         <div class="container mx-auto px-4 md:px-6 py-10">
+            {isFinished && (
+              <div class="flex items-center justify-center mb-6">
+                <span class="px-4 py-1.5 rounded-full bg-yellow-500/10 border border-yellow-500/40 text-yellow-400 text-[11px] font-bold uppercase tracking-widest">
+                  🏆 Temporada Finalizada
+                </span>
+              </div>
+            )}
             {/* Mostramos directamente la información completa del PDF */}
             <LeagueInfo client:load event={currentEvent} />
         </div>

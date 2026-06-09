@@ -5,7 +5,8 @@ import Navbar from "../../../layouts/Navbar.astro";
 import Footer from "../../../layouts/Footer.astro";
 import EventNavbar from "../../../shared/components/EventNavbar.astro";
 import { getEventBySlug } from "../../../shared/lib/events";
-import { parsecLeagueData } from "../../../features/parsec-league/data/parsecLeague";
+import { getStandings, getSeason } from "../../../features/parsec-league/lib/leagueData";
+import SeasonChampion from "../../../features/parsec-league/components/SeasonChampion.astro";
 
 export function getStaticPaths() {
   return [
@@ -18,8 +19,9 @@ const event = getEventBySlug(eventId);
 
 if (!event) return Astro.redirect('/404');
 
-// Usamos los datos de standings actualizados
-const standings = parsecLeagueData.standings;
+const [standings, season] = await Promise.all([getStandings(), getSeason()]);
+const isFinished = season?.status === 'finished';
+const championName = season?.champion?.name ?? null;
 ---
 
 <Layout title={`Marcador - ${event.title}`}>
@@ -27,11 +29,33 @@ const standings = parsecLeagueData.standings;
     <EventNavbar eventSlug={event.slug} eventName={event.title} />
 
     <section class="max-w-6xl mx-auto px-4 py-24">
+      {isFinished && season?.champion && (
+      <SeasonChampion champion={{
+        name: season.champion.name,
+        logo: season.champion.logo ?? undefined,
+        played: season.champion.played,
+        won: season.champion.won,
+        drawn: season.champion.drawn,
+        lost: season.champion.lost,
+        gf: season.champion.gf,
+        ga: season.champion.ga,
+        gd: season.champion.gd,
+        points: season.champion.points,
+      }} />
+    )}
+
       <div class="mb-8">
-        <h2 class="text-2xl font-orbitron font-bold text-green-500 uppercase tracking-wider">
-          Clasificación Parsec League
-        </h2>
-        <p class="text-gray-500 text-sm">Temporada Actual - Basado en la última jornada</p>
+        <div class="flex items-center gap-3 flex-wrap">
+          <h2 class="text-2xl font-orbitron font-bold text-green-500 uppercase tracking-wider">
+            Clasificación Parsec League
+          </h2>
+          {isFinished && (
+            <span class="px-3 py-1 rounded-full bg-yellow-500/10 border border-yellow-500/40 text-yellow-400 text-[10px] font-bold uppercase tracking-widest">
+              Temporada Finalizada
+            </span>
+          )}
+        </div>
+        <p class="text-gray-500 text-sm mt-1">Clasificación final</p>
       </div>
 
       <div class="overflow-x-auto rounded-xl border border-white/5 bg-zinc-900/20 backdrop-blur-sm">
@@ -52,17 +76,19 @@ const standings = parsecLeagueData.standings;
             </tr>
           </thead>
           <tbody class="divide-y divide-white/5">
-            {standings.map((team) => (
-              <tr class="hover:bg-white/2 transition-colors group">
+            {standings.map((team) => {
+              const isChamp = isFinished && team.name === championName;
+              return (
+              <tr class={`transition-colors group ${isChamp ? 'bg-yellow-500/5 border-l-2 border-yellow-500' : 'hover:bg-white/2'}`}>
                 <td class="px-6 py-4">
-                  <span class={`text-sm font-bold ${team.position <= 3 ? 'text-green-500' : 'text-zinc-500'}`}>
-                    {team.position}
+                  <span class={`text-sm font-bold ${isChamp ? 'text-yellow-400' : team.position <= 3 ? 'text-green-500' : 'text-zinc-500'}`}>
+                    {isChamp ? '👑' : team.position}
                   </span>
                 </td>
                 <td class="px-6 py-2">
                   <div class="flex items-center gap-3">
-                    <img src={team.logo} alt={team.name} class="rounded-full w-8 h-8 object-contain" />
-                    <span class="text-sm font-semibold text-zinc-200 group-hover:text-white transition-colors">
+                    <img src={team.logo} alt={team.name} class={`rounded-full w-8 h-8 object-contain ${isChamp ? 'ring-1 ring-yellow-500/60' : ''}`} />
+                    <span class={`text-sm font-semibold transition-colors ${isChamp ? 'text-yellow-300 font-bold' : 'text-zinc-200 group-hover:text-white'}`}>
                       {team.name}
                     </span>
                   </div>
@@ -92,7 +118,7 @@ const standings = parsecLeagueData.standings;
                   </div>
                 </td>
               </tr>
-            ))}
+            ); })}
           </tbody>
         </table>
       </div>

@@ -1,11 +1,12 @@
 import type { APIRoute } from 'astro';
 import { ImageResponse } from '@vercel/og';
-import categories from '../../../features/awards/data/categories';
+import { getCategories } from '../../../features/awards/lib/awardsData';
 import { loadOrbitronFont } from '../../../shared/lib/ogFonts';
 
 export const prerender = false;
 
 export const GET: APIRoute = async ({ params, site }) => {
+  const categories = await getCategories();
   const category = categories.find(c => String(c.id) === params.id);
   if (!category) return new Response('Not found', { status: 404 });
 

@@ -44,3 +44,14 @@ export function getSupabase(context: APIContext) {
  * (Utilizado por el authStore y el bloque <script> de perfil.astro)
  */
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, authConfig);
+
+/**
+ * [Cliente SERVER service_role] Solo para API routes server-side.
+ * Requiere SUPABASE_SERVICE_ROLE_KEY en las env vars.
+ * NUNCA exponer en el cliente.
+ */
+export function createServiceClient() {
+  const serviceKey = import.meta.env.SUPABASE_SERVICE_ROLE_KEY as string;
+  if (!serviceKey) throw new Error('Falta SUPABASE_SERVICE_ROLE_KEY en las env vars');
+  return createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
+}

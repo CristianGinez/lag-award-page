@@ -7,7 +7,7 @@ import EventNavbar from "../../../shared/components/EventNavbar.astro";
 // Funciones de datos
 import { getWinners } from '../../../features/awards/lib/voting';
 import { getEventBySlug } from "../../../shared/lib/events";
-import { getCategoriesByEventId } from "../../../features/awards/data/categories";
+import { getCategories, EVENT_ID_2025 } from "../../../features/awards/lib/awardsData";
 
 // --- VALIDACIÓN DE RUTA DINÁMICA ---
 const { eventId } = Astro.params;
@@ -25,7 +25,7 @@ const EVENT_ID_UUID = '856a7c16-5436-4776-a844-04dcaafb4656';
 
 // Obtener datos reales
 const winnersData = await getWinners(EVENT_ID_UUID);
-const categories = getCategoriesByEventId(currentEvent.id);
+const categories = await getCategories(EVENT_ID_2025);
 
 // Helper para imágenes
 const getOptimizedUrl = (url: string) => {

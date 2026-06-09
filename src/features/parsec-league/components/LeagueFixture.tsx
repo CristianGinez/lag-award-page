@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Round } from '../data/parsecLeague';
+import type { Round } from '../types';
 
-export const LeagueFixture: React.FC<{ fixture: Round[] }> = ({ fixture }) => {
+export const LeagueFixture: React.FC<{ fixture: Round[]; isFinished?: boolean }> = ({ fixture, isFinished = false }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
       {fixture.map((round, idx) => (
@@ -19,6 +19,8 @@ export const LeagueFixture: React.FC<{ fixture: Round[] }> = ({ fixture }) => {
                      <span className="bg-gray-800 px-3 py-1 rounded text-white font-mono font-bold border border-white/10 shadow-lg text-2xl">
                        {match.homeScore} - {match.awayScore}
                      </span>
+                  ) : isFinished ? (
+                    <span className="text-[10px] text-gray-600 uppercase tracking-wider font-mono">No disputada</span>
                   ) : (
                     <div className="flex flex-col items-center text-xs text-gray-500">
                       <span className="font-bold text-gray-400">{match.time}</span>

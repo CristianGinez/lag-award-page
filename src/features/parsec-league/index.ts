@@ -1,2 +1,2 @@
-export { parsecLeagueData } from './data/parsecLeague';
+export { getLeagueData, getStandings, getFixture, getEditions, getScorers } from './lib/leagueData';
 export * from './types';

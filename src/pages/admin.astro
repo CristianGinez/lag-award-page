@@ -3,6 +3,11 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../layouts/Navbar.astro';
 import Footer from '../layouts/Footer.astro';
 import { sendChangelogToDiscord } from '../features/admin/lib/discord';
+import { getCategories, EVENT_ID_2025 } from '../features/awards/lib/awardsData';
+import { getSupabase } from '../features/auth/lib/supabase';
+import { getBadgeCatalog } from '../features/achievements/lib/achievementsData';
+const adminCategories = await getCategories(EVENT_ID_2025);
+const badgeCatalog = await getBadgeCatalog();
 
 // Si es un POST (click al botón), enviamos el mensaje
 if (Astro.request.method === 'POST') {
@@ -16,10 +21,18 @@ if (Astro.request.method === 'POST') {
         const changesArray = notes.split('\n').filter(line => line.trim() !== '');
         
         await sendChangelogToDiscord(
-            version, 
-            changesArray, 
+            version,
+            changesArray,
             imageUrl ? imageUrl : undefined // Si está vacío, enviamos undefined
         );
+        const ssrSupabase = getSupabase(Astro);
+        await ssrSupabase.from('site_changelog').insert({
+          version,
+          title: `Actualización v${version}`,
+          body: changesArray.join('\n'),
+          type: 'update',
+          image: imageUrl || null,
+        });
     } catch (e) {
         console.error("Error al enviar:", e);
     }
@@ -35,6 +48,7 @@ if (Astro.request.method === 'POST') {
 
     <div class="container mx-auto px-4 md:px-6 py-8 pb-40">
       
+      <div id="admin-categories-data" data-json={JSON.stringify(adminCategories)} class="hidden" aria-hidden="true"></div>
       <div id="loading-state" class="flex flex-col items-center justify-center h-[70vh]">
         <div class="relative">
             <div class="w-20 h-20 border-4 border-white/5 border-t-purple-500 rounded-full animate-spin"></div>
@@ -77,7 +91,7 @@ if (Astro.request.method === 'POST') {
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
             <!-- LAG Awards (actual / activo) -->
-            <a href="#awards-section" class="group relative p-5 rounded-2xl bg-gradient-to-br from-yellow-500/10 via-[#0a0a0a] to-[#0a0a0a] border border-yellow-500/20 overflow-hidden hover:border-yellow-500/50 transition-all">
+            <a href="/admin/awards" class="group relative p-5 rounded-2xl bg-gradient-to-br from-yellow-500/10 via-[#0a0a0a] to-[#0a0a0a] border border-yellow-500/20 overflow-hidden hover:border-yellow-500/50 transition-all">
               <div class="absolute -right-6 -top-6 w-24 h-24 bg-yellow-500/10 blur-3xl rounded-full group-hover:bg-yellow-500/20 transition-all"></div>
               <div class="relative z-10">
                 <div class="flex items-center justify-between mb-3">
@@ -104,32 +118,64 @@ if (Astro.request.method === 'POST') {
               </div>
             </a>
 
-            <!-- Parsec League (placeholder) -->
-            <div class="group relative p-5 rounded-2xl bg-[#0a0a0a] border border-white/5 overflow-hidden opacity-60 cursor-not-allowed">
+            <!-- Parsec League (activo) -->
+            <a href="/admin/league" class="group relative p-5 rounded-2xl bg-gradient-to-br from-green-500/10 via-[#0a0a0a] to-[#0a0a0a] border border-green-500/20 overflow-hidden hover:border-green-500/50 transition-all">
+              <div class="absolute -right-6 -top-6 w-24 h-24 bg-green-500/10 blur-3xl rounded-full group-hover:bg-green-500/20 transition-all"></div>
               <div class="relative z-10">
                 <div class="flex items-center justify-between mb-3">
-                  <div class="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-xl">⚽</div>
-                  <span class="text-[10px] font-bold uppercase tracking-widest text-gray-500 bg-white/5 px-2 py-0.5 rounded">Soon</span>
+                  <div class="w-10 h-10 rounded-lg bg-green-500/15 border border-green-500/30 flex items-center justify-center text-xl">⚽</div>
+                  <span class="text-[10px] font-bold uppercase tracking-widest text-green-400 bg-green-500/10 px-2 py-0.5 rounded">Activo</span>
                 </div>
-                <h3 class="font-bold font-orbitron text-gray-400 text-sm uppercase tracking-wider mb-1">Parsec League</h3>
-                <p class="text-gray-600 text-xs leading-relaxed">Equipos, fixture, posiciones, goleadores</p>
-                <span class="block mt-3 text-gray-600 text-[10px] font-bold uppercase tracking-widest">Próximamente</span>
+                <h3 class="font-bold font-orbitron text-white text-sm uppercase tracking-wider mb-1">Parsec League</h3>
+                <p class="text-gray-500 text-xs leading-relaxed">Equipos, fixture, posiciones, goleadores</p>
+                <span class="block mt-3 text-green-400 text-[10px] font-bold uppercase tracking-widest group-hover:translate-x-1 transition-transform">Entrar →</span>
               </div>
-            </div>
+            </a>
 
-            <!-- Admins / Usuarios (placeholder) -->
-            <div class="group relative p-5 rounded-2xl bg-[#0a0a0a] border border-white/5 overflow-hidden opacity-60 cursor-not-allowed">
+            <!-- VIPs -->
+            <a href="/admin/vips" class="group relative p-5 rounded-2xl bg-gradient-to-br from-purple-500/10 via-[#0a0a0a] to-[#0a0a0a] border border-purple-500/20 overflow-hidden hover:border-purple-500/50 transition-all">
+              <div class="absolute -right-6 -top-6 w-24 h-24 bg-purple-500/10 blur-3xl rounded-full group-hover:bg-purple-500/20 transition-all"></div>
               <div class="relative z-10">
                 <div class="flex items-center justify-between mb-3">
-                  <div class="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-xl">👥</div>
-                  <span class="text-[10px] font-bold uppercase tracking-widest text-gray-500 bg-white/5 px-2 py-0.5 rounded">Soon</span>
+                  <div class="w-10 h-10 rounded-lg bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-xl">👥</div>
+                  <span class="text-[10px] font-bold uppercase tracking-widest text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded">Activo</span>
                 </div>
-                <h3 class="font-bold font-orbitron text-gray-400 text-sm uppercase tracking-wider mb-1">Admins / Usuarios</h3>
-                <p class="text-gray-600 text-xs leading-relaxed">Gestionar lista de admins y perfiles</p>
-                <span class="block mt-3 text-gray-600 text-[10px] font-bold uppercase tracking-widest">Próximamente</span>
+                <h3 class="font-bold font-orbitron text-white text-sm uppercase tracking-wider mb-1">VIPs</h3>
+                <p class="text-gray-500 text-xs leading-relaxed">Perfiles, bios y links del team</p>
+                <span class="block mt-3 text-purple-400 text-[10px] font-bold uppercase tracking-widest group-hover:translate-x-1 transition-transform">Entrar →</span>
               </div>
-            </div>
+            </a>
 
+            <!-- Logros -->
+            <a href="#badge-admin" class="group relative p-5 rounded-2xl bg-gradient-to-br from-amber-500/10 via-[#0a0a0a] to-[#0a0a0a] border border-amber-500/20 overflow-hidden hover:border-amber-500/50 transition-all">
+              <div class="absolute -right-6 -top-6 w-24 h-24 bg-amber-500/10 blur-3xl rounded-full group-hover:bg-amber-500/20 transition-all"></div>
+              <div class="relative z-10">
+                <div class="flex items-center justify-between mb-3">
+                  <div class="w-10 h-10 rounded-lg bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-xl">🏅</div>
+                  <span class="text-[10px] font-bold uppercase tracking-widest text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded">Activo</span>
+                </div>
+                <h3 class="font-bold font-orbitron text-white text-sm uppercase tracking-wider mb-1">Logros</h3>
+                <p class="text-gray-500 text-xs leading-relaxed">Otorgar badges manualmente a usuarios</p>
+                <span class="block mt-3 text-amber-400 text-[10px] font-bold uppercase tracking-widest group-hover:translate-x-1 transition-transform">Ver abajo →</span>
+              </div>
+            </a>
+
+          </div>
+        </section>
+
+        <!-- ╔══════════════════════════════════════════════════════════╗ -->
+        <!-- ║  VINCULACIÓN VIPs ↔ CUENTAS GOOGLE                       ║ -->
+        <!-- ╚══════════════════════════════════════════════════════════╝ -->
+        <section id="vip-link-section" class="mb-10 scroll-mt-24">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">Cuentas VIP</span>
+            <div class="flex-grow border-t border-white/5"></div>
+          </div>
+          <div class="rounded-2xl border border-purple-500/15 bg-purple-500/5 p-6">
+            <p class="text-xs text-gray-500 font-mono mb-5">Vinculá un email de Google a un VIP para que pueda editar su propio perfil.</p>
+            <div id="vip-link-table" class="space-y-2 mb-4">
+              <p class="text-xs text-gray-600 font-mono">Cargando VIPs…</p>
+            </div>
           </div>
         </section>
 
@@ -271,6 +317,58 @@ if (Astro.request.method === 'POST') {
     </div>
   </main>
 
+  <!-- ═══════════════════════ BADGE ADMIN PANEL ═══════════════════════ -->
+  <div id="badge-admin" class="container mx-auto px-4 md:px-10 py-10 text-white scroll-mt-24">
+    <h2 class="text-3xl font-bold mb-2 text-amber-400 font-orbitron">🏅 Otorgar Logros</h2>
+    <p class="text-gray-500 text-sm mb-8">Otorgá badges manualmente a un usuario por su email.</p>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+      <!-- Catálogo -->
+      <div>
+        <h3 class="text-xs font-bold uppercase tracking-widest text-gray-500 font-mono mb-4">Catálogo de badges</h3>
+        <div class="space-y-2">
+          {badgeCatalog.map((b) => (
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-white/3 border border-white/5">
+              <span class="text-2xl">{b.icon ?? '🏅'}</span>
+              <div class="min-w-0">
+                <p class="text-white font-bold text-sm font-mono">{b.slug}</p>
+                <p class="text-gray-500 text-xs truncate">{b.name} · {b.rarity}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div>
+        <h3 class="text-xs font-bold uppercase tracking-widest text-gray-500 font-mono mb-4">Otorgar badge</h3>
+        <div class="bg-[#0f0f0f] border border-amber-500/20 rounded-2xl p-6">
+          <div class="mb-4">
+            <label class="block text-xs text-gray-400 font-mono mb-2 uppercase tracking-wider">Email del usuario</label>
+            <input id="badge-target-email" type="email" placeholder="usuario@email.com"
+              class="w-full bg-black border border-gray-700 rounded-lg p-2.5 text-white text-sm focus:border-amber-500 outline-none font-mono" />
+          </div>
+          <div class="mb-6">
+            <label class="block text-xs text-gray-400 font-mono mb-2 uppercase tracking-wider">Badge slug</label>
+            <select id="badge-slug-select"
+              class="w-full bg-black border border-gray-700 rounded-lg p-2.5 text-white text-sm focus:border-amber-500 outline-none font-mono">
+              {badgeCatalog.map((b) => (
+                <option value={b.slug}>{b.slug} — {b.name}</option>
+              ))}
+            </select>
+          </div>
+          <button id="btn-grant-badge"
+            class="cursor-pointer w-full py-3 bg-amber-500/90 hover:bg-amber-400 text-black font-bold rounded-lg transition-colors flex items-center justify-center gap-2 text-sm">
+            🏅 Otorgar Badge
+          </button>
+          <div id="badge-grant-result" class="hidden mt-4 text-xs rounded-lg px-3 py-2 font-mono"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <div class="container mx-auto p-10 text-white">
         <h1 class="text-3xl font-bold mb-8 text-yellow-500">Publicar Changelog en Discord</h1>
         
@@ -311,9 +409,10 @@ if (Astro.request.method === 'POST') {
 <script>
   import { supabase } from '../features/auth/lib/supabase';
   import { getDashboardStats, resetAllVotes } from '../features/admin/lib/admin';
-  import categories from '../features/awards/data/categories';
+  const categories = JSON.parse((document.getElementById('admin-categories-data') as HTMLElement)?.dataset.json || '[]');
   
   let intervalId: ReturnType<typeof setInterval>;
+  document.addEventListener('astro:before-swap', () => clearInterval(intervalId), { once: true });
 
   // Refs DOM
   const loadingState = document.getElementById('loading-state');
@@ -369,6 +468,7 @@ if (Astro.request.method === 'POST') {
         if(emailDisplay) emailDisplay.textContent = user.email;
 
         loadStats();
+        loadVipLinkTable();
         intervalId = setInterval(loadStats, 15000);
 
     } else {
@@ -552,5 +652,102 @@ if (Astro.request.method === 'POST') {
      }, { once: true });
 
   document.addEventListener('astro:page-load', checkAdminAccess);
+
+  // ── VIP account linking ──────────────────────────────────────────────
+  async function loadVipLinkTable() {
+    const container = document.getElementById('vip-link-table');
+    if (!container) return;
+    try {
+      const res = await fetch('/api/admin/vips');
+      if (!res.ok) return;
+      const vips: any[] = await res.json();
+
+      container.innerHTML = vips.map((v) => `
+        <div class="flex flex-col sm:flex-row sm:items-center gap-3 p-3 rounded-xl border border-white/5 bg-white/[0.02]" data-vip-id="${v.id}">
+          <div class="flex items-center gap-3 flex-1 min-w-0">
+            ${v.avatar ? `<img src="${v.avatar}" class="w-8 h-8 rounded-full object-cover shrink-0 border border-white/10" />` : `<div class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-xs font-black shrink-0" style="color:${v.color}">${v.name[0]}</div>`}
+            <span class="font-orbitron font-bold text-xs text-white uppercase tracking-wide truncate">${v.name}</span>
+          </div>
+          ${v.user_id
+            ? `<span class="text-[10px] font-mono text-green-400 bg-green-500/10 border border-green-500/20 px-2 py-1 rounded-full shrink-0">✓ Vinculado</span>
+               <button onclick="unlinkVip('${v.id}')" class="text-[10px] font-mono text-red-400/60 hover:text-red-400 border border-transparent hover:border-red-500/20 px-3 py-1.5 rounded-lg transition-all shrink-0">Desvincular</button>`
+            : `<form onsubmit="linkVip(event,'${v.id}')" class="flex gap-2 shrink-0">
+                 <input name="email" type="email" placeholder="email@google.com" required
+                   class="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-purple-500 w-48" />
+                 <button type="submit" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-[10px] font-bold rounded-lg transition-colors">Vincular</button>
+               </form>`
+          }
+        </div>
+      `).join('');
+    } catch (e) {
+      container.innerHTML = '<p class="text-xs text-red-400 font-mono">Error al cargar VIPs</p>';
+    }
+  }
+
+  (window as any).linkVip = async (e: SubmitEvent, vipId: string) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const email = (form.elements.namedItem('email') as HTMLInputElement).value;
+    const btn = form.querySelector('button')!;
+    btn.textContent = '...'; btn.disabled = true;
+    const res = await fetch('/api/admin/vip-link', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ vip_id: vipId, email }),
+    });
+    const data = await res.json();
+    if (!res.ok) { alert(data.error); btn.textContent = 'Vincular'; btn.disabled = false; return; }
+    await loadVipLinkTable();
+  };
+
+  (window as any).unlinkVip = async (vipId: string) => {
+    if (!confirm('¿Desvincular esta cuenta?')) return;
+    const res = await fetch('/api/admin/vip-link', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ vip_id: vipId }),
+    });
+    if (res.ok) await loadVipLinkTable();
+  };
+
+
+  // ── Badge admin panel ────────────────────────────────────────────────
+  const grantBtn = document.getElementById('btn-grant-badge') as HTMLButtonElement | null;
+  const grantResult = document.getElementById('badge-grant-result');
+
+  function showGrantResult(msg: string, isError = false) {
+    if (!grantResult) return;
+    grantResult.textContent = msg;
+    grantResult.className = `mt-4 text-xs rounded-lg px-3 py-2 font-mono ${isError ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'bg-green-500/10 text-green-400 border border-green-500/20'}`;
+    grantResult.classList.remove('hidden');
+  }
+
+  grantBtn?.addEventListener('click', async () => {
+    const email = (document.getElementById('badge-target-email') as HTMLInputElement)?.value?.trim();
+    const slug = (document.getElementById('badge-slug-select') as HTMLSelectElement)?.value;
+    if (!email || !slug) { showGrantResult('Completá ambos campos.', true); return; }
+
+    grantBtn.disabled = true;
+    grantBtn.textContent = 'Otorgando…';
+
+    try {
+      const res = await fetch('/api/admin/grant-badge', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ target_email: email, badge_slug: slug }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showGrantResult(`✓ Badge "${slug}" otorgado a ${data.granted_to}`);
+      } else {
+        showGrantResult(data.error || 'Error al otorgar.', true);
+      }
+    } catch (e) {
+      showGrantResult('Error de red.', true);
+    } finally {
+      grantBtn.disabled = false;
+      grantBtn.textContent = '🏅 Otorgar Badge';
+    }
+  });
 
 </script>

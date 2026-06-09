@@ -1,0 +1,57 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Navbar from '@/layouts/Navbar.astro';
+import Footer from '@/layouts/Footer.astro';
+import { VipEditForm } from '@/features/profile/components/VipEditForm';
+import { getSupabase } from '@/features/auth/lib/supabase';
+import { getVipForUser } from '@/features/community/lib/vipsData';
+
+const ssrSupabase = getSupabase(Astro);
+const { data: { user } } = await ssrSupabase.auth.getUser();
+
+// Sin sesión → login
+if (!user) return Astro.redirect('/login');
+
+// Sin VIP vinculado → perfil
+const vipProfile = await getVipForUser(user.id);
+if (!vipProfile) return Astro.redirect('/perfil');
+---
+
+<Layout title={`Editar perfil — ${vipProfile.name}`}>
+  <Navbar />
+  <main class="min-h-screen bg-[#050505] text-white pt-28 pb-24 px-4">
+
+    <div class="max-w-2xl mx-auto">
+
+      <!-- Header -->
+      <div class="mb-10">
+        <a href="/perfil" class="inline-flex items-center gap-2 text-xs font-mono text-gray-500 hover:text-gray-300 transition-colors mb-6">
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
+          </svg>
+          Volver al perfil
+        </a>
+        <div class="flex items-center gap-4">
+          {vipProfile.avatar
+            ? <img src={vipProfile.avatar} alt={vipProfile.name} width="56" height="56" decoding="async"
+                class="w-14 h-14 rounded-full object-cover border-2 border-white/10" />
+            : <div class="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-xl font-black"
+                style={`color:${vipProfile.color}`}>{vipProfile.name[0]}</div>
+          }
+          <div>
+            <p class="text-[10px] font-mono uppercase tracking-[0.25em] text-gray-500 mb-0.5">Editar perfil VIP</p>
+            <h1 class="text-2xl font-black font-orbitron text-white uppercase tracking-tight">{vipProfile.name}</h1>
+          </div>
+        </div>
+      </div>
+
+      <!-- Separador -->
+      <div class="h-px bg-white/5 mb-10"></div>
+
+      <!-- Form -->
+      <VipEditForm vip={vipProfile} client:load />
+
+    </div>
+  </main>
+  <Footer />
+</Layout>

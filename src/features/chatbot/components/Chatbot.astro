@@ -33,10 +33,11 @@
     <!-- Input Area -->
     <div class="p-3 bg-[#111] border-t border-white/10">
       <form id="chat-form" class="flex gap-2">
-        <input 
-          type="text" 
-          id="chat-input" 
-          placeholder="Escribe tu pregunta..." 
+        <input
+          type="text"
+          id="chat-input"
+          placeholder="Escribe tu pregunta..."
+          maxlength="500"
           class="flex-1 bg-white/5 border border-white/10 rounded-full px-4 py-2 text-xs text-white focus:outline-none focus:border-purple-500 transition-colors"
           autocomplete="off"
         />
@@ -87,116 +88,122 @@
 </style>
 
 <script>
-
+  // transition:persist keeps DOM alive across navigations — guard against
+  // duplicate listener registration each time astro:page-load fires.
   document.addEventListener('astro:page-load', () => {
+    const toggleBtn = document.getElementById('toggle-chat');
+    if (!toggleBtn || toggleBtn.dataset.chatInit) return;
+    toggleBtn.dataset.chatInit = '1';
 
-  const toggleBtn = document.getElementById('toggle-chat');
-  const closeBtn = document.getElementById('close-chat');
-  const chatWindow = document.getElementById('chat-window');
-  const chatForm = document.getElementById('chat-form');
-  const chatInput = document.getElementById('chat-input') as HTMLInputElement;
-  const messagesContainer = document.getElementById('messages');
+    const closeBtn = document.getElementById('close-chat');
+    const chatWindow = document.getElementById('chat-window');
+    const chatForm = document.getElementById('chat-form') as HTMLFormElement;
+    const chatInput = document.getElementById('chat-input') as HTMLInputElement;
+    const messagesContainer = document.getElementById('messages');
 
-  let isOpen = false;
+    let isOpen = false;
 
-  function toggleChat() {
-    isOpen = !isOpen;
-    if (isOpen) {
-      chatWindow?.classList.remove('hidden');
-      chatWindow?.classList.add('flex');
-      toggleBtn?.classList.add('hidden');
-      setTimeout(() => chatInput?.focus(), 100);
-    } else {
-      chatWindow?.classList.add('hidden');
-      chatWindow?.classList.remove('flex');
-      toggleBtn?.classList.remove('hidden');
-    }
-  }
-
-  toggleBtn?.addEventListener('click', toggleChat);
-  closeBtn?.addEventListener('click', toggleChat);
-
-  function addMessage(text: string, sender: 'user' | 'bot') {
-    if (!messagesContainer) return;
-
-    const div = document.createElement('div');
-    div.className = `flex items-start gap-2 ${sender === 'user' ? 'flex-row-reverse' : ''}`;
-    
-    const avatar = sender === 'bot' 
-      ? '<div class="w-8 h-8 rounded-full bg-purple-900/50 flex items-center justify-center text-lg border border-purple-500/30 shrink-0">🦎</div>'
-      : '<div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-xs border border-white/10 shrink-0">👤</div>';
-    
-    const bubbleClass = sender === 'bot'
-      ? 'bg-white/5 rounded-tl-none text-gray-300 border-white/5'
-      : 'bg-purple-600/20 rounded-tr-none text-white border-purple-500/20';
-
-    div.innerHTML = `
-      ${avatar}
-      <div class="${bubbleClass} p-3 rounded-2xl text-xs max-w-[80%] border break-words">
-        ${text}
-      </div>
-    `;
-
-    messagesContainer.appendChild(div);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-  }
-
-  function addTypingIndicator() {
-    if (!messagesContainer) return null;
-    const div = document.createElement('div');
-    div.id = 'typing-indicator';
-    div.className = 'flex items-start gap-2';
-    div.innerHTML = `
-      <div class="w-8 h-8 rounded-full bg-purple-900/50 flex items-center justify-center text-lg border border-purple-500/30 shrink-0">🦎</div>
-      <div class="bg-white/5 p-3 rounded-2xl rounded-tl-none border border-white/5 flex gap-1 items-center h-10">
-        <span class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></span>
-        <span class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></span>
-        <span class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
-      </div>
-    `;
-    messagesContainer.appendChild(div);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    return div;
-  }
-
-  chatForm?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const message = chatInput.value.trim();
-    if (!message) return;
-
-    // User message
-    addMessage(message, 'user');
-    chatInput.value = '';
-    chatInput.disabled = true;
-
-    // Bot typing
-    const typingIndicator = addTypingIndicator();
-
-    try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message })
-      });
-
-      const data = await res.json();
-      
-      if (typingIndicator) typingIndicator.remove();
-      
-      if (data.reply) {
-        addMessage(data.reply, 'bot');
+    function toggleChat() {
+      isOpen = !isOpen;
+      if (isOpen) {
+        chatWindow?.classList.remove('hidden');
+        chatWindow?.classList.add('flex');
+        toggleBtn.classList.add('hidden');
+        setTimeout(() => chatInput?.focus(), 100);
       } else {
-        console.error('Error del servidor:', data.error);
-        addMessage('Ups, tuve un error de conexión. Revisa la consola.', 'bot');
+        chatWindow?.classList.add('hidden');
+        chatWindow?.classList.remove('flex');
+        toggleBtn.classList.remove('hidden');
       }
-    } catch (error) {
-      if (typingIndicator) typingIndicator.remove();
-      console.error('Error de red:', error);
-      addMessage('Error fatal. Me morí. x_x', 'bot');
-    } finally {
-      chatInput.disabled = false;
-      chatInput.focus();
     }
-  });
+
+    toggleBtn.addEventListener('click', toggleChat);
+    closeBtn?.addEventListener('click', toggleChat);
+
+    function addMessage(text: string, sender: 'user' | 'bot') {
+      if (!messagesContainer) return;
+
+      const div = document.createElement('div');
+      div.className = `flex items-start gap-2 ${sender === 'user' ? 'flex-row-reverse' : ''}`;
+
+      const avatarHTML = sender === 'bot'
+        ? '<div class="w-8 h-8 rounded-full bg-purple-900/50 flex items-center justify-center text-lg border border-purple-500/30 shrink-0">🦎</div>'
+        : '<div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-xs border border-white/10 shrink-0">👤</div>';
+
+      const bubbleClass = sender === 'bot'
+        ? 'bg-white/5 rounded-tl-none text-gray-300 border-white/5'
+        : 'bg-purple-600/20 rounded-tr-none text-white border-purple-500/20';
+
+      const bubble = document.createElement('div');
+      bubble.className = `${bubbleClass} p-3 rounded-2xl text-xs max-w-[80%] border break-words`;
+
+      if (sender === 'bot') {
+        bubble.innerHTML = text; // Bot responses include safe HTML formatting
+      } else {
+        bubble.textContent = text; // User input must never touch innerHTML
+      }
+
+      const avatarWrapper = document.createElement('div');
+      avatarWrapper.innerHTML = avatarHTML;
+
+      div.appendChild(avatarWrapper.firstElementChild!);
+      div.appendChild(bubble);
+
+      messagesContainer.appendChild(div);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    function addTypingIndicator() {
+      if (!messagesContainer) return null;
+      const div = document.createElement('div');
+      div.id = 'typing-indicator';
+      div.className = 'flex items-start gap-2';
+      div.innerHTML = `
+        <div class="w-8 h-8 rounded-full bg-purple-900/50 flex items-center justify-center text-lg border border-purple-500/30 shrink-0">🦎</div>
+        <div class="bg-white/5 p-3 rounded-2xl rounded-tl-none border border-white/5 flex gap-1 items-center h-10">
+          <span class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></span>
+          <span class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></span>
+          <span class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
+        </div>
+      `;
+      messagesContainer.appendChild(div);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      return div;
+    }
+
+    chatForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const message = chatInput.value.trim();
+      if (!message) return;
+
+      addMessage(message, 'user');
+      chatInput.value = '';
+      chatInput.disabled = true;
+
+      const typingIndicator = addTypingIndicator();
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message }),
+        });
+
+        const data = await res.json();
+        typingIndicator?.remove();
+
+        if (data.reply) {
+          addMessage(data.reply, 'bot');
+        } else {
+          addMessage('Ups, tuve un error de conexión.', 'bot');
+        }
+      } catch {
+        typingIndicator?.remove();
+        addMessage('Error fatal. Me morí. x_x', 'bot');
+      } finally {
+        chatInput.disabled = false;
+        chatInput.focus();
+      }
+    });
   });
 </script>

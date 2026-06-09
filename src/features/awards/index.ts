@@ -1,3 +1,3 @@
-export { default as categories } from './data/categories';
+export { getCategories, EVENT_ID_2025 } from './lib/awardsData';
 export * from './lib/voting';
 export * from './types';

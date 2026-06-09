@@ -28,7 +28,7 @@ import { optimizeUrl } from '../../../shared/lib/imageOptimizer';
 
         return (
           <a 
-            href={`/categorias?id=${award.id}`}
+            href={`/eventos`}
             class={
               "group relative h-64 rounded-2xl overflow-hidden cursor-pointer transform transition-all duration-500 hover:scale-105 block " +
               (isLonelyLast ? "lg:col-start-2" : "")
@@ -79,6 +79,8 @@ import { optimizeUrl } from '../../../shared/lib/imageOptimizer';
   import { gsap, ScrollTrigger } from '@/shared/lib/gsap';
 
   document.addEventListener('astro:page-load', () => {
+    if (!document.getElementById('awards-grid')) return;
+
     gsap.to('#awards-grid > *', {
       opacity: 1, y: 0,
       stagger: 0.1,

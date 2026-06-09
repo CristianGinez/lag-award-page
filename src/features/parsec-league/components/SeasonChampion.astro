@@ -1,0 +1,102 @@
+---
+interface Champion {
+  name: string;
+  logo?: string;
+  played: number;
+  won: number;
+  drawn: number;
+  lost: number;
+  gf: number;
+  ga: number;
+  gd: number;
+  points: number;
+}
+
+interface Props {
+  champion: Champion;
+  seasonName?: string;
+}
+
+const { champion, seasonName = 'Parsec League 2026' } = Astro.props;
+---
+
+<div class="relative overflow-hidden rounded-2xl border border-yellow-500/40 bg-gradient-to-br from-yellow-950/40 via-[#0a0a0a] to-[#0a0a0a] shadow-[0_0_60px_rgba(234,179,8,0.15)] mb-10">
+  <!-- Shimmer overlay -->
+  <div class="absolute inset-0 -z-0 pointer-events-none overflow-hidden rounded-2xl">
+    <div class="champion-shimmer absolute inset-0 bg-gradient-to-r from-transparent via-yellow-400/5 to-transparent"></div>
+  </div>
+
+  <!-- Glow corners -->
+  <div class="absolute -top-10 -left-10 w-40 h-40 bg-yellow-500/10 blur-3xl rounded-full pointer-events-none"></div>
+  <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-yellow-500/10 blur-3xl rounded-full pointer-events-none"></div>
+
+  <div class="relative z-10 p-6 md:p-10">
+    <!-- Header -->
+    <div class="flex items-center gap-3 mb-6">
+      <span class="text-yellow-400 text-xs font-bold uppercase tracking-[0.3em] font-mono">
+        🏆 {seasonName}
+      </span>
+      <div class="flex-grow border-t border-yellow-500/20"></div>
+      <span class="text-yellow-400/60 text-[10px] font-bold uppercase tracking-widest">Temporada Finalizada</span>
+    </div>
+
+    <div class="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-10">
+      <!-- Logo + Crown -->
+      <div class="flex-shrink-0 flex flex-col items-center gap-3">
+        <div class="relative">
+          <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-3xl">👑</span>
+          {champion.logo ? (
+            <img
+              src={champion.logo}
+              alt={champion.name}
+              class="w-24 h-24 md:w-32 md:h-32 rounded-full object-contain border-2 border-yellow-500/60 shadow-[0_0_30px_rgba(234,179,8,0.3)] mt-4"
+            />
+          ) : (
+            <div class="w-24 h-24 md:w-32 md:h-32 rounded-full bg-yellow-500/10 border-2 border-yellow-500/40 flex items-center justify-center mt-4">
+              <span class="text-4xl">⚽</span>
+            </div>
+          )}
+        </div>
+        <div class="text-center">
+          <p class="text-yellow-400/60 text-[10px] uppercase tracking-widest font-mono">Campeón</p>
+          <h2 class="text-2xl md:text-3xl font-black font-orbitron text-yellow-400 uppercase tracking-tight mt-0.5">
+            {champion.name}
+          </h2>
+        </div>
+      </div>
+
+      <!-- Stats grid -->
+      <div class="flex-grow w-full">
+        <p class="text-gray-500 text-xs uppercase tracking-widest font-mono mb-4">Estadísticas Finales</p>
+        <div class="grid grid-cols-4 sm:grid-cols-8 gap-2">
+          {[
+            { label: 'PJ', value: champion.played },
+            { label: 'PG', value: champion.won },
+            { label: 'PE', value: champion.drawn },
+            { label: 'PP', value: champion.lost },
+            { label: 'GF', value: champion.gf },
+            { label: 'GC', value: champion.ga },
+            { label: 'DG', value: champion.gd > 0 ? `+${champion.gd}` : champion.gd },
+            { label: 'Pts', value: champion.points, highlight: true },
+          ].map(stat => (
+            <div class={`flex flex-col items-center justify-center p-2 rounded-lg border ${stat.highlight ? 'border-yellow-500/50 bg-yellow-500/10' : 'border-white/5 bg-white/3'}`}>
+              <span class="text-[10px] text-gray-500 uppercase font-mono tracking-wider">{stat.label}</span>
+              <span class={`text-xl font-black font-mono mt-0.5 ${stat.highlight ? 'text-yellow-400' : 'text-white'}`}>{stat.value}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(200%); }
+  }
+  .champion-shimmer {
+    animation: shimmer 4s ease-in-out infinite;
+    width: 60%;
+  }
+</style>

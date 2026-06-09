@@ -1,0 +1,88 @@
+---
+// src/features/parsec-league/components/LeagueHighlight.astro
+import { getSeason, getStandings } from '../lib/leagueData';
+
+const [season, standings] = await Promise.all([getSeason(), getStandings()]);
+const champion = season?.champion ?? null;
+const top3 = standings.slice(0, 3);
+const isFinished = season?.status === 'finished';
+---
+
+<section id="parsec-league" class="py-16 md:py-24 scroll-mt-24 reveal-on-scroll">
+  <div class="container mx-auto px-4 md:px-6">
+
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-green-500/70 font-mono mb-3">Fútbol Parsecqueado</p>
+      <h2 class="text-4xl md:text-5xl font-black font-orbitron text-white uppercase tracking-tight mb-3">
+        ⚽ Parsec <span class="text-green-400">League</span>
+      </h2>
+      {isFinished && (
+        <span class="inline-block px-3 py-1 rounded-full bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 text-[10px] font-bold uppercase tracking-widest">
+          Temporada Finalizada
+        </span>
+      )}
+      <div class="mt-4 h-0.5 w-24 mx-auto bg-gradient-to-r from-transparent via-green-500/50 to-transparent"></div>
+    </div>
+
+    <div class="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <!-- Champion card -->
+      {champion && (
+        <div class="relative overflow-hidden rounded-2xl border border-yellow-500/30 bg-gradient-to-br from-yellow-950/30 via-[#0a0a0a] to-[#0a0a0a] p-6 flex flex-col items-center gap-4 text-center shadow-[0_0_40px_rgba(234,179,8,0.1)]">
+          <div class="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl" aria-hidden="true">
+            <div class="absolute -top-8 -right-8 w-32 h-32 bg-yellow-500/10 blur-3xl rounded-full"></div>
+          </div>
+          <span class="text-3xl">👑</span>
+          {champion.logo && (
+            <img
+              src={champion.logo}
+              alt={champion.name}
+              class="w-20 h-20 rounded-full object-contain border-2 border-yellow-500/40 shadow-[0_0_20px_rgba(234,179,8,0.25)]"
+              loading="lazy"
+            />
+          )}
+          <div>
+            <p class="text-yellow-500/60 text-[10px] uppercase tracking-widest font-mono">Campeón 2026</p>
+            <p class="text-2xl font-black font-orbitron text-yellow-400 uppercase tracking-tight mt-1">{champion.name}</p>
+            <p class="text-gray-500 text-sm mt-1">{champion.points} pts · {champion.won}G {champion.drawn}E {champion.lost}P</p>
+          </div>
+        </div>
+      )}
+
+      <!-- Top 3 mini-table -->
+      <div class="rounded-2xl border border-white/8 bg-white/3 overflow-hidden">
+        <div class="px-5 py-3 bg-white/5 border-b border-white/5 flex items-center gap-2">
+          <div class="w-1.5 h-5 bg-green-500 rounded-full"></div>
+          <p class="text-xs font-bold font-orbitron uppercase tracking-wider text-white">Clasificación Final</p>
+        </div>
+        <div class="divide-y divide-white/5">
+          {top3.map((team, i) => (
+            <div class={`flex items-center gap-3 px-5 py-3 ${i === 0 ? 'bg-yellow-500/5' : ''}`}>
+              <span class={`text-sm font-black font-mono w-5 text-center ${i === 0 ? 'text-yellow-400' : 'text-gray-600'}`}>
+                {i === 0 ? '👑' : i + 1}
+              </span>
+              {team.logo && (
+                <img src={team.logo} alt={team.name} class="w-7 h-7 rounded-full object-contain" loading="lazy" />
+              )}
+              <span class={`text-sm font-semibold flex-grow ${i === 0 ? 'text-yellow-300' : 'text-gray-300'}`}>{team.name}</span>
+              <span class={`text-sm font-black font-mono ${i === 0 ? 'text-yellow-400' : 'text-green-500'}`}>{team.points}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CTA -->
+    <div class="text-center mt-10">
+      <a
+        href="/eventos/ParsecLeague/marcador"
+        class="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-green-500/30 bg-green-500/5 hover:bg-green-500/10 text-green-400 font-bold text-sm uppercase tracking-widest transition-all hover:scale-105"
+      >
+        Ver tabla completa →
+      </a>
+    </div>
+
+  </div>
+</section>

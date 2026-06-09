@@ -1,0 +1,88 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Navbar from '@/layouts/Navbar.astro';
+import Footer from '@/layouts/Footer.astro';
+import VipCard from '@/features/community/components/VipCard.astro';
+import { getVips } from '@/features/community/lib/vipsData';
+
+const vips = await getVips();
+Astro.response.headers.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=600');
+---
+
+<Layout title="El Team — VIPs del TeamLag" description="Conocé al círculo VIP del TeamLag." image="/og/default.png">
+
+<script>
+  import { gsap } from 'gsap';
+
+  function initVipsPage() {
+    if (!document.querySelector('[data-vip-grid]')) return;
+
+    const cards = document.querySelectorAll<HTMLElement>('[data-vip]');
+    const header = document.querySelector<HTMLElement>('[data-vip-header]');
+
+    // Restaurar estado si venimos de una página de detalle (back button)
+    cards.forEach((c) => { c.style.position = ''; c.style.zIndex = ''; });
+    gsap.set(cards, { opacity: 1 });
+    if (header) gsap.set(header, { opacity: 1 });
+
+    // Overlay oscuro para la transición
+    let overlay = document.getElementById('vip-transition-overlay') as HTMLElement | null;
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'vip-transition-overlay';
+      overlay.style.cssText = 'position:fixed;inset:0;background:#050505;opacity:0;z-index:50;pointer-events:none;';
+      document.body.appendChild(overlay);
+    } else {
+      gsap.set(overlay, { opacity: 0 });
+      overlay.style.pointerEvents = 'none';
+    }
+
+    cards.forEach((card) => {
+      card.addEventListener('click', () => {
+        const others = [...cards].filter((c) => c !== card);
+
+        // Elevar la card clickeada sobre el overlay
+        card.style.position = 'relative';
+        card.style.zIndex = '60';
+
+        // Oscurecer todo lo demás
+        gsap.to(others, { opacity: 0, duration: 0.22, ease: 'power2.in' });
+        if (header) gsap.to(header, { opacity: 0, duration: 0.18 });
+        overlay!.style.pointerEvents = 'all';
+        gsap.to(overlay!, { opacity: 0.97, duration: 0.38, ease: 'power2.in' });
+      });
+    });
+
+    // Animación de entrada en la lista
+    gsap.from('[data-vip]', {
+      opacity: 0,
+      y: 20,
+      stagger: 0.05,
+      duration: 0.45,
+      ease: 'power3.out',
+      delay: 0.08,
+    });
+  }
+
+  document.addEventListener('astro:page-load', initVipsPage);
+</script>
+  <Navbar />
+  <main class="pt-24 min-h-screen bg-[#050505]">
+    <div class="container mx-auto px-4 md:px-6 py-12 max-w-5xl">
+
+      <div class="mb-10" data-vip-header>
+        <span class="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-500 font-mono">El círculo íntimo</span>
+        <h1 class="text-4xl md:text-5xl font-black font-orbitron text-white mt-2 mb-2 uppercase tracking-tight">
+          🦎 El <span class="bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 text-transparent bg-clip-text">Team</span>
+        </h1>
+        <p class="text-gray-400 text-sm">Los VIPs que hacen al TeamLag.</p>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4" data-vip-grid>
+        {vips.map((vip) => <VipCard vip={vip} />)}
+      </div>
+
+    </div>
+  </main>
+  <Footer />
+</Layout>

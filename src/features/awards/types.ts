@@ -3,6 +3,8 @@ export interface Nominee {
   creator?: string;
   image: string;
   description: string;
+  youtubeId?: string;
+  video?: string;
 }
 
 export interface Category {

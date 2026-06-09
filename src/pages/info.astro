@@ -1,68 +1,26 @@
 ---
-// src/pages/index.astro
+// src/pages/info.astro
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../layouts/Navbar.astro";
 import Footer from "../layouts/Footer.astro";
-import Hero from "../shared/components/Hero.astro";
-
-// Datos de los VIPs
-const vips = [
-  { name: "LAG", role: "Usuario", image: "https://yt3.googleusercontent.com/aDag2YmW8AmgtxcN_jdZMdsiP0q_t3vlKUi_o-0NHXraeIQ4MITmDBzyG2oNBJk_H27LY1MH=s160-c-k-c0x00ffffff-no-rj", color: "text-red-500" },
-  { name: "KZ", role: "VIP", image: "https://zgfpsqsbthjpejqyuhcx.supabase.co/storage/v1/object/public/tlag/nominados/img/kz.webp", color: "text-orange-500" },
-  { name: "GTA LOCO", role: "VIP", image: "https://yt3.googleusercontent.com/smFJmj8LvZRhVYan5QaHcFLIF6oKTC0TUbnMAdBcutHaW4D4utNu2W81UsD3Ez6AG9IVDJNgJ58=s160-c-k-c0x00ffffff-no-rj", color: "text-purple-500" },
-  { name: "TheNikito", role: "VIP", image: "https://yt3.googleusercontent.com/ytc/AIdro_lAj5cX8-MXNr0F2tDroqkJ6Cky4wRvpAfbVsTWfPIux2c=s160-c-k-c0x00ffffff-no-rj", color: "text-blue-500" },
-  { name: "Dy", role: "VIP", image: "https://lh3.googleusercontent.com/a/ACg8ocLxHRJmZCmabd2pyIPCl9YROorrNrLhoZ1z9QUcMNBCmWizrOwiZg=s96-c", color: "text-pink-300" },
-  { name: "Kidfire", role: "VIP", image: "https://zgfpsqsbthjpejqyuhcx.supabase.co/storage/v1/object/public/tlag/nominados/img/kidfire.webp", color: "text-pink-500" },
-];
+import TeamSection from "../features/community/components/TeamSection.astro";
 ---
 
 <Layout title="Comunidad TeamLag">
   <Navbar />
-  
+
   <main class="min-h-screen bg-[#050505] text-white overflow-hidden">
 
-    
-    {/* --- SECCIÓN VIPs --- */}
-    <section id="vips" class="py-24 container mx-auto px-4 relative">
-      {/* Fondo decorativo */}
-      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-96 bg-purple-900/10 blur-[120px] rounded-full -z-10"></div>
-
-      <div class="text-center mb-16 animate-fade-in-up">
-        <h2 class="text-4xl md:text-5xl font-black font-orbitron text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 mb-4">
-          lOS PIBES
-        </h2>
-        <p class="text-gray-400 text-lg">Nefastos que construyen nuestra historia.</p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {vips.map((vip) => (
-          <div class="group relative bg-gray-900/40 border border-white/5 rounded-2xl p-6 hover:bg-gray-800/60 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-500/10 flex flex-col items-center">
-            
-            {/* Contenedor de Imagen */}
-            <div class="w-24 h-24 rounded-full bg-gradient-to-br from-gray-800 to-black p-1 mb-4 shadow-lg group-hover:scale-110 transition-transform">
-              <img 
-                src={vip.image} 
-                alt={vip.name}
-                class="w-full h-full rounded-full object-cover border-2 border-transparent group-hover:border-white/20 transition-colors"
-                loading="lazy"
-              />
-            </div>
-
-            <h3 class={`text-xl font-bold font-orbitron ${vip.color}`}>{vip.name}</h3>
-            <span class="text-xs uppercase tracking-widest text-gray-500 mt-1">{vip.role}</span>
-          </div>
-        ))}
-      </div>
-    </section>
+    <TeamSection />
 
     {/* --- SECCIÓN COMUNIDAD (Discord & YouTube) --- */}
     <section id="comunidad" class="py-24 bg-linear-to-b from-transparent to-purple-900/10 border-y border-white/5">
       <div class="container mx-auto px-4 text-center">
         <h2 class="text-4xl font-bold mb-12 font-orbitron text-white">ÚNETE A LA LOCURA</h2>
-        
+
         <div class="flex flex-col md:flex-row gap-6 justify-center items-stretch max-w-4xl mx-auto">
           {/* Discord Card */}
-          <a href="https://discord.gg/YWJZBAUqQK" target="_blank" rel="noopener noreferrer" 
+          <a href="https://discord.gg/YWJZBAUqQK" target="_blank" rel="noopener noreferrer"
              class="flex-1 bg-[#5865F2]/10 hover:bg-[#5865F2]/20 border border-[#5865F2]/30 p-8 rounded-2xl transition-all group hover:scale-[1.02]">
             <div class="text-[#5865F2] mb-4">
               <svg class="w-16 h-16 mx-auto" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419z"/></svg>
@@ -72,7 +30,7 @@ const vips = [
           </a>
 
           {/* YouTube Card */}
-          <a href="https://www.youtube.com/@LAGartovich" target="_blank" rel="noopener noreferrer" 
+          <a href="https://www.youtube.com/@LAGartovich" target="_blank" rel="noopener noreferrer"
              class="flex-1 bg-[#FF0000]/10 hover:bg-[#FF0000]/20 border border-[#FF0000]/30 p-8 rounded-2xl transition-all group hover:scale-[1.02]">
             <div class="text-[#FF0000] mb-4">
               <svg class="w-16 h-16 mx-auto" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.746 22 12 22 12s0 3.255-.418 4.814a2.504 2.504 0 0 1-1.768 1.768c-1.56.419-7.814.419-7.814.419s-6.255 0-7.814-.419a2.505 2.505 0 0 1-1.768-1.768C2 15.255 2 12 2 12s0-3.254.418-4.814a2.506 2.506 0 0 1 1.768-1.768C5.744 5 11.998 5 11.998 5s6.255 0 7.814.418ZM15.194 12 10 15V9l5.194 3Z" clip-rule="evenodd"/></svg>
@@ -84,9 +42,9 @@ const vips = [
       </div>
     </section>
 
-    {/* --- SECCIÓN DESARROLLADORES (Preservada) --- */}
+    {/* --- SECCIÓN DESARROLLADORES --- */}
     <section class="mt-32 pt-20 border-t border-white/5 relative">
-        
+
         <div class="text-center mb-20">
           <span class="text-purple-400 font-mono text-xs uppercase tracking-[0.3em] mb-2 block">Equipo de Desarrollo</span>
           <h2 class="text-4xl md:text-5xl font-bold text-white font-orbitron">
@@ -98,10 +56,10 @@ const vips = [
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto px-4">
-          
+
           <div class="group bg-[#0a0a0a] border border-white/10 rounded-2xl p-8 hover:border-purple-500/30 transition-all duration-300 relative overflow-hidden">
             <div class="absolute top-0 right-0 w-64 h-64 bg-purple-600/10 blur-[80px] rounded-full -z-10 group-hover:bg-purple-600/20 transition-all"></div>
-            
+
             <div class="flex flex-col md:flex-row gap-8 items-start">
                 <div class="relative">
                     <div class="w-24 h-24 rounded-2xl overflow-hidden border border-white/10 shadow-2xl grayscale group-hover:grayscale-0 transition-all duration-500">
@@ -125,7 +83,7 @@ const vips = [
                 <svg class="w-5 h-5" fill="currentColor" viewBox="13 11 22 26">
                     <path d="M32.3305 18.0977C32.3082 18.24 32.2828 18.3856 32.2542 18.5351C31.2704 23.5861 27.9046 25.331 23.606 25.331H21.4173C20.8916 25.331 20.4486 25.7127 20.3667 26.2313L19.2461 33.3381L18.9288 35.3527C18.8755 35.693 19.1379 36 19.4815 36H23.3634C23.8231 36 24.2136 35.666 24.286 35.2127L24.3241 35.0154L25.055 30.3772L25.1019 30.1227C25.1735 29.6678 25.5648 29.3338 26.0245 29.3338H26.6051C30.3661 29.3338 33.3103 27.8068 34.1708 23.388C34.5303 21.5421 34.3442 20.0008 33.393 18.9168C33.1051 18.59 32.748 18.3188 32.3305 18.0977Z"></path>
                     <path d="M31.3009 17.6871C31.1506 17.6434 30.9955 17.6036 30.8364 17.5678C30.6766 17.5328 30.5127 17.5018 30.3441 17.4748C29.754 17.3793 29.1074 17.334 28.4147 17.334H22.5676C22.4237 17.334 22.2869 17.3666 22.1644 17.4254C21.8948 17.5551 21.6944 17.8104 21.6459 18.1229L20.402 26.0013L20.3662 26.2311C20.4481 25.7126 20.8911 25.3308 21.4168 25.3308H23.6055C27.9041 25.3308 31.2699 23.5851 32.2537 18.5349C32.2831 18.3854 32.3078 18.2398 32.33 18.0975C32.0811 17.9655 31.8115 17.8525 31.5212 17.7563C31.4496 17.7324 31.3757 17.7094 31.3009 17.6871Z"></path>
-                    <path d="M21.6461 18.1231C21.6946 17.8105 21.895 17.5552 22.1646 17.4264C22.2879 17.3675 22.4239 17.3349 22.5678 17.3349H28.4149C29.1077 17.3349 29.7542 17.3803 30.3444 17.4757C30.513 17.5027 30.6768 17.5338 30.8367 17.5687C30.9957 17.6045 31.1508 17.6443 31.3011 17.688C31.3759 17.7103 31.4498 17.7334 31.5222 17.7564C31.8125 17.8527 32.0821 17.9664 32.331 18.0976C32.6237 16.231 32.3287 14.9601 31.3194 13.8093C30.2068 12.5424 28.1986 12 25.629 12H18.169C17.6441 12 17.1963 12.3817 17.1152 12.9011L14.0079 32.5969C13.9467 32.9866 14.2473 33.3381 14.6402 33.3381H19.2458L20.4022 26.0014L21.6461 18.1231Z"></path>
+                    <path d="M21.6461 18.1231C21.6946 17.8105 21.895 17.5552 22.1646 17.4264C22.2879 17.3675 22.4239 17.3349 22.5678 17.3349H28.4149C29.1077 17.3349 29.7542 17.3803 30.3444 17.4757C30.513 17.5027 30.6768 17.5338 30.8367 17.5687C30.9957 17.6045 31.1508 17.6443 31.3011 17.688C31.3759 17.7103 31.4498 17.7334 31.5222 17.7564C31.8125 17.8527 32.0821 17.9664 32.331 18.0976C32.6237 16.231 32.3287 14.9601 31.3194 13.8093C30.2068 12.5424 28.1986 12 25.629 12H18.169C17.6441 12 17.1963 12.3817 17.1152 12.9011L14.0079 32.5969C13.9467 32.9866 14.2473 33.3381 14.6402 33.3381H19.2458L20.402 26.0014L21.6461 18.1231Z"></path>
                 </svg>
             </a>
                         </div>
@@ -138,7 +96,7 @@ const vips = [
                                 Diseño de arquitectura escalable, integración de autenticación OAuth, modelado de base de datos PostgreSQL y lógica de seguridad (RLS).
                             </p>
                         </div>
-                        
+
                         <div>
                             <h4 class="text-xs font-bold text-gray-500 uppercase mb-2">Core Stack</h4>
                             <div class="flex flex-wrap gap-2">
@@ -184,7 +142,7 @@ const vips = [
                                 Diseño de interfaz responsiva, animaciones CSS avanzadas, experiencia de usuario (UX) y optimización visual de componentes.
                             </p>
                         </div>
-                        
+
                         <div>
                             <h4 class="text-xs font-bold text-gray-500 uppercase mb-2">Core Stack</h4>
                             <div class="flex flex-wrap gap-2">
@@ -210,6 +168,6 @@ const vips = [
       <br>
 
   </main>
-  
+
   <Footer />
 </Layout>

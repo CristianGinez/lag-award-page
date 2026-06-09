@@ -1,5 +1,5 @@
 import React from 'react';
-import type { LeagueTeam, Round, GoalScorer } from '../data/parsecLeague';
+import type { LeagueTeam, Round, GoalScorer } from '../types';
 
 interface LeagueDashboardProps {
   data: {

@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { Ratelimit } from '@upstash/ratelimit';
 import { redis } from '../../../shared/lib/redis';
-import categories from '../../awards/data/categories';
+import { getCategories } from '../../awards/lib/awardsData';
 
 // LEER LA CLAVE DE FORMA SEGURA
 const API_KEY = import.meta.env.GEMINI_API_KEY;
@@ -49,14 +49,22 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
         const body = await request.json();
         const { message } = body;
 
-        if (!message) {
+        if (!message || typeof message !== 'string') {
             return new Response(JSON.stringify({ error: 'Mensaje requerido' }), {
                 status: 400,
                 headers: { 'Content-Type': 'application/json' }
             });
         }
 
+        if (message.length > 500) {
+            return new Response(JSON.stringify({ error: 'Mensaje demasiado largo (máx. 500 caracteres)' }), {
+                status: 400,
+                headers: { 'Content-Type': 'application/json' }
+            });
+        }
+
         // Preparar contexto con los datos
+        const categories = await getCategories();
         const context = categories.map(cat => {
             const nominees = cat.nominees.map((nom: any) =>
                 `- ${nom.name} (${nom.creator || 'Sin creador'})`

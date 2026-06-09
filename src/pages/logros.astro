@@ -1,0 +1,24 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Navbar from '@/layouts/Navbar.astro';
+import Footer from '@/layouts/Footer.astro';
+import { BadgeGallery } from '@/features/achievements/components/BadgeGallery';
+---
+
+<Layout title="Logros — TeamLag" description="Coleccioná logros de la comunidad TeamLag." image="/og/default.png">
+  <Navbar />
+  <main class="pt-24 min-h-screen bg-[#050505]">
+    <div class="container mx-auto px-4 md:px-6 py-12 max-w-5xl">
+
+      <div class="mb-10">
+        <span class="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-500 font-mono">Sistema de logros</span>
+        <h1 class="text-4xl md:text-5xl font-black font-orbitron text-white mt-2 mb-2">Logros</h1>
+        <p class="text-gray-400 text-sm">Coleccioná insignias por tu actividad en la comunidad TeamLag.</p>
+      </div>
+
+      <BadgeGallery client:idle />
+
+    </div>
+  </main>
+  <Footer />
+</Layout>

@@ -6,6 +6,13 @@
   --font-sans: 'Inter', sans-serif;
   --font-heading: 'Orbitron', monospace;
 
+  /* Colores VIP */
+  --vip-lag: #dc2626;
+  --vip-pixel: #9333ea;
+  --vip-kz: #ea580c;
+  --vip-thenikito: #9ca3af;
+  --vip-kidfire: #db2777;
+
   /* Colores principales */
   --color-primary: #dc2626; /* Rojo vibrante */
   --color-secondary: #7c3aed; /* Morado */

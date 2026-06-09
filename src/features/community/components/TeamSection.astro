@@ -72,6 +72,8 @@ const vips = await getVips();
   import { gsap, ScrollTrigger } from '@/shared/lib/gsap';
 
   document.addEventListener('astro:page-load', () => {
+    if (!document.getElementById('vip-grid')) return;
+
     // Stagger de VIP cards al entrar en viewport
     gsap.to('#vip-grid > *', {
       opacity: 1,

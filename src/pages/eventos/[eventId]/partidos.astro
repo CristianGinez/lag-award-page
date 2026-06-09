@@ -4,7 +4,7 @@ import Navbar from "../../../layouts/Navbar.astro";
 import Footer from "../../../layouts/Footer.astro";
 import EventNavbar from "../../../shared/components/EventNavbar.astro";
 import { getEventBySlug } from "../../../shared/lib/events";
-import { parsecLeagueData } from "../../../features/parsec-league/data/parsecLeague";
+import { getFixture, getSeason } from "../../../features/parsec-league/lib/leagueData";
 import { LeagueFixture } from "../../../features/parsec-league/components/LeagueFixture";
 
 const { eventId } = Astro.params;
@@ -13,6 +13,9 @@ const currentEvent = getEventBySlug(eventId);
 if (!currentEvent || currentEvent.type !== 'league') {
   return Astro.redirect('/404');
 }
+
+const season = await getSeason();
+const isFinished = season?.status === 'finished';
 
 export function getStaticPaths() {
   return [{ params: { eventId: 'ParsecLeague' } }];
@@ -30,12 +33,17 @@ export function getStaticPaths() {
     </div>
 
     <div class="container mx-auto px-4 md:px-6 py-10">
-      <div class="flex items-center gap-4 mb-8 max-w-5xl mx-auto">
+      <div class="flex items-center gap-4 mb-8 max-w-5xl mx-auto flex-wrap">
         <div class="h-10 w-1.5 bg-blue-500 rounded-full"></div>
         <h1 class="text-4xl font-black text-white tracking-tight">Fixture & Resultados</h1>
+        {isFinished && (
+          <span class="px-3 py-1 rounded-full bg-yellow-500/10 border border-yellow-500/40 text-yellow-400 text-[10px] font-bold uppercase tracking-widest">
+            Temporada Finalizada
+          </span>
+        )}
       </div>
-      
-      <LeagueFixture client:load fixture={parsecLeagueData.fixture} />
+
+      <LeagueFixture client:load fixture={await getFixture()} isFinished={isFinished} />
     </div>
   </main>
   <Footer />

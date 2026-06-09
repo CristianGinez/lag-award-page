@@ -1,6 +1,6 @@
 
 import React from 'react';
-import type { Edition } from '../data/parsecLeague';
+import type { Edition } from '../types';
 
 export const LeagueEditions: React.FC<{ editions: Edition[] }> = ({ editions }) => {
   return (

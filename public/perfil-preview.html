@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perfil — Steam Style</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #050505;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ════════════════════════════════
+       PROFILE BANNER
+    ════════════════════════════════ */
+    .profile-banner {
+      width: 100%;
+      height: 200px;
+      background:
+        linear-gradient(to bottom, rgba(5,5,5,0) 40%, #050505 100%),
+        linear-gradient(135deg, #0d0020 0%, #0a0a1e 30%, #100a00 60%, #0a001a 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* subtle grid pattern */
+    .profile-banner::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* glow orbs */
+    .profile-banner::after {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(124,58,237,0.2) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 30%, rgba(219,39,119,0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 60% 80%, rgba(245,158,11,0.08) 0%, transparent 40%);
+    }
+
+    /* ════════════════════════════════
+       PROFILE HEADER
+    ════════════════════════════════ */
+    .profile-header {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      margin-top: -56px;
+      display: flex;
+      align-items: flex-end;
+      gap: 20px;
+      z-index: 10;
+    }
+
+    .avatar-frame {
+      flex-shrink: 0;
+      width: 96px; height: 96px;
+      border-radius: 12px;
+      padding: 2px;
+      background: linear-gradient(135deg, #7c3aed, #db2777, #f59e0b);
+      box-shadow: 0 0 30px rgba(124,58,237,0.4), 0 8px 32px rgba(0,0,0,0.6);
+      position: relative;
+    }
+
+    .avatar-inner {
+      width: 100%; height: 100%;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #1a0533, #0d0d1f);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 36px; font-weight: 900;
+      color: #c084fc;
+    }
+
+    .avatar-online {
+      position: absolute; bottom: -3px; right: -3px;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: #22c55e;
+      border: 3px solid #050505;
+      box-shadow: 0 0 8px rgba(34,197,94,0.7);
+    }
+
+    .header-info {
+      padding-bottom: 10px;
+      flex: 1;
+    }
+
+    .header-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 22px; font-weight: 900;
+      color: #fff;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.8);
+      line-height: 1;
+    }
+
+    .header-meta {
+      display: flex; align-items: center; gap: 10px; margin-top: 8px; flex-wrap: wrap;
+    }
+
+    .header-email {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; color: #4b5563;
+    }
+
+    .header-sep { width: 3px; height: 3px; border-radius: 50%; background: #1f2937; }
+
+    .vip-chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 9px; border-radius: 999px;
+      background: rgba(250,204,21,0.08);
+      border: 1px solid rgba(250,204,21,0.2);
+      font-size: 9px; font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      color: #fbbf24; text-transform: uppercase; letter-spacing: 0.1em;
+    }
+
+    .online-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 10px; color: #22c55e;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .online-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: #22c55e;
+      box-shadow: 0 0 6px rgba(34,197,94,0.8);
+      animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    /* ════════════════════════════════
+       LAYOUT
+    ════════════════════════════════ */
+    .profile-body {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px 24px 80px;
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+
+    /* ════════════════════════════════
+       SIDEBAR
+    ════════════════════════════════ */
+    .sidebar { display: flex; flex-direction: column; gap: 10px; position: sticky; top: 20px; }
+
+    .side-block {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .side-block-title {
+      padding: 10px 14px;
+      font-size: 9px; font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase; letter-spacing: 0.25em;
+      color: #374151;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .side-block-body { padding: 14px; }
+
+    .side-stat {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 6px 0;
+    }
+    .side-stat:not(:last-child) { border-bottom: 1px solid rgba(255,255,255,0.03); }
+    .side-stat-label { font-size: 10px; color: #4b5563; font-family: 'JetBrains Mono', monospace; }
+    .side-stat-value { font-size: 12px; font-weight: 700; color: #d1d5db; }
+
+    .signout-btn {
+      width: 100%; padding: 10px;
+      background: none;
+      border: 1px solid rgba(239,68,68,0.1);
+      border-radius: 10px;
+      color: rgba(239,68,68,0.35);
+      font-size: 10px; font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase; letter-spacing: 0.15em;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .signout-btn:hover { border-color: rgba(239,68,68,0.3); color: rgba(239,68,68,0.6); }
+
+    /* ════════════════════════════════
+       MAIN BLOCKS
+    ════════════════════════════════ */
+    .main { display: flex; flex-direction: column; gap: 10px; }
+
+    .block {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .block-header {
+      padding: 12px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .block-title {
+      font-size: 9px; font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase; letter-spacing: 0.25em;
+      color: #374151;
+    }
+
+    .block-action {
+      font-size: 9px; color: #374151;
+      font-family: 'JetBrains Mono', monospace;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .block-action:hover { color: #9ca3af; }
+
+    .block-body { padding: 16px 18px; }
+
+    /* ── LOGROS ── */
+    .logro-badge {
+      display: inline-flex; align-items: center; gap: 12px;
+      padding: 12px 18px; border-radius: 12px;
+      border: 1px solid rgba(251,146,60,0.5);
+      background: linear-gradient(135deg, rgba(249,115,22,0.2), rgba(251,191,36,0.08), rgba(234,88,12,0.04));
+      box-shadow: 0 0 20px rgba(251,146,60,0.2), inset 0 1px 0 rgba(255,255,255,0.04);
+      position: relative; overflow: hidden; cursor: default;
+    }
+    .logro-badge::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(to right, transparent, rgba(253,186,116,0.6), transparent);
+    }
+    .logro-pulse {
+      position: absolute; inset: 0; border-radius: 12px;
+      background: rgba(251,146,60,0.06);
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+    .logro-badge img {
+      width: 34px; height: 34px; border-radius: 8px; object-fit: contain;
+      filter: drop-shadow(0 0 7px rgba(251,146,60,0.9));
+      position: relative; z-index: 1; flex-shrink: 0;
+    }
+    .logro-text { position: relative; z-index: 1; }
+    .logro-label {
+      font-size: 9px; font-weight: 700; color: rgb(253,186,116);
+      font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.2em;
+    }
+    .logro-name {
+      font-size: 12px; font-weight: 700; color: #fff;
+      font-family: 'Orbitron', sans-serif; margin-top: 2px;
+    }
+
+    /* ── DISCORD ── */
+    .discord-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .discord-left { display: flex; align-items: center; gap: 12px; }
+    .discord-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: rgba(88,101,242,0.1);
+      border: 1px solid rgba(88,101,242,0.18);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .discord-icon svg { width: 18px; height: 18px; fill: #5865F2; }
+    .discord-info strong { display: block; font-size: 12px; color: #e5e7eb; font-weight: 600; }
+    .discord-info span { font-size: 10px; color: #4b5563; font-family: 'JetBrains Mono', monospace; }
+    .discord-btn {
+      padding: 8px 16px; border-radius: 8px;
+      background: #5865F2; color: #fff;
+      font-size: 10px; font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      border: none; cursor: pointer; white-space: nowrap;
+    }
+
+    /* ── VOTOS — SIN MODIFICAR ── */
+    .votes-accordion {
+      border: 2px solid white;
+      background: #0a0a0a;
+      overflow: hidden;
+    }
+    .votes-toggle {
+      width: 100%; padding: 4px 16px;
+      background: white; color: black;
+      display: flex; justify-content: space-between; align-items: center;
+      cursor: pointer; border: none;
+    }
+    .votes-toggle h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 13px; font-weight: 900;
+      text-transform: uppercase; letter-spacing: -0.03em;
+    }
+    .votes-count {
+      font-size: 11px; font-weight: 700;
+      background: black; color: white;
+      padding: 3px 8px; border-radius: 4px;
+    }
+    .votes-grid {
+      padding: 8px;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+    }
+    .vote-item {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px; padding: 8px;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; text-align: center;
+      gap: 4px; height: 64px; position: relative; overflow: hidden;
+    }
+    .vote-check { position: absolute; top: 4px; right: 6px; font-size: 9px; color: #22c55e; opacity: 0.5; }
+    .vote-cat { font-size: 9px; color: #9ca3af; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+    .vote-name { font-size: 11px; color: #93c5fd; font-weight: 700; line-height: 1.2; }
+  </style>
+</head>
+<body>
+
+  <!-- BANNER -->
+  <div class="profile-banner"></div>
+
+  <!-- HEADER -->
+  <div class="profile-header">
+    <div class="avatar-frame">
+      <div class="avatar-inner">P</div>
+      <div class="avatar-online"></div>
+    </div>
+    <div class="header-info">
+      <div class="header-name">Paolo Ginez</div>
+      <div class="header-meta">
+        <div class="online-chip"><div class="online-dot"></div>En línea</div>
+        <div class="header-sep"></div>
+        <span class="header-email">paologinez20@gmail.com</span>
+        <div class="header-sep"></div>
+        <span class="vip-chip">★ VIP</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="profile-body">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <div class="side-block">
+        <div class="side-block-title">Stats</div>
+        <div class="side-block-body">
+          <div class="side-stat">
+            <span class="side-stat-label">Logros</span>
+            <span class="side-stat-value">1</span>
+          </div>
+          <div class="side-stat">
+            <span class="side-stat-label">Votos emitidos</span>
+            <span class="side-stat-value">8</span>
+          </div>
+          <div class="side-stat">
+            <span class="side-stat-label">Miembro desde</span>
+            <span class="side-stat-value" style="font-size:10px;color:#6b7280;">Nov 2025</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="signout-btn">Cerrar Sesión</button>
+
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <!-- Logros -->
+      <div class="block">
+        <div class="block-header">
+          <span class="block-title">Vitrina de logros</span>
+          <a href="#" class="block-action">Ver todos →</a>
+        </div>
+        <div class="block-body">
+          <div class="logro-badge">
+            <div class="logro-pulse"></div>
+            <img src="https://res.cloudinary.com/dkjaq3i9p/image/upload/v1768411742/LOGO_LAGAWARDS_xen8va.png" alt="logro">
+            <div class="logro-text">
+              <div class="logro-label">Fundador</div>
+              <div class="logro-name">Votante Fundador</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Discord -->
+      <div class="block">
+        <div class="block-header">
+          <span class="block-title">Cuenta de Discord</span>
+        </div>
+        <div class="block-body">
+          <div class="discord-row">
+            <div class="discord-left">
+              <div class="discord-icon">
+                <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+              </div>
+              <div class="discord-info">
+                <strong>Discord Oficial</strong>
+                <span>No vinculado — conectá tu Discord</span>
+              </div>
+            </div>
+            <button class="discord-btn">Conectar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Votos — SIN MODIFICAR -->
+      <div class="votes-accordion">
+        <button class="votes-toggle">
+          <h3>Tus Votos 2025</h3>
+          <span class="votes-count">8 Votos</span>
+        </button>
+        <div class="votes-grid">
+          <div class="vote-item"><span class="vote-check">✓</span><div class="vote-cat">Mejor streamer</div><div class="vote-name">LAG</div></div>
+          <div class="vote-item"><span class="vote-check">✓</span><div class="vote-cat">Mejor clip</div><div class="vote-name">KZ</div></div>
+          <div class="vote-item"><span class="vote-check">✓</span><div class="vote-cat">Mejor momento</div><div class="vote-name">Grox</div></div>
+          <div class="vote-item"><span class="vote-check">✓</span><div class="vote-cat">MVP del año</div><div class="vote-name">Thenikito</div></div>
+          <div class="vote-item"><span class="vote-check">✓</span><div class="vote-cat">Mejor jugada</div><div class="vote-name">Kidfire</div></div>
+          <div class="vote-item"><span class="vote-check">✓</span><div class="vote-cat">Peor momento</div><div class="vote-name">Pixel</div></div>
+          <div class="vote-item"><span class="vote-check">✓</span><div class="vote-cat">Más tóxico</div><div class="vote-name">LAG</div></div>
+          <div class="vote-item"><span class="vote-check">✓</span><div class="vote-cat">Más mejorado</div><div class="vote-name">Thenikito</div></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+</body>
+</html>

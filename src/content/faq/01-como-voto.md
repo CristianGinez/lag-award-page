@@ -5,6 +5,6 @@ order: 1
 updatedAt: 2026-05-12
 ---
 
-Para votar tenés que iniciar sesión con tu cuenta de Google desde `/login`. Una vez logueado, andá a `/categorias` y elegí tu nominado favorito en cada categoría. Solo podés votar **una vez por categoría**.
+La votación de los LAG Awards 2025 ya cerró. Podés ver los resultados en `/eventos`.
 
-Si querés ver tus votos actuales, andá a `/perfil`.
+Si querés ver tus votos, andá a `/perfil`.

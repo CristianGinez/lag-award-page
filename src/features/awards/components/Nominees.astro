@@ -1,5 +1,6 @@
 ---
-import categories from '../data/categories.ts';
+import { getCategories } from '../lib/awardsData';
+const categories = await getCategories();
 import { optimizeUrl } from '../../../shared/lib/imageOptimizer';
 
 const nominees = categories.flatMap((category) => 
@@ -114,7 +115,7 @@ const nominees = categories.flatMap((category) =>
                                     
                                 </div>
 
-                                <a href="/categorias" class="block w-full text-center py-2 px-4 bg-linear-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-bold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-red-900/20">
+                                <a href="/eventos" class="block w-full text-center py-2 px-4 bg-linear-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-bold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-red-900/20">
                                     Ir a Votar
                                 </a>
                             </div>

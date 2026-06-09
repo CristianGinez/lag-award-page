@@ -76,6 +76,21 @@ export async function voteForNominee(categoryId: string, nomineeName: string) {
       return false;
     }
 
+    // Otorgar badge "Votante Fundador" (idempotente — ok si ya lo tiene)
+    try {
+      const grantRes = await fetch('/api/achievements/grant-badge', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ badge_slug: 'votante-fundador-2025', event_id: EVENT_ID_2025 }),
+      });
+      if (grantRes.ok) {
+        const { badge } = await grantRes.json();
+        if (badge) {
+          window.dispatchEvent(new CustomEvent('achievement:unlocked', { detail: badge }));
+        }
+      }
+    } catch { /* no bloquear el voto por el badge */ }
+
     return true;
   } catch (err) {
     console.error('Vote network error:', err);
