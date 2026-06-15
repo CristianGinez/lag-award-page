@@ -369,24 +369,15 @@ const perfilCategories = await getCategories(EVENT_ID_2025);
     }
 
     async function renderDiscordState() {
-      const { data: { user: freshUser } } = await supabase.auth.getUser();
-      if (!freshUser) return;
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
 
-      // profiles.discord_id is the source of truth — identities array is not reliably populated by getUser()
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('discord_id')
-        .eq('id', freshUser.id)
-        .maybeSingle();
-
-      const hasDiscord = Boolean(profile?.discord_id);
-
-      // Username from OAuth identities (best-effort, may be absent)
-      const discordUsername =
-        freshUser?.identities?.find((i) => i.provider === 'discord')
-          ?.identity_data?.['full_name'] as string | undefined ??
-        freshUser?.identities?.find((i) => i.provider === 'discord')
-          ?.identity_data?.['name'] as string | undefined;
+      // Use server endpoint — service client bypasses RLS so discord_id is always readable
+      const res = await fetch('/api/auth/discord-status', {
+        headers: { 'Authorization': `Bearer ${session.access_token}` },
+      });
+      if (!res.ok) return;
+      const { linked: hasDiscord, discordUsername } = await res.json();
 
       discordSection?.classList.remove('hidden');
 
