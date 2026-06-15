@@ -1,13 +1,17 @@
 import type { APIRoute } from 'astro';
-import { getSupabase, createServiceClient } from '@/features/auth/lib/supabase';
+import { createServiceClient } from '@/features/auth/lib/supabase';
 import { invalidateCache } from '@/shared/lib/cache';
 
+// PKCE sessions live in localStorage, not cookies — read the Bearer token from the Authorization header
 async function requireAdmin(context: Parameters<APIRoute>[0]) {
-  const ssrSupabase = getSupabase(context);
-  const { data: { user } } = await ssrSupabase.auth.getUser();
+  const authHeader = context.request.headers.get('authorization');
+  if (!authHeader?.startsWith('Bearer ')) return null;
+
+  const token = authHeader.slice(7);
+  const serviceSupabase = createServiceClient();
+  const { data: { user } } = await serviceSupabase.auth.getUser(token);
   if (!user) return null;
 
-  const serviceSupabase = createServiceClient();
   const { data } = await serviceSupabase
     .from('admin_users')
     .select('user_id')

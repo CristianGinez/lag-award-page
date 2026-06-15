@@ -1,16 +1,19 @@
 import type { APIRoute } from 'astro';
-import { getSupabase, createServiceClient } from '@/features/auth/lib/supabase';
+import { createServiceClient } from '@/features/auth/lib/supabase';
 
 export const POST: APIRoute = async (context) => {
   try {
-    // 1. Verificar que el solicitante es admin
-    const ssrSupabase = getSupabase(context);
-    const { data: { user } } = await ssrSupabase.auth.getUser();
-    if (!user) {
+    // 1. Verificar que el solicitante es admin (PKCE sessions use Bearer token, not cookies)
+    const authHeader = context.request.headers.get('authorization');
+    if (!authHeader?.startsWith('Bearer ')) {
       return new Response(JSON.stringify({ error: 'No autenticado' }), { status: 401 });
     }
 
     const serviceSupabase = createServiceClient();
+    const { data: { user } } = await serviceSupabase.auth.getUser(authHeader.slice(7));
+    if (!user) {
+      return new Response(JSON.stringify({ error: 'No autenticado' }), { status: 401 });
+    }
 
     // Check admin_users table
     const { data: adminRow } = await serviceSupabase

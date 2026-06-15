@@ -1,5 +1,13 @@
 import { useState } from 'react';
+import { supabase } from '@/features/auth/lib/supabase';
 import type { Vip, VipLink, VipLinkPlatform } from '../types';
+
+async function authHeader(): Promise<Record<string, string>> {
+  const { data: { session } } = await supabase.auth.getSession();
+  return session?.access_token
+    ? { 'Authorization': `Bearer ${session.access_token}` }
+    : {};
+}
 
 const PLATFORMS: VipLinkPlatform[] = [
   'youtube', 'twitch', 'steam', 'instagram', 'tiktok',
@@ -165,6 +173,8 @@ export function VipsManager({ initialVips }: { initialVips: Vip[] }) {
     setSaving(true);
     setMsg('');
     try {
+      const headers = await authHeader();
+
       // 1. Guardar el VIP
       const vipPayload = { ...editing };
       delete (vipPayload as any).links;
@@ -172,7 +182,7 @@ export function VipsManager({ initialVips }: { initialVips: Vip[] }) {
 
       const res = await fetch('/api/admin/vips', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...headers },
         body: JSON.stringify(vipPayload),
       });
       const data = await res.json();
@@ -187,7 +197,7 @@ export function VipsManager({ initialVips }: { initialVips: Vip[] }) {
       for (const link of editLinks) {
         const linkRes = await fetch('/api/admin/vips/links', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', ...headers },
           body: JSON.stringify({ ...link, vip_id: vipId }),
         });
         if (linkRes.ok) {
@@ -203,7 +213,7 @@ export function VipsManager({ initialVips }: { initialVips: Vip[] }) {
         if (!editLinkIds.has(prev.id)) {
           await fetch('/api/admin/vips/links', {
             method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', ...headers },
             body: JSON.stringify({ id: prev.id }),
           });
         }
@@ -227,9 +237,10 @@ export function VipsManager({ initialVips }: { initialVips: Vip[] }) {
     const payload = { ...vip, is_active: !(vip as any).is_active };
     delete (payload as any).links;
     delete (payload as any).vip_links;
+    const headers = await authHeader();
     const res = await fetch('/api/admin/vips', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...headers },
       body: JSON.stringify(payload),
     });
     if (res.ok) {

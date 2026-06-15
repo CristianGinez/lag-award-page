@@ -653,12 +653,21 @@ if (Astro.request.method === 'POST') {
 
   document.addEventListener('astro:page-load', checkAdminAccess);
 
+  // ── helpers ──────────────────────────────────────────────────────────
+  async function getAuthHeaders(): Promise<Record<string, string>> {
+    const { data: { session } } = await supabase.auth.getSession();
+    return session?.access_token
+      ? { 'Authorization': `Bearer ${session.access_token}` }
+      : {};
+  }
+
   // ── VIP account linking ──────────────────────────────────────────────
   async function loadVipLinkTable() {
     const container = document.getElementById('vip-link-table');
     if (!container) return;
     try {
-      const res = await fetch('/api/admin/vips');
+      const headers = await getAuthHeaders();
+      const res = await fetch('/api/admin/vips', { headers });
       if (!res.ok) return;
       const vips: any[] = await res.json();
 
@@ -690,9 +699,10 @@ if (Astro.request.method === 'POST') {
     const email = (form.elements.namedItem('email') as HTMLInputElement).value;
     const btn = form.querySelector('button')!;
     btn.textContent = '...'; btn.disabled = true;
+    const authHeaders = await getAuthHeaders();
     const res = await fetch('/api/admin/vip-link', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...authHeaders },
       body: JSON.stringify({ vip_id: vipId, email }),
     });
     const data = await res.json();
@@ -702,9 +712,10 @@ if (Astro.request.method === 'POST') {
 
   (window as any).unlinkVip = async (vipId: string) => {
     if (!confirm('¿Desvincular esta cuenta?')) return;
+    const authHeaders = await getAuthHeaders();
     const res = await fetch('/api/admin/vip-link', {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...authHeaders },
       body: JSON.stringify({ vip_id: vipId }),
     });
     if (res.ok) await loadVipLinkTable();
@@ -731,9 +742,10 @@ if (Astro.request.method === 'POST') {
     grantBtn.textContent = 'Otorgando…';
 
     try {
+      const authHeaders = await getAuthHeaders();
       const res = await fetch('/api/admin/grant-badge', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...authHeaders },
         body: JSON.stringify({ target_email: email, badge_slug: slug }),
       });
       const data = await res.json();
