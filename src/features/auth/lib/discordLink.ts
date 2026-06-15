@@ -16,50 +16,39 @@ export async function startDiscordLink() {
 }
 
 /**
- * Tras el callback, lee la identidad de Discord vinculada y guarda
- * el discord_id en profiles. Llamar en /perfil cuando ?linked=discord.
+ * Tras el callback, usa el endpoint server-side para leer la identidad
+ * de Discord (vía admin API) y guardar el discord_id en profiles.
+ * Llamar en /perfil cuando ?linked=discord.
  */
 export async function syncDiscordIdToProfile(): Promise<
   { ok: boolean; discordId?: string; reason?: string; error?: unknown }
 > {
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { ok: false, reason: 'no-session' };
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) return { ok: false, reason: 'no-session' };
 
-  const discordIdentity = user.identities?.find((i) => i.provider === 'discord');
-  if (!discordIdentity) return { ok: false, reason: 'no-discord-identity' };
+  // Use server-side endpoint: browser getUser() doesn't reliably return identities
+  const res = await fetch('/api/auth/sync-discord', {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${session.access_token}` },
+  });
 
-  // Discord snowflake puede venir en provider_id o sub según la versión del SDK
-  const discordId =
-    (discordIdentity.identity_data as Record<string, unknown>)?.provider_id as string |undefined ??
-    (discordIdentity.identity_data as Record<string, unknown>)?.sub as string | undefined ??
-    discordIdentity.id;
+  const data = await res.json();
 
-  const { error } = await supabase
-    .from('profiles')
-    .update({ discord_id: String(discordId), updated_at: new Date().toISOString() })
-    .eq('id', user.id);
-
-  if (error) {
-    console.error('[discordLink] no se pudo guardar discord_id:', error);
-    // 23505 = unique_violation: ese Discord ya está vinculado a otro perfil
-    if ((error as { code?: string }).code === '23505') {
-      return { ok: false, reason: 'already-linked-to-another', error };
-    }
-    return { ok: false, reason: 'db-error', error };
+  if (!res.ok) {
+    if (res.status === 409 || data.error === 'already-linked-to-another')
+      return { ok: false, reason: 'already-linked-to-another' };
+    if (data.error === 'no-discord-identity')
+      return { ok: false, reason: 'no-discord-identity' };
+    return { ok: false, reason: 'db-error', error: data.error };
   }
-  // Reconocer VIP si el discord_id matchea
-  try {
-    await supabase.rpc('claim_vip_status', { target_user_id: user.id });
-  } catch { /* no bloquear el flujo */ }
 
   // Otorgar badge "Discord Conectado"
   try {
-    const { data: { session } } = await supabase.auth.getSession();
     const grantRes = await fetch('/api/achievements/grant-badge', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        ...(session?.access_token ? { 'Authorization': `Bearer ${session.access_token}` } : {}),
+        'Authorization': `Bearer ${session.access_token}`,
       },
       body: JSON.stringify({ badge_slug: 'discord-conectado' }),
     });
@@ -71,7 +60,7 @@ export async function syncDiscordIdToProfile(): Promise<
     }
   } catch { /* no bloquear el flujo */ }
 
-  return { ok: true, discordId: String(discordId) };
+  return { ok: true, discordId: data.discordId };
 }
 
 /** Desvincular Discord de la cuenta actual. */
