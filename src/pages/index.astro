@@ -49,6 +49,13 @@ Astro.response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-re
 </Layout>
 
 <script>
+  // Redirect Discord OAuth errors back to /perfil so the user sees the message
+  const p = new URLSearchParams(window.location.search);
+  const errCode = p.get('error_code') ?? new URLSearchParams(window.location.hash.slice(1)).get('error_code');
+  if (errCode) {
+    window.location.replace(`/perfil?discord_error=${encodeURIComponent(errCode)}`);
+  }
+
   // Scroll reveal — Intersection Observer para todas las secciones
   const observer = new IntersectionObserver(
     (entries) => {
