@@ -361,7 +361,18 @@ const perfilCategories = await getCategories(EVENT_ID_2025);
 
     async function renderDiscordState() {
       const { data: { user: freshUser } } = await supabase.auth.getUser();
-      const hasDiscord = freshUser?.identities?.some((i) => i.provider === 'discord');
+      if (!freshUser) return;
+
+      // profiles.discord_id is the source of truth — identities array is not reliably populated by getUser()
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('discord_id')
+        .eq('id', freshUser.id)
+        .maybeSingle();
+
+      const hasDiscord = Boolean(profile?.discord_id);
+
+      // Username from OAuth identities (best-effort, may be absent)
       const discordUsername =
         freshUser?.identities?.find((i) => i.provider === 'discord')
           ?.identity_data?.['full_name'] as string | undefined ??
