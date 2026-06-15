@@ -1,12 +1,16 @@
 import type { APIRoute } from 'astro';
-import { getSupabase } from '@/features/auth/lib/supabase';
+import { createServiceClient } from '@/features/auth/lib/supabase';
 import { invalidateCache } from '@/shared/lib/cache';
 
 export const prerender = false;
 
 export const POST: APIRoute = async (context) => {
-  const supabase = getSupabase(context);
-  const { data: { user } } = await supabase.auth.getUser();
+  // PKCE sessions live in localStorage, not cookies — read Bearer token from Authorization header
+  const authHeader = context.request.headers.get('authorization');
+  if (!authHeader?.startsWith('Bearer ')) return json({ error: 'No autorizado' }, 401);
+
+  const supabase = createServiceClient();
+  const { data: { user } } = await supabase.auth.getUser(authHeader.slice(7));
   if (!user) return json({ error: 'No autorizado' }, 401);
 
   let body: any;
