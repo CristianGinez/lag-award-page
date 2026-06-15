@@ -32,7 +32,8 @@ const { title, description = 'La comunidad oficial de LAGartovich', image = ogDe
 		<meta property="twitter:image" content={image} />
 
 
-		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8934256241015789" crossorigin="anonymous"></script>
+		<!-- AdSense: Fragment bypasses Astro's script processing (prevents data-astro-exec attribute) -->
+		<Fragment set:html='<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8934256241015789" crossorigin="anonymous"></script>' />
 		<meta name="google-adsense-account" content="ca-pub-8934256241015789">
 		
 		<link rel="preconnect" href="https://fonts.googleapis.com">
